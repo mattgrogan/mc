@@ -1,16 +1,6 @@
-import {
-  Circle,
-  Img,
-  ImgProps,
-  Layout,
-  LayoutProps,
-  NodeProps,
-  signal,
-  Txt,
-} from "@motion-canvas/2d";
+import { Img, ImgProps, Layout, LayoutProps, signal } from "@motion-canvas/2d";
 import {
   all,
-  createRef,
   easeInOutCubic,
   easeOutExpo,
   linear,
