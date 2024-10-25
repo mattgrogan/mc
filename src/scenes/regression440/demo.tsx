@@ -51,10 +51,13 @@ export default makeScene2D(function* (view) {
   yield* table().dice().removeDice();
 
   yield* bug().updateLabel("PLACE BETS");
-  yield* table().bets().makeBet(100, c.PLACE5);
-  yield* table().bets().makeBet(120, c.PLACE6);
-  yield* table().bets().makeBet(120, c.PLACE8);
-  yield* table().bets().makeBet(100, c.PLACE9);
+  yield* sequence(
+    0.2,
+    table().bets().makeBet(100, c.PLACE5),
+    table().bets().makeBet(120, c.PLACE6),
+    table().bets().makeBet(120, c.PLACE8),
+    table().bets().makeBet(100, c.PLACE9)
+  );
   yield* bug().updateBankroll(-440);
   yield* bug().updateBets(440);
   yield* bug().updateExposure(-440);
@@ -64,9 +67,30 @@ export default makeScene2D(function* (view) {
   yield* bug().updateRoll(false);
   yield* table().dice().throw(3, 6);
   yield* bug().updateLabel("THROW IS NINE");
+
+  yield* bug().hidePlayerStats();
+
+  yield* bug().updateLabel("PLAYER WINS 140");
   yield* table().bets().winBet(140, c.PLACE9, false);
-  yield* bug().updateBankroll(-300);
-  yield* bug().updateExposure(-300);
+  yield* table().dice().removeDice();
+  yield* bug().updateLabel("PLACE BETS");
+  yield* sequence(
+    0.2,
+    table().bets().removeBet(c.PLACE5),
+    table().bets().removeBet(c.PLACE6),
+    table().bets().removeBet(c.PLACE8),
+    table().bets().removeBet(c.PLACE9)
+  );
+  yield* sequence(
+    0.2,
+    table().bets().makeBet(50, c.PLACE5),
+    table().bets().makeBet(60, c.PLACE6),
+    table().bets().makeBet(60, c.PLACE8),
+    table().bets().makeBet(50, c.PLACE9)
+  );
+  yield* bug().updateBankroll(-80);
+  yield* bug().updateBets(220);
+  yield* bug().updateExposure(-80);
 
   yield* table().dice().removeDice();
 

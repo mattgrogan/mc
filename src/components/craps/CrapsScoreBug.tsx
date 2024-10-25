@@ -287,4 +287,13 @@ export class CrapsScoreBug extends Rect {
     // TODO: Add formatting
     yield* this.values.exposure().next(amount.toFixed(0), from);
   }
+  public *hidePlayerStats() {
+    // Temporarily hide the stats
+    yield* sequence(
+      0.1,
+      this.values.bankroll().next("-"),
+      this.values.bets().next("-"),
+      this.values.exposure().next("-")
+    );
+  }
 }
