@@ -1,6 +1,8 @@
 import { Vector2 } from "@motion-canvas/core";
 
 export enum c {
+  PLAYER = "PLAYER",
+  DEALER = "DEALER",
   PUCKOFF = "PUCKOFF",
   PUCK4 = "PUCK4",
   PUCK5 = "PUCK5",
@@ -27,6 +29,9 @@ const BOX_9 = 310;
 const BOX_10 = 450;
 
 export const tableCoords: { [id: string]: Vector2 } = {
+  PLAYER: new Vector2(-60, 600),
+  DEALER: new Vector2(-300, -600),
+
   PUCKOFF: new Vector2(770, -380),
   PUCK4: new Vector2(BOX_4, PUCK_Y),
   PUCK5: new Vector2(BOX_5, PUCK_Y),

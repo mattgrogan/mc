@@ -28,5 +28,12 @@ export default makeScene2D(function* (view) {
   yield* table().movePuckTo(c.PUCK4);
   yield* waitFor(1);
   yield* table().dice().throw(3, 3);
+  yield* table().bets().makeBet(5, c.PUCK5);
+  yield* table().bets().moveBet(c.PUCK5, c.PUCK6);
+  yield* table().bets().loseBet(c.PUCK6);
+  yield* table().bets().makeBet(100, c.PUCK8);
+  yield* table().bets().removeBet(c.PUCK8);
+  yield* table().bets().makeBet(100, c.PUCK8);
+  yield* table().bets().winBet(500, c.PUCK8);
   yield* waitFor(5);
 });

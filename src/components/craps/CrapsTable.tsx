@@ -5,6 +5,7 @@ import felt from "../../../assets/Tables/Craps_Table_Steel_Felt.png";
 import { c, tableCoords } from "../CrapsTableCoords";
 import { CrapsPuck } from "./CrapsPuck";
 import { CrapsDice } from "./CrapsDice";
+import { CrapsBets } from "./CrapsBets";
 
 export interface CrapsTableProps extends LayoutProps {}
 
@@ -12,6 +13,7 @@ export class CrapsTable extends Layout {
   private readonly tableImg = createRef<Img>();
   private readonly puck = createRef<CrapsPuck>();
   public readonly dice = createRef<CrapsDice>();
+  public readonly bets = createRef<CrapsBets>();
 
   public constructor(props?: CrapsTableProps) {
     super({ ...props });
@@ -33,6 +35,7 @@ export class CrapsTable extends Layout {
           landBottomRight={tableCoords[c.DICE_LAND_BR]}
           restPosition={tableCoords[c.DICE_REST]}
         />
+        <CrapsBets ref={this.bets} />
       </Img>
     );
   }
