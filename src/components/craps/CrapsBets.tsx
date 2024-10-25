@@ -1,5 +1,5 @@
 import { Layout, LayoutProps } from "@motion-canvas/2d";
-import { c, tableCoords } from "../CrapsTableCoords";
+import { c, tableCoords } from "./CrapsTableCoords";
 import { CrapsChip } from "./CrapsChip";
 import {
   all,

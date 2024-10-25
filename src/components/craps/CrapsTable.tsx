@@ -2,7 +2,7 @@ import { Img, Layout, LayoutProps } from "@motion-canvas/2d";
 import { all, createRef, easeInOutCubic } from "@motion-canvas/core";
 
 import felt from "../../../assets/Tables/Craps_Table_Steel_Felt.png";
-import { c, tableCoords } from "../CrapsTableCoords";
+import { c, tableCoords } from "./CrapsTableCoords";
 import { CrapsPuck } from "./CrapsPuck";
 import { CrapsDice } from "./CrapsDice";
 import { CrapsBets } from "./CrapsBets";

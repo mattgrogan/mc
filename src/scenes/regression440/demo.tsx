@@ -9,7 +9,7 @@ import {
 import { CrapsTable } from "../../components/craps/CrapsTable";
 
 import { FadeIn } from "../../utils/FadeIn";
-import { c } from "../../components/CrapsTableCoords";
+import { c } from "../../components/craps/CrapsTableCoords";
 
 export default makeScene2D(function* (view) {
   const container = createRef<Layout>();
