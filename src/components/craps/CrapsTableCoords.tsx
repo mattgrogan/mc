@@ -3,6 +3,52 @@ import { Vector2 } from "@motion-canvas/core";
 export enum c {
   PLAYER = "PLAYER",
   DEALER = "DEALER",
+
+  PASSLINE = "PASSLINE",
+  PASSLINEODDS = "PASSLINEODDS",
+
+  DONTPASS = "DONTPASS",
+  DONTPASSODDS = "DONTPASSODDS",
+
+  FIELD = "FIELD",
+
+  COME = "COME",
+  COME4 = "COME4",
+  COME5 = "COME5",
+  COME6 = "COME6",
+  COME8 = "COME8",
+  COME9 = "COME9",
+  COME10 = "COME10",
+
+  DONTCOME = "DONTCOME",
+  DONTCOME4 = "DONTCOME4",
+  DONTCOME5 = "DONTCOME5",
+  DONTCOME6 = "DONTCOME6",
+  DONTCOME8 = "DONTCOME8",
+  DONTCOME9 = "DONTCOME9",
+  DONTCOME10 = "DONTCOME10",
+
+  COME4ODDS = "COME4ODDS",
+  COME5ODDS = "COME5ODDS",
+  COME6ODDS = "COME6ODDS",
+  COME8ODDS = "COME8ODDS",
+  COME9ODDS = "COME9ODDS",
+  COME10ODDS = "COME10ODDS",
+
+  PLACE4 = "PLACE4",
+  PLACE5 = "PLACE5",
+  PLACE6 = "PLACE6",
+  PLACE8 = "PLACE8",
+  PLACE9 = "PLACE9",
+  PLACE10 = "PLACE10",
+
+  LAY4 = "LAY4",
+  LAY5 = "LAY5",
+  LAY6 = "LAY6",
+  LAY8 = "LAY8",
+  LAY9 = "LAY9",
+  LAY10 = "LAY10",
+
   PUCKOFF = "PUCKOFF",
   PUCK4 = "PUCK4",
   PUCK5 = "PUCK5",
@@ -19,6 +65,9 @@ export enum c {
   DICE_REST = "DICE_REST",
 }
 
+const COME_Y = -220;
+const PLACE_Y = -180;
+const LAY_Y = -360;
 const PUCK_Y = -300;
 
 const BOX_4 = -240;
@@ -31,6 +80,51 @@ const BOX_10 = 450;
 export const tableCoords: { [id: string]: Vector2 } = {
   PLAYER: new Vector2(-60, 600),
   DEALER: new Vector2(-300, -600),
+
+  PASSLINE: new Vector2(-50, 235),
+  PASSLINEODDS: new Vector2(-50, 350),
+
+  DONTPASS: new Vector2(-35, 150),
+  DONTPASSODDS: new Vector2(25, 150),
+
+  FIELD: new Vector2(-100, 50),
+
+  COME: new Vector2(0, -100),
+  COME4: new Vector2(BOX_4, COME_Y),
+  COME5: new Vector2(BOX_5, COME_Y),
+  COME6: new Vector2(BOX_6, COME_Y),
+  COME8: new Vector2(BOX_8, COME_Y),
+  COME9: new Vector2(BOX_9, COME_Y),
+  COME10: new Vector2(BOX_10, COME_Y),
+
+  COME4ODDS: new Vector2(BOX_4, COME_Y + 30),
+  COME5ODDS: new Vector2(BOX_5, COME_Y + 30),
+  COME6ODDS: new Vector2(BOX_6, COME_Y + 30),
+  COME8ODDS: new Vector2(BOX_8, COME_Y + 30),
+  COME9ODDS: new Vector2(BOX_9, COME_Y + 30),
+  COME10ODDS: new Vector2(BOX_10, COME_Y + 30),
+
+  DONTCOME: new Vector2(586, -250),
+  DONTCOME4: new Vector2(BOX_4, LAY_Y),
+  DONTCOME5: new Vector2(BOX_5, LAY_Y),
+  DONTCOME6: new Vector2(BOX_6, LAY_Y),
+  DONTCOME8: new Vector2(BOX_8, LAY_Y),
+  DONTCOME9: new Vector2(BOX_9, LAY_Y),
+  DONTCOME10: new Vector2(BOX_10, LAY_Y),
+
+  PLACE4: new Vector2(BOX_4, PLACE_Y),
+  PLACE5: new Vector2(BOX_5, PLACE_Y),
+  PLACE6: new Vector2(BOX_6, PLACE_Y),
+  PLACE8: new Vector2(BOX_8, PLACE_Y),
+  PLACE9: new Vector2(BOX_9, PLACE_Y),
+  PLACE10: new Vector2(BOX_10, PLACE_Y),
+
+  LAY4: new Vector2(BOX_4, LAY_Y),
+  LAY5: new Vector2(BOX_5, LAY_Y),
+  LAY6: new Vector2(BOX_6, LAY_Y),
+  LAY8: new Vector2(BOX_8, LAY_Y),
+  LAY9: new Vector2(BOX_9, LAY_Y),
+  LAY10: new Vector2(BOX_10, LAY_Y),
 
   PUCKOFF: new Vector2(770, -380),
   PUCK4: new Vector2(BOX_4, PUCK_Y),
