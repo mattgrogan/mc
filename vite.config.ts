@@ -4,7 +4,9 @@ import ffmpeg from "@motion-canvas/ffmpeg";
 
 export default defineConfig({
   plugins: [
-    motionCanvas({ project: ["./src/project.ts", "./src/example.ts"] }),
+    motionCanvas({
+      project: ["./src/regression440_demo.ts", "./src/example.ts"],
+    }),
     ffmpeg(),
   ],
 });
