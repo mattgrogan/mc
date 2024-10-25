@@ -1,8 +1,15 @@
-import { Circle, Layout, makeScene2D } from "@motion-canvas/2d";
-import { createRef, useLogger } from "@motion-canvas/core";
+import { Layout, makeScene2D } from "@motion-canvas/2d";
+import {
+  all,
+  createRef,
+  easeOutCubic,
+  Vector2,
+  waitFor,
+} from "@motion-canvas/core";
 import { CrapsTable } from "../../components/craps/CrapsTable";
 
-import felt from "../../../../assets/Tables/Craps_Table_Steel_Felt.png";
+import { FadeIn } from "../../utils/FadeIn";
+import { c } from "../../components/CrapsTableCoords";
 
 export default makeScene2D(function* (view) {
   const container = createRef<Layout>();
@@ -11,10 +18,15 @@ export default makeScene2D(function* (view) {
     <Layout ref={container}>
       <CrapsTable
         ref={table}
-        position={[0, 0]}
+        opacity={0}
       ></CrapsTable>
     </Layout>
   );
 
-  table().setTableSrc(felt);
+  yield* FadeIn(table(), 1, easeOutCubic, [0, 500]);
+  yield* waitFor(1);
+  yield* table().movePuckTo(c.PUCK4);
+  yield* waitFor(1);
+  yield* table().dice().throw(3, 3);
+  yield* waitFor(5);
 });
