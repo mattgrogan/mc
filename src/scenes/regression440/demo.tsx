@@ -16,7 +16,7 @@ import { c } from "../../components/craps/CrapsTableCoords";
 import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { CrapsProcessor } from "../../components/craps/CrapsProcessor";
 
-import simData from "../../../data/REGRESSION440_TEST.json";
+import simData from "../../../data/REGRESSION440_EXAMPLE.json";
 
 export default makeScene2D(function* (view) {
   view.fill("222");
@@ -103,10 +103,16 @@ export default makeScene2D(function* (view) {
   const processor = new CrapsProcessor(table, bug);
 
   //const generators = [];
-  for (let i = 0; i < 95; i++) {
-    //generators.push(processor.round(simData[i]));
-    yield* processor.round(simData[i]);
+  const session = simData[0].SESSION;
+  const firstSession = simData.filter(({ SESSION }) => SESSION === session);
+
+  for (const roll of firstSession) {
+    yield* processor.round(roll);
   }
+  // for (let i = 0; i < 54; i++) {
+  //   //generators.push(processor.round(simData[i]));
+  //   yield* processor.round(firstSession[i]);
+  // }
   //yield* all(...generators);
   yield* waitFor(30);
 });

@@ -274,18 +274,18 @@ export class CrapsScoreBug extends Rect {
   }
 
   public *updateBankroll(amount: number, from: Direction = Direction.Bottom) {
-    // TODO: Add formatting
-    yield* this.values.bankroll().next(amount.toFixed(0), from);
+    const amountStr = amount > 0 ? "+" + amount.toFixed(0) : amount.toFixed(0);
+    yield* this.values.bankroll().next(amountStr, from);
   }
 
   public *updateBets(amount: number, from: Direction = Direction.Bottom) {
-    // TODO: Add formatting
     yield* this.values.bets().next(amount.toFixed(0), from);
   }
 
   public *updateExposure(amount: number, from: Direction = Direction.Bottom) {
-    // TODO: Add formatting
-    yield* this.values.exposure().next(amount.toFixed(0), from);
+    const amountStr = amount > 0 ? "+" + amount.toFixed(0) : amount.toFixed(0);
+
+    yield* this.values.exposure().next(amountStr, from);
   }
   public *hidePlayerStats() {
     // Temporarily hide the stats

@@ -1,7 +1,7 @@
 // This object processes a craps simulation file
 // and generates the animations.
 
-import { Reference, useLogger, waitFor } from "@motion-canvas/core";
+import { Reference, sequence, useLogger, waitFor } from "@motion-canvas/core";
 import { CrapsScoreBug } from "./CrapsScoreBug";
 import { CrapsTable } from "./CrapsTable";
 import { c } from "./CrapsTableCoords";
@@ -17,38 +17,48 @@ export class CrapsProcessor {
     this.scoreBug = scoreBug;
   }
 
-  public *test(data: any) {
-    const logger = useLogger();
-    logger.debug({
-      message: "Some more advanced logging",
-      remarks:
-        "Some remarks about this log. Can also contain <b>HTML</b> tags.",
-      object: data,
-      durationMs: 200,
-      stack: new Error("").stack,
-    });
-    yield* this.table().dice().throw(6, 6);
-  }
-
   public *round(data: any) {
+    const logger = useLogger();
+
     // Run one round of craps
     yield* this.scoreBug().updateLabel("GET READY!");
     yield* this.scoreBug().updateRoll(data.SHOOTER_ROLL == 1);
+
+    yield* this.scoreBug().updateBankroll(data.PLYR_NET_BR_START);
+    yield* this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START);
     yield* waitFor(1);
 
     yield* this.scoreBug().updateLabel("PLACE BETS");
-    yield* this.scoreBug().updateBankroll(data.PLYR_BANKROLL_START);
+
+    // Take any bets down
+    const downBets = [];
+    for (const bet of data.PLYR_BETSDOWN) {
+      downBets.push(this.table().bets().removeBet(bet.bet));
+    }
+    yield* sequence(0.2, ...downBets);
+
+    // Place new bets
+    const newBets = [];
+    for (const bet of data.PLYR_NEWBETS) {
+      newBets.push(this.table().bets().makeBet(bet.amount, bet.bet));
+    }
+    yield* sequence(0.2, ...newBets);
+
+    // Update scorebug after bets down and placed
+    yield* this.scoreBug().updateBankroll(data.PLYR_NET_BR_UPDATED);
     yield* this.scoreBug().updateBets(data.PLYR_BETS_TOTAL);
-    yield* this.scoreBug().updateExposure(data.PLYR_SHEXPOSURE);
+    yield* this.scoreBug().updateExposure(data.PLYR_NET_SHBR_UPDATED);
 
     yield* waitFor(1);
 
+    // Throw the dice
     yield* this.scoreBug().updateLabel("DICE ARE OUT");
     yield* this.table().dice().throw(data.D1, data.D2);
     yield* this.scoreBug().updateLabel("THROW IS " + data.THROW);
 
     yield* waitFor(1);
 
+    // Move the puck
     if (data.NEW_POINT_STATUS == "On" || data.NEW_POINT_STATUS == "Off") {
       let puckPosition = c.PUCKOFF;
       switch (data.NEW_POINT) {
@@ -82,9 +92,30 @@ export class CrapsProcessor {
     }
 
     // TAKE
-    // PAY
-    // MOVE
+    const lostBets = [];
+    for (const bet of data.PLYR_LOST) {
+      lostBets.push(this.table().bets().loseBet(bet.bet));
+    }
+    yield* sequence(0.2, ...lostBets);
 
+    // PAY
+    const wonBets = [];
+
+    for (const bet of data.PLYR_WON) {
+      logger.debug({ message: "Won Bet", object: bet });
+      wonBets.push(this.table().bets().winBet(bet.won, bet.bet, true));
+    }
+    yield* sequence(0.2, ...wonBets);
+
+    // Update the scorebug fields
+    yield* this.scoreBug().updateBankroll(data.PLYR_NET_BR_END);
+    yield* this.scoreBug().updateBets(data.PLYR_BETSREMAINING_TOTAL);
+    yield* this.scoreBug().updateExposure(data.PLYR_NET_SHBR_END);
+
+    // MOVE
+    // TODO: Move any bets that moved.
+
+    // Hide the dice
     yield* this.table().dice().removeDice();
 
     if (data.PLYR_WONLOST > 0) {

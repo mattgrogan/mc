@@ -1,6 +1,9 @@
 import { Img, Layout, LayoutProps } from "@motion-canvas/2d";
 
 import chip5Png from "../../../assets/Chips/Chip_0005.png";
+import chip10Png from "../../../assets/Chips/Chip_0010.png";
+import chip12Png from "../../../assets/Chips/Chip_0012.png";
+import chip14Png from "../../../assets/Chips/Chip_0014.png";
 import chip15Png from "../../../assets/Chips/Chip_0015.png";
 import chip16Png from "../../../assets/Chips/Chip_0016.png";
 import chip18Png from "../../../assets/Chips/Chip_0018.png";
@@ -8,8 +11,10 @@ import chip21Png from "../../../assets/Chips/Chip_0021.png";
 import chip24Png from "../../../assets/Chips/Chip_0024.png";
 import chip25Png from "../../../assets/Chips/Chip_0025.png";
 import chip30Png from "../../../assets/Chips/Chip_0030.png";
+import chip35Png from "../../../assets/Chips/Chip_0035.png";
 import chip50Png from "../../../assets/Chips/Chip_0050.png";
 import chip60Png from "../../../assets/Chips/Chip_0060.png";
+import chip70Png from "../../../assets/Chips/Chip_0070.png";
 import chip95Png from "../../../assets/Chips/Chip_0095.png";
 import chip100Png from "../../../assets/Chips/Chip_0100.png";
 import chip120Png from "../../../assets/Chips/Chip_0120.png";
@@ -24,6 +29,9 @@ import { useLogger } from "@motion-canvas/core";
 
 const chipPngs: { [denom: number]: string } = {
   5: chip5Png,
+  10: chip10Png,
+  12: chip12Png,
+  14: chip14Png,
   15: chip15Png,
   16: chip16Png,
   18: chip18Png,
@@ -31,8 +39,10 @@ const chipPngs: { [denom: number]: string } = {
   24: chip24Png,
   25: chip25Png,
   30: chip30Png,
+  35: chip35Png,
   50: chip50Png,
   60: chip60Png,
+  70: chip70Png,
   95: chip95Png,
   100: chip100Png,
   120: chip120Png,
