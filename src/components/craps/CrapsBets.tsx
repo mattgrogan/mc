@@ -78,7 +78,7 @@ export class CrapsBets extends Layout {
     denom: number,
     where: c,
     both: boolean = false,
-    offset: number = 80,
+    offset: number = 50,
     dur: number = 0.6,
     ease: TimingFunction = easeOutCubic,
     opacity: number = 1,

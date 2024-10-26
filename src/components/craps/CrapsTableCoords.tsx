@@ -68,7 +68,7 @@ export enum c {
 const COME_Y = -220;
 const PLACE_Y = -180;
 const LAY_Y = -360;
-const PUCK_Y = -300;
+const PUCK_Y = -320;
 
 const BOX_4 = -240;
 const BOX_5 = -100;
@@ -78,8 +78,8 @@ const BOX_9 = 310;
 const BOX_10 = 450;
 
 export const tableCoords: { [id: string]: Vector2 } = {
-  PLAYER: new Vector2(-60, 600),
-  DEALER: new Vector2(-300, -600),
+  PLAYER: new Vector2(0, 600),
+  DEALER: new Vector2(0, -600),
 
   PASSLINE: new Vector2(-50, 235),
   PASSLINEODDS: new Vector2(-50, 350),
@@ -138,6 +138,6 @@ export const tableCoords: { [id: string]: Vector2 } = {
   DICE_BOUNCE_TL: new Vector2(840, -230),
   DICE_BOUNCE_BR: new Vector2(840, 270),
   DICE_LAND_TL: new Vector2(-250, -100),
-  DICE_LAND_BR: new Vector2(700, 400),
+  DICE_LAND_BR: new Vector2(700, 350),
   DICE_REST: new Vector2(-650, -300),
 };

@@ -25,6 +25,7 @@ export class CrapsTable extends Layout {
         <CrapsPuck
           ref={this.puck}
           position={tableCoords[c.PUCKOFF]}
+          scale={0.7}
         />
         <CrapsBets ref={this.bets} />
         <CrapsDice
