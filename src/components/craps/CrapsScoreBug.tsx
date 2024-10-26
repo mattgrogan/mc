@@ -27,9 +27,9 @@ export class CrapsScoreBug extends Rect {
   private readonly fields = createRefMap<Rect>();
   private readonly values = createRefMap<RollText>();
   private readonly player = createRef<Layout>();
-  private roll = 1;
-  private shooter = 1;
-  private shooterRoll = 1;
+  private roll = 0;
+  private shooter = 0;
+  private shooterRoll = 0;
 
   public constructor(props?: CrapsScoreBugProps) {
     super({
@@ -69,7 +69,7 @@ export class CrapsScoreBug extends Rect {
         />
         <RollText
           ref={this.values.roll}
-          initialText={"1"}
+          initialText={"-"}
           offsetY={1}
           width={GAME_ITEM_WIDTH}
           height={this.height() * VALUE_HEIGHT_PCT}
@@ -98,7 +98,7 @@ export class CrapsScoreBug extends Rect {
         />
         <RollText
           ref={this.values.shooter}
-          initialText={"1"}
+          initialText={"-"}
           offsetY={1}
           width={GAME_ITEM_WIDTH}
           height={this.height() * VALUE_HEIGHT_PCT}
@@ -107,7 +107,7 @@ export class CrapsScoreBug extends Rect {
         />
         <RollText
           ref={this.values.shooterRoll}
-          initialText={"R1"}
+          initialText={"-"}
           offsetY={1}
           width={GAME_ITEM_WIDTH}
           height={this.height() * VALUE_HEIGHT_PCT}

@@ -26,6 +26,7 @@ export class CrapsTable extends Layout {
           ref={this.puck}
           position={tableCoords[c.PUCKOFF]}
         />
+        <CrapsBets ref={this.bets} />
         <CrapsDice
           ref={this.dice}
           startPosition={tableCoords[c.DICE_START]}
@@ -35,7 +36,6 @@ export class CrapsTable extends Layout {
           landBottomRight={tableCoords[c.DICE_LAND_BR]}
           restPosition={tableCoords[c.DICE_REST]}
         />
-        <CrapsBets ref={this.bets} />
       </Img>
     );
   }
