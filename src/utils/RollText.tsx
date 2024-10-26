@@ -85,6 +85,9 @@ export class RollText extends Rect {
     from: Direction | boolean = Direction.Bottom,
     props: TxtProps = {}
   ) {
+    if (text == this.txtField.text()) {
+      return;
+    }
     const nextTxt = new Txt({
       layout: false,
       text: text,
