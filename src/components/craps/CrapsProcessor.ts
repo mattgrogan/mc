@@ -1,7 +1,13 @@
 // This object processes a craps simulation file
 // and generates the animations.
 
-import { Reference, sequence, useLogger, waitFor } from "@motion-canvas/core";
+import {
+  all,
+  Reference,
+  sequence,
+  useLogger,
+  waitFor,
+} from "@motion-canvas/core";
 import { CrapsScoreBug } from "./CrapsScoreBug";
 import { CrapsTable } from "./CrapsTable";
 import { c } from "./CrapsTableCoords";
@@ -22,10 +28,12 @@ export class CrapsProcessor {
 
     // Run one round of craps
     yield* this.scoreBug().updateLabel("GET READY!");
-    yield* this.scoreBug().updateRoll(data.SHOOTER_ROLL == 1);
 
-    yield* this.scoreBug().updateBankroll(data.PLYR_NET_BR_START);
-    yield* this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START);
+    yield* all(
+      this.scoreBug().updateRoll(data.SHOOTER_ROLL == 1),
+      this.scoreBug().updateBankroll(data.PLYR_NET_BR_START),
+      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START)
+    );
     yield* waitFor(1);
 
     yield* this.scoreBug().updateLabel("PLACE BETS");
@@ -45,9 +53,11 @@ export class CrapsProcessor {
     yield* sequence(0.2, ...newBets);
 
     // Update scorebug after bets down and placed
-    yield* this.scoreBug().updateBankroll(data.PLYR_NET_BR_UPDATED);
-    yield* this.scoreBug().updateBets(data.PLYR_BETS_TOTAL);
-    yield* this.scoreBug().updateExposure(data.PLYR_NET_SHBR_UPDATED);
+    yield* all(
+      this.scoreBug().updateBankroll(data.PLYR_NET_BR_UPDATED),
+      this.scoreBug().updateBets(data.PLYR_BETS_TOTAL),
+      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_UPDATED)
+    );
 
     yield* waitFor(1);
 
@@ -108,9 +118,11 @@ export class CrapsProcessor {
     yield* sequence(0.2, ...wonBets);
 
     // Update the scorebug fields
-    yield* this.scoreBug().updateBankroll(data.PLYR_NET_BR_END);
-    yield* this.scoreBug().updateBets(data.PLYR_BETSREMAINING_TOTAL);
-    yield* this.scoreBug().updateExposure(data.PLYR_NET_SHBR_END);
+    yield* all(
+      this.scoreBug().updateBankroll(data.PLYR_NET_BR_END),
+      this.scoreBug().updateBets(data.PLYR_BETSREMAINING_TOTAL),
+      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_END)
+    );
 
     // MOVE
     // TODO: Move any bets that moved.

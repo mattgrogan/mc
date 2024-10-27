@@ -176,7 +176,7 @@ export class SimulationScreen extends Layout {
           >
             <Txt
               {...MonoWhite}
-              fontSize={40}
+              fontSize={30}
               text={() => this.name}
             />
           </Rect>

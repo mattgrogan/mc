@@ -77,8 +77,8 @@ export const grayGradient = new Gradient({
   from: [0, -100],
   to: [0, 100],
   stops: [
-    { offset: 0, color: "#101010" },
-    { offset: 0.5, color: "#111111" },
+    //{ offset: 0, color: "#101010" },
+    { offset: 0, color: "#202020" },
     { offset: 1, color: "#101010" },
   ],
 });

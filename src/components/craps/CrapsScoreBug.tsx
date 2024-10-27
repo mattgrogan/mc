@@ -1,5 +1,6 @@
 import { Layout, Rect, RectProps, Txt } from "@motion-canvas/2d";
 import {
+  all,
   createRef,
   createRefMap,
   Direction,
@@ -227,9 +228,10 @@ export class CrapsScoreBug extends Rect {
     }
     generators.push(
       this.values.shooterRoll().next("R" + this.shooterRoll.toFixed(0))
+      //this.values.shooterRoll().next(this.shooterRoll.toFixed(0))
     );
 
-    yield* sequence(0.2, ...generators);
+    yield* all(...generators);
   }
 
   public *hideLabel(seconds: number = 0.6) {

@@ -33,7 +33,7 @@ export default makeScene2D(function* (view) {
   camera().scene().position(view.size().div(2));
 
   const sim = new SimulationScreen();
-  sim.name = "Regression 440";
+  sim.name = "$440 Inside Regression";
   sim.options = "-";
   sim.sessions = 100000;
   sim.shooters = "10 Per Session";
