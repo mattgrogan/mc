@@ -9,6 +9,7 @@ export default defineConfig({
         "./src/regression440_demo.ts",
         "./src/example.ts",
         "./src/rolltext.ts",
+        "./src/regression440.ts",
       ],
     }),
     ffmpeg(),

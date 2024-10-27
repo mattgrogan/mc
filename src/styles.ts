@@ -53,6 +53,13 @@ export const MonoWhite = {
   fill: Theme.TITLE,
 };
 
+export const ITCBenguiatNormal = {
+  fontFamily: "ITC Benguiat",
+  fontWeight: 400,
+  fontSize: 120,
+  fill: Theme.TITLE,
+};
+
 export const blueGradient = new Gradient({
   type: "linear",
 
@@ -87,4 +94,15 @@ export const whiteGradientH = new Gradient({
     { offset: 0.8, color: "#e7e7e7" },
     { offset: 1, color: "#254e70" },
   ],
+});
+
+// https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings
+export const dollarFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
