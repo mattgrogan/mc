@@ -1,25 +1,21 @@
 import { Layout, makeScene2D } from "@motion-canvas/2d";
 import {
-  all,
   createRef,
-  easeInOutCubic,
   easeOutCubic,
   sequence,
-  useLogger,
-  Vector2,
   waitFor,
 } from "@motion-canvas/core";
 import { CrapsTable } from "../../components/craps/CrapsTable";
 
-import { FadeIn } from "../../utils/FadeIn";
-import { c } from "../../components/craps/CrapsTableCoords";
-import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { CrapsProcessor } from "../../components/craps/CrapsProcessor";
+import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
+import { FadeIn } from "../../utils/FadeIn";
 
 import simData from "../../../data/REGRESSION440_EXAMPLE.json";
+import { Theme } from "../../styles";
 
 export default makeScene2D(function* (view) {
-  view.fill("222");
+  view.fill(Theme.BG);
   const container = createRef<Layout>();
   const table = createRef<CrapsTable>();
   const bug = createRef<CrapsScoreBug>();

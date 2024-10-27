@@ -92,6 +92,17 @@ export default makeScene2D(function* (view) {
         {...TitleFont}
         text={() => titleSignal()}
       />
+      <Rect
+        ref={box}
+        lineWidth={10}
+        width={750}
+        height={90}
+        radius={10}
+        offset={[-1, -1]}
+        stroke={"#fffd98"}
+        lineDash={[20, 5]}
+        end={0}
+      ></Rect>
       <Layout ref={tickContainer}></Layout>
       <Layout ref={barContainer}></Layout>
       <Line
@@ -114,17 +125,6 @@ export default makeScene2D(function* (view) {
       >
         WORST BANKROLL
       </Txt>
-      <Rect
-        ref={box}
-        lineWidth={10}
-        width={750}
-        height={90}
-        radius={20}
-        offset={[-1, -1]}
-        stroke={"#fffd98"}
-        lineDash={[10, 10]}
-        end={0}
-      ></Rect>
       <Txt
         ref={cumPctLabel}
         {...LabelFont}

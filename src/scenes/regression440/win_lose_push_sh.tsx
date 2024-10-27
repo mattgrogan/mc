@@ -9,7 +9,7 @@ import {
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
-import { Theme } from "../../styles";
+import { Bright, Theme } from "../../styles";
 
 const WINNERS = 561996;
 const PUSHERS = 0;
@@ -94,7 +94,7 @@ export default makeScene2D(function* (view) {
           [-600, -60],
           [640, -60],
         ]}
-        stroke={"#63c69f"}
+        stroke={Bright.GREEN}
         zIndex={-500}
         end={() => win_pct_signal()}
       />
@@ -175,7 +175,7 @@ export default makeScene2D(function* (view) {
           [-600, 300],
           [640, 300],
         ]}
-        stroke={"#ba274a"}
+        stroke={Bright.RED}
         zIndex={-500}
         end={() => lose_pct_signal()}
       />

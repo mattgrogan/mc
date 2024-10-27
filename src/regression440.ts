@@ -1,6 +1,7 @@
 import { makeProject } from "@motion-canvas/core";
 import "./global.css";
 
+import intro from "./scenes/regression440/intro?scene";
 import simulationScreen from "./scenes/regression440/simulation?scene";
 import win_lose_push_sh from "./scenes/regression440/win_lose_push_sh?scene";
 import win_lose_push_sess from "./scenes/regression440/win_lose_push_sess?scene";
@@ -9,6 +10,7 @@ import bankroll from "./scenes/regression440/bankroll?scene";
 
 export default makeProject({
   scenes: [
+    intro,
     simulationScreen,
     win_lose_push_sh,
     win_lose_push_sess,

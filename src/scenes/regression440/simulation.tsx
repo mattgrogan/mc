@@ -18,6 +18,7 @@ import { FadeIn } from "../../utils/FadeIn";
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
+
   // Create your animations here
 
   const camera = createRef<Camera>();

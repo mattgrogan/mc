@@ -33,7 +33,7 @@ export const Grays = {
 };
 
 export const Theme = {
-  BG: "#111",
+  BG: "#191B1C",
   TITLE: Bright.WHITE,
   ACCENT: Bright.BLUE,
 };

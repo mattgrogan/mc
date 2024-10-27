@@ -78,6 +78,7 @@ export class CrapsBets extends Layout {
     denom: number,
     where: c,
     both: boolean = false,
+    indicate: boolean = true,
     offset: number = 50,
     dur: number = 0.6,
     ease: TimingFunction = easeOutCubic,
@@ -91,7 +92,9 @@ export class CrapsBets extends Layout {
       winChip.position(chip.right().addX(offset), dur, ease),
       winChip.opacity(opacity, dur, opacityEase)
     );
-    yield* Indicate(winChip, 1.5);
+    if (indicate) {
+      yield* Indicate(winChip, 1.5);
+    }
     yield* waitFor(0.2);
 
     const anims = [];
