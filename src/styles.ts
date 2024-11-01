@@ -5,7 +5,7 @@ export const Bright = {
   YELLOW: "#fffd98",
   ORANGE: "#f79256",
   BLUE: "#2191fb",
-  RED: "#ba274a",
+  RED: "#d81e5b",
   GREEN: "#63c69f",
 };
 

@@ -49,7 +49,8 @@ export class CrapsBets extends Layout {
     yield* this.moveChipTo(chip, where);
 
     if (indicate) {
-      yield* Indicate(chip, 1.5);
+      //yield* Indicate(chip, 1.5);
+      yield* Indicate(chip, 1.3, 0, 0.4);
     }
   }
 

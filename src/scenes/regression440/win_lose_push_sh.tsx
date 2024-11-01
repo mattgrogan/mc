@@ -6,6 +6,7 @@ import {
   easeInCubic,
   easeInOutCubic,
   easeOutCubic,
+  fadeTransition,
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
@@ -231,6 +232,7 @@ export default makeScene2D(function* (view) {
   );
 
   //yield* slideTransition(Direction.Right);
+  yield* fadeTransition();
   yield* waitFor(0.2);
   yield* titleSignal(
     "On a per-shooter basis, how often did this strategy win or lose?",

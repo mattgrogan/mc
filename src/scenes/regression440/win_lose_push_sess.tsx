@@ -6,6 +6,7 @@ import {
   easeInCubic,
   easeInOutCubic,
   easeOutCubic,
+  fadeTransition,
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
@@ -231,6 +232,7 @@ export default makeScene2D(function* (view) {
   );
 
   //yield* slideTransition(Direction.Right);
+  yield* fadeTransition();
   yield* waitFor(0.2);
   yield* titleSignal(
     "On a per-session basis, how often did this strategy win or lose?",
@@ -260,6 +262,7 @@ export default makeScene2D(function* (view) {
     win_pct_signal(WINNERS / TOTAL, 1, easeOutCubic),
     winnersSignal(WINNERS, 1, easeOutCubic)
   );
+  yield* waitFor(1);
 
   yield* waitUntil("show-pushes");
   yield* all(
@@ -267,6 +270,7 @@ export default makeScene2D(function* (view) {
     push_pct_signal(PUSHERS / TOTAL, 1, easeOutCubic),
     pushersSignal(PUSHERS, 1, easeOutCubic)
   );
+  yield* waitFor(1);
 
   yield* waitUntil("show-losers");
   yield* all(
@@ -278,5 +282,6 @@ export default makeScene2D(function* (view) {
   yield camera().zoom(1.1, 10, easeInCubic);
   //yield* losers().end(0.56194, 1, easeOutCubic)
 
+  yield* waitFor(1);
   yield* waitUntil("end");
 });

@@ -84,12 +84,12 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("tps");
   yield* sim.moveArrowTo(arrow, 2, 1);
-  yield* CircumscribeRect(sim.resultRows[2], Bright.YELLOW, 1, 15, 3);
+  yield* CircumscribeRect(sim.resultRows[2], Bright.YELLOW, 1, 15, 0.5);
   yield* waitFor(1);
 
   yield* waitUntil("total-bet");
   yield* sim.moveArrowTo(arrow, 3, 1);
-  yield* CircumscribeRect(sim.resultRows[3], Bright.YELLOW, 1, 15, 3);
+  yield* CircumscribeRect(sim.resultRows[3], Bright.YELLOW, 1, 15, 0.5);
   yield* waitFor(1);
 
   yield* waitUntil("total-won");
@@ -104,8 +104,6 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("zoom-in");
   yield* sim.cameraOn(camera(), sim.resultsTable(), 2, 1.6, [120, 0]);
-  yield* waitFor(2);
-  yield* sim.moveArrowTo(arrow, 3, 2);
 
   yield* waitUntil("house-take");
   yield* sim.moveArrowTo(arrow, 6, 1);

@@ -139,6 +139,58 @@ export default makeScene2D(function* (view) {
     chart().moveBox(-1000, 1000, chart().getPercentForBars([7, 8, 9, 10]))
   );
 
+  yield* waitUntil("highlight-1500");
+  yield* all(
+    //chart().highlightBar(10, Bright.BLUE),
+    chart().highlightBar(6, Bright.ORANGE),
+    chart().highlightBar(11, Bright.ORANGE),
+    chart().moveBox(
+      -1500,
+      1500,
+      chart().getPercentForBars([6, 7, 8, 9, 10, 11])
+    )
+  );
+  yield* waitFor(1);
+
+  yield* waitUntil("highlight-2000");
+  yield* all(
+    //chart().highlightBar(10, Bright.BLUE),
+    chart().highlightBar(5, Bright.ORANGE),
+    chart().highlightBar(12, Bright.ORANGE),
+    chart().moveBox(
+      -2000,
+      2000,
+      chart().getPercentForBars([5, 6, 7, 8, 9, 10, 11, 12])
+    )
+  );
+  yield* waitFor(1);
+
+  yield* waitUntil("highlight-2500");
+  yield* all(
+    //chart().highlightBar(10, Bright.BLUE),
+    chart().highlightBar(4, Bright.ORANGE),
+    chart().highlightBar(13, Bright.ORANGE),
+    chart().moveBox(
+      -2500,
+      2500,
+      chart().getPercentForBars([4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+    )
+  );
+  yield* waitFor(1);
+
+  yield* waitUntil("highlight-3000");
+  yield* all(
+    //chart().highlightBar(10, Bright.BLUE),
+    chart().highlightBar(3, Bright.ORANGE),
+    chart().highlightBar(14, Bright.ORANGE),
+    chart().moveBox(
+      -3000,
+      3000,
+      chart().getPercentForBars([3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
+    )
+  );
+  yield* waitFor(1);
+
   // yield* waitUntil("highlight-600-600");
   // yield* all(
   //   //chart().highlightBar(10, Bright.BLUE),

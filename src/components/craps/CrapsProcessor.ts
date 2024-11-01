@@ -26,15 +26,11 @@ export class CrapsProcessor {
   public *round(data: any) {
     const logger = useLogger();
 
-    // Run one round of craps
-    yield* this.scoreBug().updateLabel("GET READY!");
-
     yield* all(
       this.scoreBug().updateRoll(data.SHOOTER_ROLL == 1),
       this.scoreBug().updateBankroll(data.PLYR_NET_BR_START),
       this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START)
     );
-    yield* waitFor(1);
 
     yield* this.scoreBug().updateLabel("PLACE BETS");
 
@@ -48,7 +44,7 @@ export class CrapsProcessor {
     // Place new bets
     const newBets = [];
     for (const bet of data.PLYR_NEWBETS) {
-      newBets.push(this.table().bets().makeBet(bet.amount, bet.bet));
+      newBets.push(this.table().bets().makeBet(bet.amount, bet.bet, false));
     }
     yield* sequence(0.2, ...newBets);
 
@@ -59,14 +55,14 @@ export class CrapsProcessor {
       this.scoreBug().updateExposure(data.PLYR_NET_SHBR_UPDATED)
     );
 
-    yield* waitFor(1);
+    yield* waitFor(0.6);
 
     // Throw the dice
     yield* this.scoreBug().updateLabel("DICE ARE OUT");
     yield* this.table().dice().throw(data.D1, data.D2);
     yield* this.scoreBug().updateLabel("THROW IS " + data.THROW);
 
-    yield* waitFor(1);
+    yield* waitFor(0.6);
 
     // Move the puck
     if (data.NEW_POINT_STATUS == "On" || data.NEW_POINT_STATUS == "Off") {
@@ -125,10 +121,17 @@ export class CrapsProcessor {
     );
 
     // MOVE
-    // TODO: Move any bets that moved.
+    for (const movedBet of data.PLYR_MOVED) {
+      yield* this.table().bets().moveBet(movedBet.bet, movedBet.to);
+    }
+
+    // PUSH
+    for (const pushedBet of data.PLYR_PUSHED) {
+      yield* this.table().bets().removeBet(pushedBet.bet);
+    }
 
     // Hide the dice
-    yield* this.table().dice().removeDice();
+    yield this.table().dice().removeDice();
 
     if (data.PLYR_WONLOST > 0) {
       yield* this.scoreBug().updateLabel(

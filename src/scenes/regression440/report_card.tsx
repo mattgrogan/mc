@@ -14,7 +14,8 @@ import {
 } from "@motion-canvas/core";
 
 import logo from "../../../assets/Logo/DiceDataLogo_NoBG.png";
-import { MonoWhite, Theme } from "../../styles";
+import { Bright, MonoWhite, Theme } from "../../styles";
+import { CircumscribeRect } from "../../utils/Circumscribe";
 
 // Create our number formatter.
 // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings
@@ -190,21 +191,37 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("shooters");
   yield* arrowY(-60, 0.5, easeInOutCubic);
+  yield* waitFor(2);
 
   yield* waitUntil("house-edge");
-  yield* arrowY(20, 1, easeInOutCubic);
+  yield* arrowY(0, 1, easeInOutCubic);
+  yield* waitFor(2);
 
   yield* waitUntil("win-rate");
-  yield* arrowY(100, 1, easeInOutCubic);
+  yield* arrowY(70, 1, easeInOutCubic);
+  yield* waitFor(2);
 
   yield* waitUntil("lose-rate");
-  yield* arrowY(180, 1, easeInOutCubic);
+  yield* arrowY(140, 1, easeInOutCubic);
+  yield* waitFor(2);
 
-  yield* waitUntil("outcome");
-  yield* arrowY(260, 1, easeInOutCubic);
+  yield* waitUntil("outcome-50");
+  yield* arrowY(210, 1, easeInOutCubic);
+  yield* waitFor(2);
+
+  yield* waitUntil("highlight-50");
+  yield* CircumscribeRect(fields[5], Bright.YELLOW, 1.4, 10, 7);
+
+  yield* waitUntil("outcome-90");
+  yield* arrowY(280, 1, easeInOutCubic);
+  //yield* waitFor(2);
+
+  yield* waitUntil("highlight-90");
+  yield* CircumscribeRect(fields[6], Bright.YELLOW, 1.1, 10, 4);
 
   yield* waitUntil("Bankroll");
-  yield* arrowY(340, 1, easeInOutCubic);
+  yield* arrowY(350, 1, easeInOutCubic);
+  yield* waitFor(2);
 
   // yield* waitUntil("house-money");
   // yield* arrowY(350, 1, easeInOutCubic);

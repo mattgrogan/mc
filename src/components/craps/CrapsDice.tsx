@@ -160,6 +160,7 @@ export class CrapsDice extends Layout {
       this.landTopLeft(),
       this.landBottomRight()
     );
+
     const d2Land = getRandomDiePosition(
       this.landTopLeft(),
       this.landBottomRight()

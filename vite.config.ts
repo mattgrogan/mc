@@ -7,9 +7,12 @@ export default defineConfig({
     motionCanvas({
       project: [
         "./src/regression440_demo.ts",
+        "./src/play_all_day_demo.ts",
+        "./src/scenes/play_all_day/play_all_day.ts",
         "./src/example.ts",
         "./src/rolltext.ts",
         "./src/regression440.ts",
+        "./src/plotting.ts",
       ],
     }),
     ffmpeg(),

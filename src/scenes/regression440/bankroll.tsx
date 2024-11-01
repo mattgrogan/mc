@@ -294,10 +294,10 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("show-box");
   let cumulativePct = barSignals[0]();
-  //cumulativePct += barSignals[1]();
+  cumulativePct += barSignals[1]();
   //cumulativePct += barSignals[2]();
   box().topLeft([-620, -260]);
-  box().height(box().height() + 0);
+  box().height(box().height() + 60);
   yield* all(
     box().end(1, 2, easeOutCubic),
     cumPctLabel().opacity(1, 0.6, linear),
@@ -314,10 +314,9 @@ export default makeScene2D(function* (view) {
   // );
 
   yield* waitUntil("expand-25");
-  cumulativePct += barSignals[1]();
   cumulativePct += barSignals[2]();
   yield* all(
-    box().height(box().height() + 120, 3, easeInOutCubic),
+    box().height(box().height() + 60, 3, easeInOutCubic),
     cumPctLabel().opacity(1, 3, easeInOutCubic),
     cumPct(cumulativePct, 3, easeInOutCubic)
   );
@@ -326,30 +325,31 @@ export default makeScene2D(function* (view) {
   cumulativePct += barSignals[3]();
   cumulativePct += barSignals[4]();
   cumulativePct += barSignals[5]();
-  yield* all(
-    box().height(box().height() + 60 * 3, 3, easeInOutCubic),
-    cumPctLabel().opacity(1, 3, easeInOutCubic),
-    cumPct(cumulativePct, 3, easeInOutCubic)
-  );
-
-  yield* waitUntil("expand4");
   cumulativePct += barSignals[6]();
-  cumulativePct += barSignals[7]();
-  cumulativePct += barSignals[8]();
-  cumulativePct += barSignals[9]();
   yield* all(
     box().height(box().height() + 60 * 4, 3, easeInOutCubic),
     cumPctLabel().opacity(1, 3, easeInOutCubic),
     cumPct(cumulativePct, 3, easeInOutCubic)
   );
 
-  yield* waitUntil("expand5");
-  cumulativePct += barSignals[10]();
-  yield* all(
-    box().height(box().height() + 60, 2, easeInOutCubic),
-    cumPctLabel().opacity(1, 2, easeInOutCubic),
-    cumPct(cumulativePct, 2, easeInOutCubic)
-  );
+  // yield* waitUntil("expand4");
+  // cumulativePct += barSignals[6]();
+  // cumulativePct += barSignals[7]();
+  // cumulativePct += barSignals[8]();
+  // cumulativePct += barSignals[9]();
+  // yield* all(
+  //   box().height(box().height() + 60 * 4, 3, easeInOutCubic),
+  //   cumPctLabel().opacity(1, 3, easeInOutCubic),
+  //   cumPct(cumulativePct, 3, easeInOutCubic)
+  // );
+
+  // yield* waitUntil("expand5");
+  // cumulativePct += barSignals[10]();
+  // yield* all(
+  //   box().height(box().height() + 60, 2, easeInOutCubic),
+  //   cumPctLabel().opacity(1, 2, easeInOutCubic),
+  //   cumPct(cumulativePct, 2, easeInOutCubic)
+  // );
 
   // yield* waitUntil("expand6");
   // cumulativePct += barSignals[6]();

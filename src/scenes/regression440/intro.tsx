@@ -296,4 +296,5 @@ export default makeScene2D(function* (view) {
 
   // END
   yield* waitFor(5);
+  yield* waitUntil("end");
 });
