@@ -48,7 +48,7 @@ export default makeScene2D(function* (view) {
   const processor = new CrapsProcessor(table, bug);
 
   //const session = simData[9].SESSION;
-  const session = 78800;
+  const session = 26459;
   const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
   for (const roll of firstSession) {

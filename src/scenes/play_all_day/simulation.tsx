@@ -61,14 +61,14 @@ export default makeScene2D(function* (view) {
   //   Circumscribe(sim.paramsRows[5], Bright.YELLOW, 1, 5, 0.5)
   // );
 
-  yield* waitFor(1);
+  //yield* waitFor(1);
   camera().save();
   yield* all(
     camera().zoom(1.1, 1.5, easeInOutCubic),
     camera().position([-400, 0], 1.5, easeInOutCubic)
   );
   yield* waitUntil("circ");
-  yield* CircumscribeRect(sim.paramsRows[3], Bright.YELLOW, 1, 15, 1);
+  yield* CircumscribeRect(sim.paramsRows[3], Bright.YELLOW, 1, 15, 0.3);
   yield* CircumscribeRect(sim.paramsRows[4], Bright.YELLOW, 1, 15, 0.3);
   yield* camera().restore(1, easeInOutCubic);
 
@@ -93,7 +93,7 @@ export default makeScene2D(function* (view) {
   yield* waitUntil("total-bet");
   yield* sim.moveArrowTo(arrow, 3, 1);
   yield* CircumscribeRect(sim.resultRows[3], Bright.YELLOW, 1, 15, 0.5);
-  yield* waitFor(1);
+  //yield* waitFor(1);
 
   yield* waitUntil("total-won");
   yield* sim.moveArrowTo(arrow, 4, 1);
@@ -116,9 +116,9 @@ export default makeScene2D(function* (view) {
   yield* sim.moveArrowTo(arrow, 7, 1);
   yield* CircumscribeRect(sim.resultRows[7], Bright.YELLOW, 1, 15, 3.5);
 
-  yield* waitFor(1);
+  //yield* waitFor(1);
 
   yield* waitUntil("zoom-out");
-  yield* all(camera().restore(3, easeInOutCubic), arrow.opacity(0, 1, linear));
+  yield* all(camera().restore(1, easeInOutCubic), arrow.opacity(0, 1, linear));
   yield* waitUntil("end");
 });

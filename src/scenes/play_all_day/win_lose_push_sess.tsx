@@ -13,6 +13,8 @@ import {
 import { Bright, Theme } from "../../styles";
 
 import winlose from "../../../../dicedata/output/play_all_day-100k/play_all_day-100k-winloss-outcomes.json";
+import { FadeIn } from "../../utils/FadeIn";
+import { FadeOut } from "../../utils/FadeOut";
 
 const WINNERS = winlose.find((stat) => stat.STAT == "N_UP").BY_SESSION;
 const PUSHERS = winlose.find((stat) => stat.STAT == "N_EVEN").BY_SESSION;
@@ -274,7 +276,36 @@ export default makeScene2D(function* (view) {
     pushersSignal(PUSHERS, 1, easeOutCubic)
   );
 
+  yield* waitUntil("box");
+  const rect = new Rect({
+    width: 1800,
+    height: 400,
+    stroke: Bright.YELLOW,
+    lineWidth: 10,
+    lineDash: [20, 5],
+    end: 0,
+  });
+
+  const pct = new Txt({
+    ...LabelFont,
+    text: "48.8%",
+    fill: Bright.YELLOW,
+    fontWeight: 800,
+    fontSize: 90,
+    position: [575, 75],
+    opacity: 0,
+  });
+
+  view.add(rect);
+  view.add(pct);
+  yield* rect.end(1, 2, easeInOutCubic);
+  yield* waitFor(0.5);
+  yield* FadeIn(pct, 1, easeOutCubic, [0, 100]);
+
+  yield* waitFor(2);
+
   yield* waitUntil("show-losers");
+  yield* all(rect.start(1, 1, easeInOutCubic), FadeOut(pct, 1));
   yield* all(
     lose_pct().opacity(1, 0.1),
     lose_pct_signal(LOSERS / TOTAL, 1, easeOutCubic),

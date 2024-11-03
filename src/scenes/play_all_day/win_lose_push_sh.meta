@@ -10,12 +10,16 @@
       "targetTime": 6.3
     },
     {
+      "name": "box",
+      "targetTime": 8.3
+    },
+    {
       "name": "show-losers",
-      "targetTime": 7.3
+      "targetTime": 16.9719010119384
     },
     {
       "name": "end",
-      "targetTime": 8.3
+      "targetTime": 23.303893148840054
     }
   ],
   "seed": 2787853138

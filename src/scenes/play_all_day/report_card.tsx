@@ -14,7 +14,7 @@ import {
 } from "@motion-canvas/core";
 
 import logo from "../../../assets/Logo/DiceDataLogo_NoBG.png";
-import { Bright, MonoWhite, Theme } from "../../styles";
+import { Bright, Grays, MonoWhite, Theme } from "../../styles";
 import { CircumscribeRect } from "../../utils/Circumscribe";
 
 // Create our number formatter.
@@ -46,7 +46,7 @@ const HeaderFont = {
 
 const FieldFont = {
   ...MonoWhite,
-  fontWeight: 200,
+  fontWeight: 400,
   fontSize: 45,
   textWrap: "wrap",
   textAlign: "end",
@@ -111,7 +111,7 @@ export default makeScene2D(function* (view) {
             direction={"row"}
             width={"80%"}
             height={300}
-            stroke={"white"}
+            stroke={Grays.GRAY2}
             lineWidth={2}
             margin={0}
             justifyContent={"center"}
@@ -119,7 +119,7 @@ export default makeScene2D(function* (view) {
             <Rect
               width={"50%"}
               height={"100%"}
-              stroke={"white"}
+              stroke={Grays.GRAY2}
               lineWidth={2}
               margin={0}
               alignItems={"center"}
@@ -138,7 +138,7 @@ export default makeScene2D(function* (view) {
             <Rect
               width={"50%"}
               height={"100%"}
-              stroke={"white"}
+              stroke={Grays.GRAY2}
               lineWidth={2}
               margin={0}
               alignItems={"center"}
@@ -160,7 +160,7 @@ export default makeScene2D(function* (view) {
   headers[0].text("SESSIONS");
   headers[1].text("SHOOTERS PER SESSION");
   headers[2].text("HOUSE EDGE");
-  headers[3].text("WIN RATE");
+  headers[3].text("WIN + BREAKEVEN RATE");
   headers[4].text("LOSE RATE");
   headers[5].text("50% OUTCOME RANGE");
   headers[6].text("90% OUTCOME RANGE");
@@ -174,12 +174,12 @@ export default makeScene2D(function* (view) {
       })}`
   );
   fields[1].text("10");
-  fields[2].text("2.655 %");
-  fields[3].text("47.2 %");
-  fields[4].text("52.8 %");
-  fields[5].text("-$672 to +$534");
-  fields[6].text("-$1,585 to +$1,306");
-  fields[7].text("$2,525"); //USE R THIS IS THE p01 after group by session
+  fields[2].text("1.36 %");
+  fields[3].text("48.9 %");
+  fields[4].text("51.1 %");
+  fields[5].text("-$150 to +$100");
+  fields[6].text("-$325 to +$300");
+  fields[7].text("$525"); //USE R THIS IS THE p01 after group by session
   //fields[7].text("50% by 7th Roll");
 
   yield* slideTransition(Direction.Right);
@@ -210,14 +210,14 @@ export default makeScene2D(function* (view) {
   yield* waitFor(2);
 
   yield* waitUntil("highlight-50");
-  yield* CircumscribeRect(fields[5], Bright.YELLOW, 1.4, 10, 7);
+  yield* CircumscribeRect(fields[5], Bright.YELLOW, 1.4, 10, 3);
 
   yield* waitUntil("outcome-90");
   yield* arrowY(280, 1, easeInOutCubic);
   //yield* waitFor(2);
 
   yield* waitUntil("highlight-90");
-  yield* CircumscribeRect(fields[6], Bright.YELLOW, 1.1, 10, 4);
+  yield* CircumscribeRect(fields[6], Bright.YELLOW, 1.4, 10, 4);
 
   yield* waitUntil("Bankroll");
   yield* arrowY(350, 1, easeInOutCubic);

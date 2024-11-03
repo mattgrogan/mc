@@ -123,13 +123,13 @@ export default makeScene2D(function* (view) {
   yield* waitUntil("highlight-1");
   let upperBar = Math.floor(histogramData.length / 2);
   let lowerBar = upperBar - 1;
-  let bars = [lowerBar, upperBar];
+  let bars = [upperBar];
   yield* all(
-    chart().highlightBar(lowerBar, Bright.ORANGE),
+    //chart().highlightBar(lowerBar, Bright.ORANGE),
     chart().highlightBar(upperBar, Bright.ORANGE)
   );
   yield* chart().moveBox(
-    histogramData[lowerBar].cuts,
+    histogramData[upperBar].cuts,
     histogramData[upperBar + 1].cuts,
     chart().getPercentForBars(bars)
   );
@@ -137,9 +137,9 @@ export default makeScene2D(function* (view) {
   yield* waitFor(1);
 
   yield* waitUntil("highlight-2");
-  upperBar += 1;
-  lowerBar -= 1;
-  bars.push(lowerBar, upperBar);
+  //upperBar += 1;
+  //lowerBar -= 1;
+  bars.push(lowerBar);
   yield* all(
     chart().highlightBar(lowerBar, Bright.ORANGE),
     chart().highlightBar(upperBar, Bright.ORANGE),
@@ -181,35 +181,35 @@ export default makeScene2D(function* (view) {
   );
   yield* waitFor(1);
 
-  yield* waitUntil("highlight-5");
-  upperBar += 1;
-  lowerBar -= 1;
-  bars.push(lowerBar, upperBar);
-  yield* all(
-    chart().highlightBar(lowerBar, Bright.ORANGE),
-    chart().highlightBar(upperBar, Bright.ORANGE),
-    chart().moveBox(
-      histogramData[lowerBar].cuts,
-      histogramData[upperBar + 1].cuts,
-      chart().getPercentForBars(bars)
-    )
-  );
-  yield* waitFor(1);
+  // yield* waitUntil("highlight-5");
+  // upperBar += 1;
+  // lowerBar -= 1;
+  // bars.push(lowerBar, upperBar);
+  // yield* all(
+  //   chart().highlightBar(lowerBar, Bright.ORANGE),
+  //   chart().highlightBar(upperBar, Bright.ORANGE),
+  //   chart().moveBox(
+  //     histogramData[lowerBar].cuts,
+  //     histogramData[upperBar + 1].cuts,
+  //     chart().getPercentForBars(bars)
+  //   )
+  // );
+  // yield* waitFor(1);
 
-  yield* waitUntil("highlight-6");
-  upperBar += 1;
-  lowerBar -= 1;
-  bars.push(lowerBar, upperBar);
-  yield* all(
-    chart().highlightBar(lowerBar, Bright.ORANGE),
-    chart().highlightBar(upperBar, Bright.ORANGE),
-    chart().moveBox(
-      histogramData[lowerBar].cuts,
-      histogramData[upperBar + 1].cuts,
-      chart().getPercentForBars(bars)
-    )
-  );
-  yield* waitFor(1);
+  // yield* waitUntil("highlight-6");
+  // upperBar += 1;
+  // lowerBar -= 1;
+  // bars.push(lowerBar, upperBar);
+  // yield* all(
+  //   chart().highlightBar(lowerBar, Bright.ORANGE),
+  //   chart().highlightBar(upperBar, Bright.ORANGE),
+  //   chart().moveBox(
+  //     histogramData[lowerBar].cuts,
+  //     histogramData[upperBar + 1].cuts,
+  //     chart().getPercentForBars(bars)
+  //   )
+  // );
+  // yield* waitFor(1);
 
   // yield* waitUntil("highlight-600-600");
   // yield* all(

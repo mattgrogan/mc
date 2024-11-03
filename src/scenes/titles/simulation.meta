@@ -3,11 +3,11 @@
   "timeEvents": [
     {
       "name": "fadeout",
-      "targetTime": 4.1
+      "targetTime": 3.2
     },
     {
       "name": "end",
-      "targetTime": 5.3
+      "targetTime": 3.5000000000000004
     }
   ],
   "seed": 1403600509
