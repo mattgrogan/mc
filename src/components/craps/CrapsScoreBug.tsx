@@ -4,23 +4,46 @@ import {
   createRef,
   createRefMap,
   Direction,
+  easeInExpo,
   easeInOutCubic,
+  easeOutExpo,
   sequence,
   Vector2,
+  waitFor,
 } from "@motion-canvas/core";
 import { RollText } from "../../utils/RollText";
 import {
   blueGradient,
   grayGradient,
   Grays,
+  greenGradient,
+  LightBlueGradient,
   MonoWhite,
   PoppinsBlack,
   PoppinsWhite,
+  purpleGradient,
+  redGradient,
   whiteGradientH,
+  yellowGradient,
 } from "../../styles";
 
 const GAME_ITEM_WIDTH = 200;
 const VALUE_HEIGHT_PCT = 0.7;
+const POPUP_HOLD_SECS = 2; // How long to hold the popups for?
+
+function getOrdinal(n: number) {
+  let ord = "TH";
+
+  if (n % 10 == 1 && n % 100 != 11) {
+    ord = "ST";
+  } else if (n % 10 == 2 && n % 100 != 12) {
+    ord = "ND";
+  } else if (n % 10 == 3 && n % 100 != 13) {
+    ord = "RD";
+  }
+
+  return ord;
+}
 
 export interface CrapsScoreBugProps extends RectProps {}
 
@@ -28,6 +51,11 @@ export class CrapsScoreBug extends Rect {
   private readonly fields = createRefMap<Rect>();
   private readonly values = createRefMap<RollText>();
   private readonly player = createRef<Layout>();
+  private readonly newShooterPopup = createRef<Rect>();
+  private readonly sevenOutPopup = createRef<Rect>();
+  private readonly pointSetPopup = createRef<Rect>();
+  private readonly pointHitPopup = createRef<Rect>();
+  private readonly pointSetPopupText = createRef<Txt>();
   private roll = 0;
   private shooter = 0;
   private shooterRoll = 0;
@@ -212,6 +240,86 @@ export class CrapsScoreBug extends Rect {
       </Rect>
     );
 
+    // SHOOTER POPUPS
+    this.add(
+      <Rect
+        //fill={"red"}
+        width={GAME_ITEM_WIDTH * 2}
+        height={this.height() * (1 - VALUE_HEIGHT_PCT)}
+        offset={[-1, 1]}
+        position={this.fields.shooter().topLeft()}
+        clip
+      >
+        <Rect
+          ref={this.newShooterPopup}
+          width={GAME_ITEM_WIDTH * 2}
+          height={this.height() * (1 - VALUE_HEIGHT_PCT)}
+          fill={LightBlueGradient}
+          stroke={Grays.WHITE}
+          lineWidth={3}
+        >
+          <Txt
+            text={"NEW SHOOTER"}
+            {...PoppinsBlack}
+            fontWeight={600}
+            scale={0.8}
+            fill={Grays.WHITE}
+          ></Txt>
+        </Rect>
+        <Rect
+          ref={this.sevenOutPopup}
+          width={GAME_ITEM_WIDTH * 2}
+          height={this.height() * (1 - VALUE_HEIGHT_PCT)}
+          fill={redGradient}
+          stroke={Grays.WHITE}
+          lineWidth={3}
+        >
+          <Txt
+            text={"SEVEN OUT"}
+            {...PoppinsWhite}
+            fontWeight={600}
+            scale={0.8}
+          ></Txt>
+        </Rect>
+        <Rect
+          ref={this.pointSetPopup}
+          width={GAME_ITEM_WIDTH * 2}
+          height={this.height() * (1 - VALUE_HEIGHT_PCT)}
+          fill={purpleGradient}
+          stroke={Grays.WHITE}
+          lineWidth={3}
+        >
+          <Txt
+            ref={this.pointSetPopupText}
+            text={"POINT SET"}
+            {...PoppinsWhite}
+            fontWeight={600}
+            scale={0.8}
+          ></Txt>
+        </Rect>
+        <Rect
+          ref={this.pointHitPopup}
+          width={GAME_ITEM_WIDTH * 2}
+          height={this.height() * (1 - VALUE_HEIGHT_PCT)}
+          fill={greenGradient}
+          stroke={Grays.WHITE}
+          lineWidth={3}
+        >
+          <Txt
+            text={"POINT HIT"}
+            {...PoppinsWhite}
+            fontWeight={600}
+            scale={0.8}
+          ></Txt>
+        </Rect>
+      </Rect>
+    );
+
+    this.newShooterPopup().y(this.newShooterPopup().height());
+    this.sevenOutPopup().y(this.sevenOutPopup().height());
+    this.pointSetPopup().y(this.pointSetPopup().height());
+    this.pointHitPopup().y(this.pointHitPopup().height());
+
     this.moveOffset(new Vector2(1, 0));
   }
 
@@ -296,6 +404,52 @@ export class CrapsScoreBug extends Rect {
       this.values.bankroll().next("-"),
       this.values.bets().next("-"),
       this.values.exposure().next("-")
+    );
+  }
+
+  public *newShooter(secs: number = POPUP_HOLD_SECS) {
+    // Show the popup
+    yield* this.newShooterPopup().y(0, 0.6, easeOutExpo);
+    yield* waitFor(secs);
+    yield* this.newShooterPopup().y(
+      this.newShooterPopup().height(),
+      0.6,
+      easeInExpo
+    );
+  }
+
+  public *sevenOut(secs: number = POPUP_HOLD_SECS) {
+    // Show the popup
+    yield* this.sevenOutPopup().y(0, 0.6, easeOutExpo);
+    yield* waitFor(secs);
+    yield* this.sevenOutPopup().y(
+      this.sevenOutPopup().height(),
+      0.6,
+      easeInExpo
+    );
+  }
+
+  public *pointHit(secs: number = POPUP_HOLD_SECS) {
+    // Show the popup
+    yield* this.pointHitPopup().y(0, 0.6, easeOutExpo);
+    yield* waitFor(secs);
+    yield* this.pointHitPopup().y(
+      this.pointHitPopup().height(),
+      0.6,
+      easeInExpo
+    );
+  }
+
+  public *pointSet(nth: number, secs: number = POPUP_HOLD_SECS) {
+    // Show the popup
+    const text = nth.toFixed(0) + getOrdinal(nth) + " POINT SET";
+    this.pointSetPopupText().text(text);
+    yield* this.pointSetPopup().y(0, 0.6, easeOutExpo);
+    yield* waitFor(secs);
+    yield* this.pointSetPopup().y(
+      this.pointSetPopup().height(),
+      0.6,
+      easeInExpo
     );
   }
 }

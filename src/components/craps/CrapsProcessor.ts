@@ -3,6 +3,7 @@
 
 import {
   all,
+  delay,
   Reference,
   sequence,
   useLogger,
@@ -25,6 +26,10 @@ export class CrapsProcessor {
 
   public *round(data: any) {
     const logger = useLogger();
+
+    if (data.SHOOTER_ROLL == 1) {
+      yield this.scoreBug().newShooter();
+    }
 
     yield* all(
       this.scoreBug().updateRoll(data.SHOOTER_ROLL == 1),
@@ -63,6 +68,18 @@ export class CrapsProcessor {
     yield* this.scoreBug().updateLabel("THROW IS " + data.THROW);
 
     yield* waitFor(0.6);
+
+    if (data.IS_SEVEN_OUT) {
+      yield delay(0.4, this.scoreBug().sevenOut());
+    }
+
+    if (data.IS_POINT_SET) {
+      yield delay(0.4, this.scoreBug().pointSet(data.POINTS_SET));
+    }
+
+    if (data.IS_POINT_HIT) {
+      yield delay(0.4, this.scoreBug().pointHit());
+    }
 
     // Move the puck
     if (data.NEW_POINT_STATUS == "On" || data.NEW_POINT_STATUS == "Off") {

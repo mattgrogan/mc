@@ -47,16 +47,13 @@ export default makeScene2D(function* (view) {
 
   const processor = new CrapsProcessor(table, bug);
 
-  //const session = simData[9].SESSION;
+  const session = simData[2].SESSION;
   // const session = 26459;
-  // const firstSession = simData.filter(({ SESSION }) => SESSION === session);
+  const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
-  // for (const roll of firstSession) {
-  //   yield* processor.round(roll);
-  // }
-
-  yield* bug().hideLabel();
-  yield* bug().hidePlayer();
+  for (const roll of firstSession) {
+    yield* processor.round(roll);
+  }
 
   yield* bug().updateLabel("GAME OVER");
   yield* waitFor(10);

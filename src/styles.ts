@@ -66,8 +66,63 @@ export const blueGradient = new Gradient({
   from: [0, -100],
   to: [0, 100],
   stops: [
-    { offset: 0, color: "#242f40" },
-    { offset: 0.6, color: "#141B23" },
+    { offset: 0, color: "#253494" },
+    { offset: 0.6, color: "#081d58" },
+  ],
+});
+
+export const LightBlueGradient = new Gradient({
+  type: "linear",
+
+  from: [0, -100],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: "#2191fb" },
+    { offset: 0.6, color: "#1d4e89" },
+  ],
+});
+
+export const yellowGradient = new Gradient({
+  type: "linear",
+
+  from: [0, -100],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: "#fffd98" },
+    { offset: 0.6, color: "#f7fcb9" },
+  ],
+});
+
+export const greenGradient = new Gradient({
+  type: "linear",
+
+  from: [0, -100],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: "#41ab5d" },
+    { offset: 0.6, color: "#00441b" },
+  ],
+});
+
+export const purpleGradient = new Gradient({
+  type: "linear",
+
+  from: [0, -100],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: "#6a51a3" },
+    { offset: 0.6, color: "#3f007d" },
+  ],
+});
+
+export const redGradient = new Gradient({
+  type: "linear",
+
+  from: [0, -100],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: "#e31a1c" },
+    { offset: 0.6, color: "#800026" },
   ],
 });
 
@@ -78,8 +133,8 @@ export const grayGradient = new Gradient({
   to: [0, 100],
   stops: [
     //{ offset: 0, color: "#101010" },
-    { offset: 0, color: "#202020" },
-    { offset: 1, color: "#101010" },
+    { offset: 0, color: "#252525" },
+    { offset: 1, color: "#000000" },
   ],
 });
 
