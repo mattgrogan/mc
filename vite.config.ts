@@ -13,6 +13,8 @@ export default defineConfig({
         "./src/rolltext.ts",
         "./src/regression440.ts",
         "./src/plotting.ts",
+        "./src/scenes/tpd_no_replacement/tpd_no_replacement_demo.ts",
+        "./src/scenes/tpd_no_replacement/tpd_no_replacement.ts",
       ],
     }),
     ffmpeg(),

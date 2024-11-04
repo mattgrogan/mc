@@ -28,6 +28,13 @@ export enum c {
   DONTCOME9 = "DONTCOME9",
   DONTCOME10 = "DONTCOME10",
 
+  DONTCOME4ODDS = "DONTCOME4",
+  DONTCOME5ODDS = "DONTCOME5",
+  DONTCOME6ODDS = "DONTCOME6",
+  DONTCOME8ODDS = "DONTCOME8",
+  DONTCOME9ODDS = "DONTCOME9",
+  DONTCOME10ODDS = "DONTCOME10",
+
   COME4ODDS = "COME4ODDS",
   COME5ODDS = "COME5ODDS",
   COME6ODDS = "COME6ODDS",
@@ -77,6 +84,8 @@ const BOX_8 = 180;
 const BOX_9 = 310;
 const BOX_10 = 450;
 
+const DCODDS_OFFSET = 60;
+
 export const tableCoords: { [id: string]: Vector2 } = {
   PLAYER: new Vector2(0, 600),
   DEALER: new Vector2(0, -600),
@@ -111,6 +120,13 @@ export const tableCoords: { [id: string]: Vector2 } = {
   DONTCOME8: new Vector2(BOX_8, LAY_Y),
   DONTCOME9: new Vector2(BOX_9, LAY_Y),
   DONTCOME10: new Vector2(BOX_10, LAY_Y),
+
+  DONTCOME4ODDS: new Vector2(BOX_4 + DCODDS_OFFSET, LAY_Y),
+  DONTCOME5ODDS: new Vector2(BOX_5 + DCODDS_OFFSET, LAY_Y),
+  DONTCOME6ODDS: new Vector2(BOX_6 + DCODDS_OFFSET, LAY_Y),
+  DONTCOME8ODDS: new Vector2(BOX_8 + DCODDS_OFFSET, LAY_Y),
+  DONTCOME9ODDS: new Vector2(BOX_9 + DCODDS_OFFSET, LAY_Y),
+  DONTCOME10ODDS: new Vector2(BOX_10 + DCODDS_OFFSET, LAY_Y),
 
   PLACE4: new Vector2(BOX_4, PLACE_Y),
   PLACE5: new Vector2(BOX_5, PLACE_Y),

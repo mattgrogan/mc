@@ -12,7 +12,7 @@ import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
 //import simData from "../../../data/PLAY_ALL_DAY.json";
-import simData from "../../../../dicedata/output/play_all_day-100k/play_all_day-100k-random_sessions.json";
+import simData from "../../../../dicedata/output/3pd_no_replacement-test/3pd_no_replacement-test-random_sessions.json";
 import { Theme } from "../../styles";
 
 export default makeScene2D(function* (view) {
@@ -47,16 +47,16 @@ export default makeScene2D(function* (view) {
 
   const processor = new CrapsProcessor(table, bug);
 
-  //const session = simData[9].SESSION;
-  // const session = 26459;
-  // const firstSession = simData.filter(({ SESSION }) => SESSION === session);
+  const session = simData[0].SESSION;
+  //const session = 26459;
+  const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
-  // for (const roll of firstSession) {
-  //   yield* processor.round(roll);
-  // }
+  for (const roll of firstSession) {
+    yield* processor.round(roll);
+  }
 
-  yield* bug().hideLabel();
-  yield* bug().hidePlayer();
+  // yield* bug().hideLabel();
+  // yield* bug().hidePlayer();
 
   yield* bug().updateLabel("GAME OVER");
   yield* waitFor(10);

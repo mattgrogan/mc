@@ -46,7 +46,7 @@ export class CrapsProcessor {
     for (const bet of data.PLYR_NEWBETS) {
       newBets.push(this.table().bets().makeBet(bet.amount, bet.bet, false));
     }
-    yield* sequence(0.2, ...newBets);
+    yield* sequence(0.3, ...newBets);
 
     // Update scorebug after bets down and placed
     yield* all(

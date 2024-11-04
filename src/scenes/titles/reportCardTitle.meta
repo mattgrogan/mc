@@ -1,0 +1,14 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "fadeout",
+      "targetTime": 4.1
+    },
+    {
+      "name": "end",
+      "targetTime": 5.3
+    }
+  ],
+  "seed": 1595508997
+}

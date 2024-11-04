@@ -5,58 +5,33 @@ import {
   useLogger,
   Vector2,
 } from "@motion-canvas/core";
-import { Axis } from "./Axis";
+import { NumberLine } from "./NumberLine";
 
 export default makeScene2D(function* (view) {
   // Create your animations here
 
-  view.fill("black");
-  const line = createRef<Line>();
+  view.fill("#333");
+  const nl = createRef<NumberLine>();
 
   view.add(
-    <Line
-      ref={line}
-      points={[
-        [-600, 0],
-        [600, 0],
-      ]}
-      lineWidth={5}
-      stroke={"white"}
+    <NumberLine
+      ref={nl}
+      minNumber={0}
+      maxNumber={100}
+      length={400}
+      numberLineProps={{ lineWidth: 5, stroke: "red" }}
     />
   );
 
-  const axis = new Axis({
-    minCoord: 0,
-    maxCoord: 100,
-    minPoint: () => line().left().x,
-    maxPoint: () => line().right().x,
-  });
   const logger = useLogger();
-  const p = axis.c2p(50);
-  logger.debug(p().toString());
 
-  logger.debug("Creating pointVal");
-  const pointVal = createSignal(50);
-  logger.debug("pointVal=" + pointVal().toString());
+  yield* nl().x(-600, 1);
 
-  const point = (
-    <Circle
-      size={50}
-      fill={"red"}
-    />
-  );
-  view.add(point);
-
-  point.x(axis.c2p(50));
-
-  logger.debug("maxCoord=" + axis.maxCoord().toString());
-  axis.maxCoord(50);
-  logger.debug("maxCoord=" + axis.maxCoord().toString());
-
-  yield* axis.maxCoord(200, 1);
-
-  yield* point.x(axis.c2p(30), 1);
-
-  yield* line().scale(0.5, 1);
-  yield* point.x(axis.c2p(75), 1);
+  // const point = (
+  //   <Circle
+  //     size={50}
+  //     fill={"red"}
+  //   />
+  // );
+  // view.add(point);
 });
