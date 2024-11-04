@@ -34,7 +34,6 @@ export default makeScene2D(function* (view) {
       <Txt
         ref={title}
         {...PoppinsWhite}
-        opacity={1}
         x={400}
         y={-400}
         fontWeight={500}
