@@ -83,7 +83,7 @@ export default makeScene2D(function* (view) {
           {...TitleFont}
           fontSize={54}
         >
-          PLAY ALL DAY [ $25 MIN ]
+          3 POINT DOLLY (NO REPLACEMENT)
         </Txt>
       </Layout>
       <Icon

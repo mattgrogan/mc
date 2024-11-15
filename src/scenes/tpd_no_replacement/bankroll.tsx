@@ -349,12 +349,12 @@ export default makeScene2D(function* (view) {
   cumulativePct += barSignals[5]();
   cumulativePct += barSignals[6]();
   cumulativePct += barSignals[7]();
-  cumulativePct += barSignals[8]();
-  cumulativePct += barSignals[9]();
+  // cumulativePct += barSignals[8]();
+  // cumulativePct += barSignals[9]();
   // cumulativePct += barSignals[8]();
   // cumulativePct += barSignals[9]();
   yield* all(
-    box().height(box().height() + 60 * 5, 3, easeInOutCubic),
+    box().height(box().height() + 60 * 3, 3, easeInOutCubic),
     cumPctLabel().opacity(1, 3, easeInOutCubic),
     cumPct(cumulativePct, 3, easeInOutCubic)
   );

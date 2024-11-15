@@ -1,0 +1,58 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "draw-rect",
+      "targetTime": 12.33839304510852
+    },
+    {
+      "name": "start-bets",
+      "targetTime": 13.33839304510852
+    },
+    {
+      "name": "bet50",
+      "targetTime": 32.73839304510853
+    },
+    {
+      "name": "lose50",
+      "targetTime": 35.93839304510853
+    },
+    {
+      "name": "restart-bets",
+      "targetTime": 36.538393045108535
+    },
+    {
+      "name": "win-150-2",
+      "targetTime": 41.93839304510856
+    },
+    {
+      "name": "bet50-2",
+      "targetTime": 43.93839304510856
+    },
+    {
+      "name": "win-1500",
+      "targetTime": 47.138393045108565
+    },
+    {
+      "name": "count",
+      "targetTime": 50.738393045108566
+    },
+    {
+      "name": "count-wins",
+      "targetTime": 51.738393045108566
+    },
+    {
+      "name": "count-lose",
+      "targetTime": 54.738393045108566
+    },
+    {
+      "name": "count-net",
+      "targetTime": 57.738393045108566
+    },
+    {
+      "name": "end",
+      "targetTime": 67.53839304510856
+    }
+  ],
+  "seed": 3514751970
+}

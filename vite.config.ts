@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import motionCanvas from "@motion-canvas/vite-plugin";
-import ffmpeg from "@motion-canvas/ffmpeg";
+//import ffmpeg from "@motion-canvas/ffmpeg";
 
 export default defineConfig({
   plugins: [
@@ -15,8 +15,12 @@ export default defineConfig({
         "./src/plotting.ts",
         "./src/scenes/tpd_no_replacement/tpd_no_replacement_demo.ts",
         "./src/scenes/tpd_no_replacement/tpd_no_replacement.ts",
+        "./src/scenes/boxcars/boxcars_demo.ts",
+        "./src/scenes/boxcars/boxcars.ts",
+        "./src/scenes/sixeight_lowroller/sixeight_lowroller_demo.ts",
+        "./src/scenes/sixeight_lowroller/sixeight_lowroller.ts",
       ],
     }),
-    ffmpeg(),
+    //ffmpeg(),
   ],
 });

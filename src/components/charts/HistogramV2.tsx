@@ -195,7 +195,7 @@ export class HistogramV2 extends Layout {
     bottomZero.x = this.c2pX(0);
     this.zeroLine = new Line({
       stroke: "#797979",
-      lineWidth: 5,
+      lineWidth: 0,
       lineDash: [20, 10],
       height: "100%",
       points: [

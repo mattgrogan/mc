@@ -1,0 +1,26 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "none",
+      "targetTime": 3.6
+    },
+    {
+      "name": "onehit",
+      "targetTime": 5.6
+    },
+    {
+      "name": "winners",
+      "targetTime": 3.6
+    },
+    {
+      "name": "next-level",
+      "targetTime": 19.6
+    },
+    {
+      "name": "end",
+      "targetTime": 5
+    }
+  ],
+  "seed": 2239033027
+}

@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "spotlight",
+      "targetTime": 11.999999999999996
+    },
+    {
+      "name": "bet50",
+      "targetTime": 17.2
+    },
+    {
+      "name": "remove-chips",
+      "targetTime": 24.267293848319213
+    },
+    {
+      "name": "end",
+      "targetTime": 32.467293848319215
+    }
+  ],
+  "seed": 919962530
+}
