@@ -11,7 +11,7 @@ import { CrapsProcessor } from "../../components/craps/CrapsProcessor";
 import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
-import simData from "../../../../dicedata/output/boxcars-test/boxcars-test-sessions.json";
+import simData from "../../../../dicedata/output/boxcars-100k/boxcars-100k-sessions.json";
 import { Theme } from "../../styles";
 
 export default makeScene2D(function* (view) {
