@@ -8,7 +8,5 @@ If you are interested in Motion Canvas, you may find the utilities valuable:
 
 [Motion Canvas Utilities](src/utils)
 
-<video width="320" height="240" controls>
-  <source src="src/utils/utilsDemoProject.mp4" type="video/mp4">
-</video>
+
 
