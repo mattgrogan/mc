@@ -39,7 +39,7 @@ export default makeScene2D(function* (view) {
   yield* sequence(
     0.5,
     FadeIn(bug(), 0.6, easeOutCubic, [0, 100]),
-    bug().updateLabel("GOOD LUCK!")
+    bug().updateLabel("PLAY ALL DAY")
   );
 
   yield* waitFor(1);
@@ -47,7 +47,7 @@ export default makeScene2D(function* (view) {
   const processor = new CrapsProcessor(table, bug);
 
   const session = simData[0].SESSION;
-  //const session = 59;
+  //const session = 300;
   const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
   for (const roll of firstSession) {

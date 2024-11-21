@@ -36,8 +36,8 @@ export default makeScene2D(function* (view) {
   camera().scene().position(view.size().div(2));
 
   const sim = new SimulationScreen();
-  sim.name = "3 Pt Dolly (No Replace)";
-  sim.options = "1x Odds";
+  sim.name = "6/8 Low Roller";
+  sim.options = "-";
   sim.sessions = simstats[0].SESSIONS;
   sim.shooters = "10 Per Session";
   sim.tableMin = "$15";

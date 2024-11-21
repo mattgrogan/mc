@@ -3,18 +3,22 @@ import {
   LayoutProps,
   Line,
   LineProps,
-  signal,
   Node,
+  signal,
   Txt,
   TxtProps,
-  Circle,
 } from "@motion-canvas/2d";
 import {
+  all,
   createDeferredEffect,
-  createEffect,
   createSignal,
+  easeInOutExpo,
+  easeOutCubic,
+  sequence,
   SignalValue,
   SimpleSignal,
+  spawn,
+  TimingFunction,
   Vector2,
 } from "@motion-canvas/core";
 
@@ -26,9 +30,6 @@ export interface NumberLineProps extends LayoutProps {
   numberLineProps?: LineProps;
   tickMarkProps?: TickMarkProps;
   tickLabelProps?: TickLabelProps;
-
-  // minPoint: SignalValue<number>;
-  // maxPoint: SignalValue<number>;
 }
 
 export interface TickMarkProps extends LineProps {
@@ -44,11 +45,14 @@ export interface TickLabelProps extends TxtProps {
    */
   lineToLabelPadding: number;
   decimalNumbers: number;
+  suffix?: string;
 }
 
 const defaultLineProps = {
   lineWidth: 5,
   stroke: "white",
+  start: 0.5,
+  end: 0.5,
 };
 
 /**
@@ -111,6 +115,9 @@ export class NumberLine extends Layout {
 
   private declare readonly numberLine: Line;
   private declare readonly tickContainer: Node;
+  private readonly tickMarks: { [id: number]: Node } = {};
+  private readonly tickLabels: { [id: number]: Node } = {};
+  private readonly tickSet = new Set<number>();
 
   public constructor(props?: NumberLineProps) {
     super({ ...props });
@@ -127,12 +134,15 @@ export class NumberLine extends Layout {
 
     this.minPoint(0);
     this.maxPoint(this.length());
-
-    // Redraw the ticks if the numbers change
-    createDeferredEffect(() => {
-      this.tickContainer.removeChildren();
-      this.addTicks();
-    });
+  }
+  public *drawFromCenter(seconds: number, ease: TimingFunction = easeOutCubic) {
+    /**
+     * Animate drawing the line from the center
+     */
+    yield* all(
+      this.numberLine.start(0, seconds, ease),
+      this.numberLine.end(1, seconds, ease)
+    );
   }
 
   public n2p(x: number): SimpleSignal<number> {
@@ -151,25 +161,14 @@ export class NumberLine extends Layout {
     return signal;
   }
 
-  public addTicks() {
+  public createTick(where: number) {
     /**
-     * Add a tick along the numberline
-     */
-    let x = this.minNumber();
-    do {
-      this.addTick(x);
-      this.addTickLabel(x);
-      x += this.tickStep();
-    } while (x <= this.maxNumber());
-  }
-
-  public addTick(where: number) {
-    /**
-     * Add a tick along the numberline
+     * Create a new tick mark
      */
     const tickPrototype = new Line({
       stroke: "white",
       lineWidth: 5,
+      opacity: 0,
       points: [
         [0, this.tickMarkProps().length / 2],
         [0, -this.tickMarkProps().length / 2],
@@ -179,33 +178,150 @@ export class NumberLine extends Layout {
 
     const tick = tickPrototype.clone();
     tick.x(() => this.n2p(where)());
-    this.tickContainer.add(tick);
+    return tick;
   }
 
-  public addTickLabel(where: number) {
+  public createTickLabel(where: number) {
     /**
-     * Add a tick label along the numberline
+     * Create a new tick label
      */
+    let text = where.toFixed(this.tickLabelProps().decimalNumbers);
+    if (this.tickLabelProps().suffix != null) {
+      text += this.tickLabelProps().suffix;
+    }
+
     const tickLabelPrototype = new Txt({
+      opacity: 0,
       ...this.tickLabelProps(),
       y: this.tickLabelProps().lineToLabelPadding,
-      text: where.toFixed(this.tickLabelProps().decimalNumbers),
+      text: text,
     });
 
     const label = tickLabelPrototype.clone();
     label.x(() => this.n2p(where)());
 
-    this.tickContainer.add(label);
+    return label;
   }
 
-  public addPoint(where: number) {
-    const point = (
-      <Circle
-        size={50}
-        fill={"red"}
-      />
+  public *rescale(
+    min: number,
+    max: number,
+    step: number,
+    seconds: number,
+    ease: TimingFunction = easeInOutExpo
+  ) {
+    /**
+     * Rescale the axis
+     */
+
+    // Redraw the ticks as the min and max change
+    const unsubscribe = createDeferredEffect(() =>
+      this.updateTicks(min, max, step)
     );
-    this.add(point);
-    point.x(this.n2p(20));
+
+    yield* all(this.minNumber(min, seconds), this.maxNumber(max, seconds));
+
+    unsubscribe();
+  }
+
+  public updateTicks(min: number, max: number, step: number, buffer = 0.5) {
+    /**
+     * Remove unneeded ticks and draw new ticks.
+     * buffer will allow ticks to be drawn even if they're outside the current range.
+     * which leads to a smoother animation.
+     */
+
+    // These are the ticks we want to end up with.
+    const desiredTickSet = this.getTickRange(min, max, step);
+
+    // Find the ticks that need to be added - those that are not in the existing
+    // tick set, but are in the desired tick set.
+    const ticksToAdd = new Set(
+      [...desiredTickSet]
+        .filter((x) => !this.tickSet.has(x))
+        .filter(
+          (x) =>
+            x >= this.minNumber() - buffer && x <= this.maxNumber() + buffer
+        )
+    );
+    const additions = [];
+    for (const where of ticksToAdd) {
+      additions.push(this.addTick(where));
+    }
+    spawn(sequence(0.1, ...additions));
+
+    // Find the ticks that need to be removed. These are in the existing set,
+    // but are not in the desired tick set.
+    const ticksToRemove = new Set(
+      [...this.tickSet].filter((x) => !desiredTickSet.has(x))
+    );
+    const removals = [];
+    for (const where of ticksToRemove) {
+      removals.push(this.removeTickAt(where));
+    }
+    spawn(sequence(0.1, ...removals));
+  }
+
+  public *addTick(where: number, seconds: number = 0.4) {
+    /**
+     * Add the tick to the node tree.
+     */
+
+    if (where in this.tickMarks) {
+      // Tick already exists, return
+      return;
+    }
+
+    if (where in this.tickLabels) {
+      // Tick label already exists, return
+      return;
+    }
+
+    const tick = this.createTick(where);
+    const tickLabel = this.createTickLabel(where);
+    this.tickMarks[where] = tick;
+    this.tickLabels[where] = tickLabel;
+    this.tickContainer.add(tick);
+    this.tickContainer.add(tickLabel);
+    this.tickSet.add(where);
+    yield* all(tick.opacity(1, seconds), tickLabel.opacity(1, seconds));
+  }
+
+  public *removeTickAt(where: number, seconds: number = 0.4) {
+    /**
+     * Remove the tick at the specified position
+     */
+
+    if (!(where in this.tickMarks)) {
+      return;
+    }
+    const tick = this.tickMarks[where];
+    const tickLabel = this.tickLabels[where];
+
+    yield* all(tick.opacity(0, seconds), tickLabel.opacity(0, seconds));
+
+    // Remove the items from the scene
+    tick.remove();
+    tickLabel.remove();
+
+    // Remove the items from the dictionary
+    delete this.tickMarks[where];
+    delete this.tickLabels[where];
+
+    // Remove this item from the set
+    this.tickSet.delete(where);
+  }
+
+  public getTickRange(start: number, stop: number, step: number): Set<number> {
+    /**
+     * Generate an array of the places where we want the ticks
+     */
+    const tickRange = new Set<number>();
+    let x = start;
+    do {
+      tickRange.add(x);
+      x += step;
+    } while (x <= stop);
+    return tickRange;
   }
 }

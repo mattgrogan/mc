@@ -1,11 +1,12 @@
 import { defineConfig } from "vite";
 import motionCanvas from "@motion-canvas/vite-plugin";
-//import ffmpeg from "@motion-canvas/ffmpeg";
+import ffmpeg from "@motion-canvas/ffmpeg";
 
 export default defineConfig({
   plugins: [
     motionCanvas({
       project: [
+        "./src/utils/utilsDemoProject.ts",
         "./src/regression440_demo.ts",
         "./src/play_all_day_demo.ts",
         "./src/scenes/play_all_day/play_all_day.ts",
@@ -21,6 +22,6 @@ export default defineConfig({
         "./src/scenes/sixeight_lowroller/sixeight_lowroller.ts",
       ],
     }),
-    //ffmpeg(),
+    ffmpeg(),
   ],
 });
