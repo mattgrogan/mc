@@ -8,4 +8,5 @@ If you are interested in Motion Canvas, you may find the utilities valuable:
 
 [Motion Canvas Utilities](src/utils)
 
-![Demo](src/utils/utilsDemoProject.mp4)
+src/utils/utilsDemoProject.mp4
+
