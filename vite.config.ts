@@ -6,6 +6,8 @@ export default defineConfig({
   plugins: [
     motionCanvas({
       project: [
+        "./src/utils/utilsDemoProject.ts",
+        "./src/coordinates.ts",
         "./src/regression440_demo.ts",
         "./src/play_all_day_demo.ts",
         "./src/scenes/play_all_day/play_all_day.ts",

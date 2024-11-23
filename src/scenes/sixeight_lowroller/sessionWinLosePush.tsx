@@ -13,7 +13,7 @@ import {
 import { Bright, Theme } from "../../styles";
 
 //-winloss-outcomes.json
-import winlose from "../../../../dicedata/output/sixeightlowroller-100k/sixeightlowroller-100k-winloss-outcomes.json";
+import winlose from "../../../../dicedata/output/sixeightlowroller-100k2/sixeightlowroller-100k2-winloss-outcomes.json";
 
 import { FadeIn } from "../../utils/FadeIn";
 import { FadeOut } from "../../utils/FadeOut";

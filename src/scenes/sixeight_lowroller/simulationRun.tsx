@@ -16,8 +16,8 @@ import { Bright, Theme } from "../../styles";
 import { CircumscribeRect } from "../../utils/Circumscribe";
 import { FadeIn } from "../../utils/FadeIn";
 
-import simstats from "../../../../dicedata/output/sixeightlowroller-100k/sixeightlowroller-100k-sessions-shooters-rolls.json";
-import casinostats from "../../../../dicedata/output/sixeightlowroller-100k/sixeightlowroller-100k-casinostats.json";
+import simstats from "../../../../dicedata/output/sixeightlowroller-100k2/sixeightlowroller-100k2-sessions-shooters-rolls.json";
+import casinostats from "../../../../dicedata/output/sixeightlowroller-100k2/sixeightlowroller-100k2-casinostats.json";
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
@@ -36,8 +36,8 @@ export default makeScene2D(function* (view) {
   camera().scene().position(view.size().div(2));
 
   const sim = new SimulationScreen();
-  sim.name = "3 Pt Dolly (No Replace)";
-  sim.options = "1x Odds";
+  sim.name = "6/8 Low Roller";
+  sim.options = "-";
   sim.sessions = simstats[0].SESSIONS;
   sim.shooters = "10 Per Session";
   sim.tableMin = "$15";

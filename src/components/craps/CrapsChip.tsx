@@ -33,13 +33,18 @@ import chip140Png from "../../../assets/Chips/Chip_0140.png";
 import chip150Png from "../../../assets/Chips/Chip_0150.png";
 import chip168Png from "../../../assets/Chips/Chip_0168.png";
 import chip196Png from "../../../assets/Chips/Chip_0196.png";
+import chip198Png from "../../../assets/Chips/Chip_0198.png";
 import chip200Png from "../../../assets/Chips/Chip_0200.png";
+import chip305Png from "../../../assets/Chips/Chip_0305.png";
 import chip360Png from "../../../assets/Chips/Chip_0360.png";
 import chip500Png from "../../../assets/Chips/Chip_0500.png";
+import chip549Png from "../../../assets/Chips/Chip_0549.png";
 import chip600Png from "../../../assets/Chips/Chip_0600.png";
 import chip750Png from "../../../assets/Chips/Chip_0750.png";
+import chip850Png from "../../../assets/Chips/Chip_0850.png";
 import chip1000Png from "../../../assets/Chips/Chip_1000.png";
 import chip1500Png from "../../../assets/Chips/Chip_1500.png";
+import chip1530Png from "../../../assets/Chips/Chip_1530.png";
 import { useLogger } from "@motion-canvas/core";
 //import { NumberFont } from "./Styles";
 
@@ -77,13 +82,18 @@ const chipPngs: { [denom: number]: string } = {
   150: chip150Png,
   168: chip168Png,
   196: chip196Png,
+  198: chip198Png,
   200: chip200Png,
+  305: chip305Png,
   360: chip360Png,
   500: chip500Png,
+  549: chip549Png,
   600: chip600Png,
   750: chip750Png,
+  850: chip850Png,
   1000: chip1000Png,
   1500: chip1500Png,
+  1530: chip1530Png,
 };
 
 const WORKING_INDICATOR_SCALE = 0.8;

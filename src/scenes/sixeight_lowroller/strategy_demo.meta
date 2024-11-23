@@ -1,0 +1,38 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "steps",
+      "targetTime": 3
+    },
+    {
+      "name": "step1",
+      "targetTime": 5
+    },
+    {
+      "name": "step2",
+      "targetTime": 13.7
+    },
+    {
+      "name": "step3",
+      "targetTime": 30.400000000000006
+    },
+    {
+      "name": "step4",
+      "targetTime": 48.300000000000004
+    },
+    {
+      "name": "step5",
+      "targetTime": 61.89999999999999
+    },
+    {
+      "name": "step6",
+      "targetTime": 106.5999999999999
+    },
+    {
+      "name": "restart",
+      "targetTime": 128.2999999999999
+    }
+  ],
+  "seed": 143858825
+}
