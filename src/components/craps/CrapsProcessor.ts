@@ -37,7 +37,8 @@ export class CrapsProcessor {
       this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START)
     );
 
-    yield* this.scoreBug().updateLabel("PLACE BETS");
+    //yield* this.scoreBug().updateLabel("PLACE BETS");
+    yield this.scoreBug().updateLabel("");
 
     // Take any bets down
     const downBets = [];
