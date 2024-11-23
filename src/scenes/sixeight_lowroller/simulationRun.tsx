@@ -16,8 +16,8 @@ import { Bright, Theme } from "../../styles";
 import { CircumscribeRect } from "../../utils/Circumscribe";
 import { FadeIn } from "../../utils/FadeIn";
 
-import simstats from "../../../../dicedata/output/sixeightlowroller-100k/sixeightlowroller-100k-sessions-shooters-rolls.json";
-import casinostats from "../../../../dicedata/output/sixeightlowroller-100k/sixeightlowroller-100k-casinostats.json";
+import simstats from "../../../../dicedata/output/sixeightlowroller-100k2/sixeightlowroller-100k2-sessions-shooters-rolls.json";
+import casinostats from "../../../../dicedata/output/sixeightlowroller-100k2/sixeightlowroller-100k2-casinostats.json";
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
