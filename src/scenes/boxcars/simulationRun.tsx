@@ -68,8 +68,9 @@ export default makeScene2D(function* (view) {
     camera().position([-400, 0], 1.5, easeInOutCubic)
   );
   yield* waitUntil("circ");
-  yield* CircumscribeRect(sim.paramsRows[3], Bright.YELLOW, 1, 15, 0.3);
-  yield* CircumscribeRect(sim.paramsRows[4], Bright.YELLOW, 1, 15, 0.3);
+  yield* CircumscribeRect(sim.paramsRows[3], Bright.YELLOW, 1, 15, 1);
+  yield* waitUntil("shooters")
+  yield* CircumscribeRect(sim.paramsRows[4], Bright.YELLOW, 1, 15, 1);
   yield* camera().restore(1, easeInOutCubic);
 
   yield* waitUntil("run");

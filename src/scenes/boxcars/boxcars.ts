@@ -1,7 +1,7 @@
 import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
-// import audio from "../../../audio/DD - 3PD - NO REPLACEMENT - 1X - 15_00108000.flac";
+import audio from "../../../audio/DD - Boxcars - 200-1500_00108000.flac"
 
 import intro from "./intro?scene";
 
@@ -46,5 +46,5 @@ export default makeProject({
     reportCard,
     endCard,
   ],
-  // audio: audio,
+  audio: audio,
 });

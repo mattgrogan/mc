@@ -205,6 +205,8 @@ export default makeScene2D(function* (view) {
     </>
   );
 
+  yield* fadeTransition()
+
   yield* waitFor(1);
   yield* FadeIn(title, 0.6, easeOutCubic, [0, 100]);
   yield* waitFor(1);

@@ -59,7 +59,7 @@ export default makeScene2D(function* (view) {
     chip1500().x(2000, 1, easeInCubic)
   );
 
-  yield* waitFor(20);
+  yield* waitFor(5);
 
   yield* waitUntil("end");
 });

@@ -210,7 +210,7 @@ export default makeScene2D(function* (view) {
   yield* waitFor(2);
 
   yield* waitUntil("highlight-50");
-  yield* CircumscribeRect(fields[5], Bright.YELLOW, 1.4, 10, 3);
+  yield* CircumscribeRect(fields[5], Bright.YELLOW, 1.4, 10, 0.6);
 
   yield* waitUntil("outcome-90");
   yield* arrowY(280, 1, easeInOutCubic);

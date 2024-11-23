@@ -50,25 +50,35 @@ export default makeScene2D(function* (view) {
   yield* table().bets().makeBet(5, c.PROP_12);
 
   yield* camera().restore(2, easeInOutCubic);
-
+  
   yield* table().dice().throw(4, 6);
   yield* table().bets().loseBet(c.PROP_12);
   yield* table().dice().removeDice();
-
+  
+  yield* waitUntil("roll2")
   yield* table().bets().makeBet(5, c.PROP_12);
   yield* table().dice().throw(6, 6);
-
+  
   yield* waitUntil("spotlight");
   const spotlight = new Spotlight({ moveTo: [-475, -235] });
   view.add(spotlight);
   yield* spotlight.turnOn([-475, -235], 300, 1);
   yield* spotlight.moveTo([-330, 130], 1, easeInOutCubic);
   yield* spotlight.turnOff(1, easeInOutCubic);
+  yield* waitUntil("win150")
+  camera().save();
+  yield* all(
+    camera().zoom(1.5, 2, easeInOutCubic),
+    camera().position([-330, 130], 2, easeInOutCubic)
+  );
   yield* table().bets().winBet(150, c.PROP_12, true);
+  yield* camera().restore(2, easeInOutCubic);
   yield table().dice().removeDice();
 
   yield* waitUntil("bet50");
   yield* table().bets().makeBet(50, c.PROP_12);
+
+  yield* waitUntil("roll3")
   yield* table().dice().throw(6, 6);
 
   camera().save();
@@ -138,7 +148,7 @@ export default makeScene2D(function* (view) {
   // yield* waitFor(1);
   // yield* table().bets().makeBet(15, c.DONTPASS);
 
-  yield* waitFor(5);
+  //yield* waitFor(5);
 
   yield* waitUntil("end");
 });

@@ -156,7 +156,7 @@ export default makeScene2D(function* (view) {
 
   yield* waitFor(1);
 
-  yield* sequence(0.15, ...chips5.map((chip) => chip.scale(1, 1, easeOutBack)));
+  yield* sequence(0.1, ...chips5.map((chip) => chip.scale(1, 1, easeOutBack)));
 
   rect().position(
     chips5[0].absolutePosition().transformAsPoint(container2().worldToParent())
@@ -166,79 +166,76 @@ export default makeScene2D(function* (view) {
   yield* rect().end(1, 1, easeInOutCubic);
 
   yield* waitUntil("start-bets");
-  for (let i = 0; i < 23; i++) {
+  for (let i = 0; i < 14; i++) {
     yield* sequence(
-      0.2,
-      chips5[i].opacity(0.2, 0.6, linear),
+      0.05,
+      chips5[i].opacity(0.05, 0.6, linear),
       rect().position(
         chips5[i + 1]
           .absolutePosition()
           .transformAsPoint(container2().worldToParent()),
-        0.6,
+        0.05,
         easeInOutCubic
       )
     );
   }
-  yield* FadeIn(chips150[23], 1, easeOutBounce, [0, 50]);
+  yield* FadeIn(chips150[14], 1, easeOutBounce, [0, 50]);
 
   yield* waitUntil("bet50");
   yield* rect().position(
-    chips5[24]
+    chips5[15]
       .absolutePosition()
       .transformAsPoint(container2().worldToParent()),
     0.6,
     easeInOutCubic
   );
-  yield* chips50[24].opacity(1, 0.6, linear);
-  chips5[24].src(chip50Png);
+  yield* chips50[15].opacity(1, 0.6, linear);
+  chips5[15].src(chip50Png);
 
   yield* waitFor(2);
   yield* waitUntil("lose50");
-  yield* chips5[24].opacity(0.2, 0.6, linear);
+  yield* chips5[15].opacity(0.2, 0.6, linear);
 
   yield* waitUntil("restart-bets");
   yield* rect().position(
-    chips5[25]
+    chips5[15]
       .absolutePosition()
       .transformAsPoint(container2().worldToParent()),
     0.6,
     easeInOutCubic
   );
 
-  for (let i = 25; i < 31; i++) {
+  for (let i = 15; i < 31; i++) {
     yield* sequence(
-      0.2,
-      chips5[i].opacity(0.2, 0.6, linear),
+      0.05,
+      chips5[i].opacity(0.05, 0.6, linear),
       rect().position(
         chips5[i + 1]
           .absolutePosition()
           .transformAsPoint(container2().worldToParent()),
-        0.6,
+        0.05,
         easeInOutCubic
       )
     );
   }
 
   yield* waitUntil("win-150-2");
-  yield* FadeIn(chips150[31], 1, easeOutBounce, [0, 50]);
+  yield* FadeIn(chips150[31], 0.5, easeOutBounce, [0, 50]);
 
-  yield* waitFor(1);
   yield* waitUntil("bet50-2");
   yield* rect().position(
     chips5[32]
       .absolutePosition()
       .transformAsPoint(container2().worldToParent()),
-    0.6,
+    0.4,
     easeInOutCubic
   );
-  yield* chips50[32].opacity(1, 0.6, linear);
+  yield* chips50[32].opacity(0.5, 0.6, linear);
   chips5[32].src(chip50Png);
-  yield* waitFor(2);
 
   yield* waitUntil("win-1500");
   yield* FadeIn(chips1500[32], 1, easeOutBounce, [0, 50]);
 
-  yield* waitFor(1);
   yield* rect().end(0, 0.6, easeInOutCubic);
   yield* FadeIn(icons[33], 1, easeOutBounce, [0, 50]);
 

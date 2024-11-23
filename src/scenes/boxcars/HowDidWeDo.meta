@@ -3,23 +3,23 @@
   "timeEvents": [
     {
       "name": "none",
-      "targetTime": 3.6
+      "targetTime": 4.2
     },
     {
       "name": "onehit",
-      "targetTime": 5.6
+      "targetTime": 15.385771900970266
     },
     {
       "name": "winners",
-      "targetTime": 3.6
+      "targetTime": 24.28709988221104
     },
     {
       "name": "next-level",
-      "targetTime": 19.6
+      "targetTime": 34.065757733666445
     },
     {
       "name": "end",
-      "targetTime": 5
+      "targetTime": 70.78216765186676
     }
   ],
   "seed": 2239033027

@@ -3,55 +3,55 @@
   "timeEvents": [
     {
       "name": "draw-rect",
-      "targetTime": 12.33839304510852
+      "targetTime": 6.4999999999999964
     },
     {
       "name": "start-bets",
-      "targetTime": 13.33839304510852
+      "targetTime": 7.4999999999999964
     },
     {
       "name": "bet50",
-      "targetTime": 32.73839304510853
+      "targetTime": 16.89999999999999
     },
     {
       "name": "lose50",
-      "targetTime": 35.93839304510853
+      "targetTime": 20.099999999999994
     },
     {
       "name": "restart-bets",
-      "targetTime": 36.538393045108535
+      "targetTime": 20.699999999999996
     },
     {
       "name": "win-150-2",
-      "targetTime": 41.93839304510856
+      "targetTime": 30.90000000000002
     },
     {
       "name": "bet50-2",
-      "targetTime": 43.93839304510856
+      "targetTime": 31.40000000000002
     },
     {
       "name": "win-1500",
-      "targetTime": 47.138393045108565
+      "targetTime": 32.40000000000002
     },
     {
       "name": "count",
-      "targetTime": 50.738393045108566
+      "targetTime": 36.00000000000002
     },
     {
       "name": "count-wins",
-      "targetTime": 51.738393045108566
+      "targetTime": 37.00000000000002
     },
     {
       "name": "count-lose",
-      "targetTime": 54.738393045108566
+      "targetTime": 45.38547154687833
     },
     {
       "name": "count-net",
-      "targetTime": 57.738393045108566
+      "targetTime": 50.13006092121919
     },
     {
       "name": "end",
-      "targetTime": 67.53839304510856
+      "targetTime": 55.25213034282063
     }
   ],
   "seed": 3514751970
