@@ -3,27 +3,27 @@
   "timeEvents": [
     {
       "name": "agenda",
-      "targetTime": 12.4
+      "targetTime": 12.27968231589774
     },
     {
       "name": "step1",
-      "targetTime": 15.000000000000002
+      "targetTime": 15.27968231589774
     },
     {
       "name": "step2",
-      "targetTime": 15.000000000000002
+      "targetTime": 18.279682315897738
     },
     {
       "name": "step3",
-      "targetTime": 20
+      "targetTime": 22.279682315897738
     },
     {
       "name": "step3-end ",
-      "targetTime": 24
+      "targetTime": 26.279682315897738
     },
     {
       "name": "end",
-      "targetTime": 26.2
+      "targetTime": 30.279682315897738
     }
   ],
   "seed": 378920624

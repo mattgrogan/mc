@@ -1,44 +1,33 @@
 import {
-  Circle,
   Icon,
-  Img,
   Layout,
   Line,
   makeScene2D,
   Rect,
-  Txt,
+  Txt
 } from "@motion-canvas/2d";
 import {
   all,
   createRef,
-  easeInBack,
-  easeInBounce,
-  easeInCubic,
   easeInElastic,
   easeInOutCubic,
-  easeOutBounce,
   easeOutCubic,
   linear,
   sequence,
   waitFor,
-  waitUntil,
+  waitUntil
 } from "@motion-canvas/core";
 
 import {
   Bright,
-  Darker,
-  Darkest,
   Grays,
   ITCBenguiatNormal,
   MonoWhite,
   PoppinsWhite,
-  Theme,
+  Theme
 } from "../../styles";
 
-import chip200Png from "../../../assets/Chips/Chip_0200.png";
-import chip1500Png from "../../../assets/Chips/Chip_1500.png";
 import { FadeIn } from "../../utils/FadeIn";
-import { FadeOut } from "../../utils/FadeOut";
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
@@ -191,11 +180,11 @@ export default makeScene2D(function* (view) {
     .children()
     .forEach((ref) => ref.restore());
 
+    yield* waitUntil("agenda");
   yield* rect().height(0, 1, easeInElastic);
   rect().remove();
 
   yield* waitFor(1);
-  yield* waitUntil("agenda");
 
   // show the agenda
   const agenda = createRef<Layout>();

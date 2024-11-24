@@ -193,6 +193,58 @@ export default makeScene2D(function* (view) {
 
   bug().position([-270, 400]);
 
+  // STEP CONTAINER
+  stepContainer().x(0)
+  stepContainer().y(700)
+  stepContainer().scale(2)
+  steps[1].opacity(0)
+  steps[2].opacity(0)
+  steps[3].opacity(0)
+  steps[4].opacity(0)
+  steps[5].opacity(0)
+  yield* FadeIn(stepContainer, 1, easeOutCubic, [100, 0]);
+
+  yield* waitUntil("show-step2")
+  yield* all(
+    steps[1].opacity(1, 1, linear),
+    stepContainer().y(500, 1, easeInOutCubic)
+  )
+  yield* waitFor(1)
+
+  yield* waitUntil("show-step3")
+  yield* all(
+    steps[2].opacity(1, 1, linear),
+    stepContainer().y(200, 1, easeInOutCubic)
+  )
+  yield* waitFor(1)
+
+  yield* waitUntil("show-step4")
+  yield* all(
+    steps[3].opacity(1, 1, linear),
+    stepContainer().y(-100, 1, easeInOutCubic)
+  )
+  yield* waitFor(1)
+
+  yield* waitUntil("show-step5")
+  yield* all(
+    steps[4].opacity(1, 1, linear),
+    stepContainer().y(-400, 1, easeInOutCubic)
+  )
+  yield* waitFor(1)
+
+  yield* waitUntil("show-step6")
+  yield* all(
+    steps[5].opacity(1, 1, linear),
+    stepContainer().y(-700, 1, easeInOutCubic)
+  )
+  yield* waitFor(1)
+
+  // SHOW TABLE
+  yield* waitUntil("Show-table")
+
+  yield* all(stepContainer().scale(1,1, easeInOutCubic),
+stepContainer().position([650, 0], 1, easeInOutCubic))
+
   yield* FadeIn(table(), 1, easeOutCubic, [0, 500]);
   yield* sequence(
     0.5,
@@ -200,27 +252,21 @@ export default makeScene2D(function* (view) {
     bug().updateLabel("GOOD LUCK!")
   );
 
-  yield* waitFor(1);
-  yield* waitUntil("steps");
 
-  yield* FadeIn(stepContainer, 1, easeOutCubic, [100, 0]);
   // camera().save();
   // yield* all(
   //   camera().zoom(1.1, cameraZoomSecs, easeInOutCubic),
   //   camera().position([100, 0], cameraZoomSecs, easeInOutCubic)
   // );
 
-  yield* waitFor(1);
   yield* waitUntil("step1");
   yield* all(
     steps[0].stroke(Bright.ORANGE, 1, linear),
     steps[0].lineWidth(10, 1, linear)
   );
-  yield* waitFor(1);
   // yield camera().restore(cameraZoomSecs, easeInOutCubic);
   yield* processor.round(firstSession[0]);
 
-  yield* waitFor(1);
   yield* waitUntil("step2");
   // yield all(
   //   camera().zoom(1.1, 1, easeInOutCubic),
@@ -235,7 +281,6 @@ export default makeScene2D(function* (view) {
   yield* processor.round(firstSession[1]);
   yield* processor.round(firstSession[2]);
 
-  yield* waitFor(1);
   yield* waitUntil("step3");
   yield* all(
     steps[1].stroke(Grays.GRAY4, 1, linear),
@@ -264,7 +309,11 @@ export default makeScene2D(function* (view) {
   yield* processor.round(firstSession[6]);
   yield* processor.round(firstSession[7]);
   yield* processor.round(firstSession[8]);
+  yield* waitFor(1);
+  yield* waitUntil("pointis4");
   yield* processor.round(firstSession[9]);
+  yield* waitFor(1);
+  yield* waitUntil("easy6");
   yield* processor.round(firstSession[10]);
 
   yield* waitFor(1);
@@ -280,13 +329,12 @@ export default makeScene2D(function* (view) {
   yield* processor.round(firstSession[13]);
 
   yield* waitFor(1);
-  yield* waitUntil("restart");
-  yield* all(
-    steps[5].stroke(Grays.GRAY4, 1, linear),
-    steps[0].stroke(Bright.ORANGE, 1, linear),
-    steps[0].lineWidth(10, 1, linear)
-  );
-  yield* processor.round(firstSession[14]);
+  yield* waitUntil("end");
+  // yield* all(
+  //   steps[5].stroke(Grays.GRAY4, 1, linear),
+  //   steps[0].stroke(Bright.ORANGE, 1, linear),
+  //   steps[0].lineWidth(10, 1, linear)
+  // );
+  // yield* processor.round(firstSession[14]);
 
-  yield* waitFor(10);
 });

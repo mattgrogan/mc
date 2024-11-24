@@ -2,12 +2,12 @@ import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
 // import audio from "../../../audio/DD - 3PD - NO REPLACEMENT - 1X - 15_00108000.flac";
+import audio from "../../../audio/DD - 6 8 LOW ROLLER00108000.flac"
 
 import intro from "./intro?scene";
 
 import strategyTitle from "../titles/strategyTitle?scene";
 import strategy from "./strategy_demo?scene";
-// import minimumsAndPayouts from "./minimumsAndPayouts?scene";
 
 import simulationTitle from "../titles/simulationTitle?scene";
 import simulationRun from "./simulationRun?scene";
@@ -30,7 +30,6 @@ export default makeProject({
     intro,
     strategyTitle,
     strategy,
-    // minimumsAndPayouts,
     simulationTitle,
     simulationRun,
     shooterWinLosePush,
@@ -42,5 +41,5 @@ export default makeProject({
     reportCard,
     endCard,
   ],
-  // audio: audio,
+  audio: audio,
 });
