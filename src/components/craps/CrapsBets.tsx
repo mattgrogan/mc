@@ -1,6 +1,6 @@
 import { Layout, LayoutProps } from "@motion-canvas/2d";
 import { c, tableCoords } from "./CrapsTableCoords";
-import { CrapsChip } from "./CrapsChip";
+import { ChipColors, CrapsChip } from "./CrapsChip";
 import {
   all,
   easeInOutCubic,
@@ -23,7 +23,7 @@ export class CrapsBets extends Layout {
   }
 
   public newChip(denom: number, where: c): Layout {
-    const chip = new CrapsChip({ denom: denom });
+    const chip = new CrapsChip({ denom: denom, chipColor: ChipColors.AUTO });
     chip.position(tableCoords[where]);
     this.add(chip);
     return chip;
@@ -80,7 +80,7 @@ export class CrapsBets extends Layout {
     where: c,
     both: boolean = false,
     indicate: boolean = true,
-    offset: number = 50,
+    offset: number = 25,
     dur: number = 0.6,
     ease: TimingFunction = easeOutCubic,
     opacity: number = 1,

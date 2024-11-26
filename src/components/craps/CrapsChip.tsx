@@ -1,110 +1,158 @@
-import { Img, Layout, LayoutProps } from "@motion-canvas/2d";
+import { Circle, CircleProps, Txt } from "@motion-canvas/2d";
 
-import chip5Png from "../../../assets/Chips/Chip_0005.png";
-import chip10Png from "../../../assets/Chips/Chip_0010.png";
-import chip12Png from "../../../assets/Chips/Chip_0012.png";
-import chip14Png from "../../../assets/Chips/Chip_0014.png";
-import chip15Png from "../../../assets/Chips/Chip_0015.png";
-import chip16Png from "../../../assets/Chips/Chip_0016.png";
-import chip18Png from "../../../assets/Chips/Chip_0018.png";
-import chip21Png from "../../../assets/Chips/Chip_0021.png";
-import chip24Png from "../../../assets/Chips/Chip_0024.png";
-import chip25Png from "../../../assets/Chips/Chip_0025.png";
-import chip27Png from "../../../assets/Chips/Chip_0027.png";
-import chip30Png from "../../../assets/Chips/Chip_0030.png";
-import chip35Png from "../../../assets/Chips/Chip_0035.png";
-import chip36Png from "../../../assets/Chips/Chip_0036.png";
-import chip40Png from "../../../assets/Chips/Chip_0040.png";
-import chip42Png from "../../../assets/Chips/Chip_0042.png";
-import chip49Png from "../../../assets/Chips/Chip_0049.png";
-import chip50Png from "../../../assets/Chips/Chip_0050.png";
-import chip60Png from "../../../assets/Chips/Chip_0060.png";
-import chip70Png from "../../../assets/Chips/Chip_0070.png";
-import chip72Png from "../../../assets/Chips/Chip_0072.png";
-import chip78Png from "../../../assets/Chips/Chip_0078.png";
-import chip80Png from "../../../assets/Chips/Chip_0080.png";
-import chip91Png from "../../../assets/Chips/Chip_0091.png";
-import chip95Png from "../../../assets/Chips/Chip_0095.png";
-import chip100Png from "../../../assets/Chips/Chip_0100.png";
-import chip110Png from "../../../assets/Chips/Chip_0110.png";
-import chip112Png from "../../../assets/Chips/Chip_0112.png";
-import chip120Png from "../../../assets/Chips/Chip_0120.png";
-import chip140Png from "../../../assets/Chips/Chip_0140.png";
-import chip150Png from "../../../assets/Chips/Chip_0150.png";
-import chip168Png from "../../../assets/Chips/Chip_0168.png";
-import chip196Png from "../../../assets/Chips/Chip_0196.png";
-import chip198Png from "../../../assets/Chips/Chip_0198.png";
-import chip200Png from "../../../assets/Chips/Chip_0200.png";
-import chip305Png from "../../../assets/Chips/Chip_0305.png";
-import chip360Png from "../../../assets/Chips/Chip_0360.png";
-import chip500Png from "../../../assets/Chips/Chip_0500.png";
-import chip549Png from "../../../assets/Chips/Chip_0549.png";
-import chip600Png from "../../../assets/Chips/Chip_0600.png";
-import chip750Png from "../../../assets/Chips/Chip_0750.png";
-import chip850Png from "../../../assets/Chips/Chip_0850.png";
-import chip1000Png from "../../../assets/Chips/Chip_1000.png";
-import chip1500Png from "../../../assets/Chips/Chip_1500.png";
-import chip1530Png from "../../../assets/Chips/Chip_1530.png";
-import { useLogger } from "@motion-canvas/core";
-//import { NumberFont } from "./Styles";
-
-const chipPngs: { [denom: number]: string } = {
-  5: chip5Png,
-  10: chip10Png,
-  12: chip12Png,
-  14: chip14Png,
-  15: chip15Png,
-  16: chip16Png,
-  18: chip18Png,
-  21: chip21Png,
-  24: chip24Png,
-  25: chip25Png,
-  27: chip27Png,
-  30: chip30Png,
-  35: chip35Png,
-  36: chip36Png,
-  40: chip40Png,
-  42: chip42Png,
-  49: chip49Png,
-  50: chip50Png,
-  60: chip60Png,
-  70: chip70Png,
-  72: chip72Png,
-  78: chip78Png,
-  80: chip80Png,
-  91: chip91Png,
-  95: chip95Png,
-  100: chip100Png,
-  110: chip110Png,
-  112: chip112Png,
-  120: chip120Png,
-  140: chip140Png,
-  150: chip150Png,
-  168: chip168Png,
-  196: chip196Png,
-  198: chip198Png,
-  200: chip200Png,
-  305: chip305Png,
-  360: chip360Png,
-  500: chip500Png,
-  549: chip549Png,
-  600: chip600Png,
-  750: chip750Png,
-  850: chip850Png,
-  1000: chip1000Png,
-  1500: chip1500Png,
-  1530: chip1530Png,
-};
-
-const WORKING_INDICATOR_SCALE = 0.8;
-
-export interface ChipProps extends LayoutProps {
-  denom: number;
+export enum ChipColors {
+  WHITE = "WHITE",
+  RED = "RED",
+  PURPLE = "PURPLE",
+  ORANGE = "ORANGE",
+  GREEN = "GREEN",
+  BLUE = "BLUE",
+  BLACK = "BLACK",
+  AUTO = "AUTO",
 }
 
-export class CrapsChip extends Layout {
+interface iChipColor {
+  background: string;
+  outerCircle: string;
+  innerCircle: string;
+  marks: string;
+  text: string;
+  textOutline: string;
+}
+
+const redChip: iChipColor = {
+  background: "#820000",
+  outerCircle: "#9a0000",
+  innerCircle: "#9a0000",
+  marks: "#fff",
+  text: "#fff",
+  textOutline: "#222222",
+};
+
+const whiteChip: iChipColor = {
+  background: "#fefefe",
+  outerCircle: "#888888",
+  innerCircle: "#393939",
+  marks: "#4281a4",
+  text: "#232323",
+  textOutline: "#393939",
+};
+
+const purpleChip: iChipColor = {
+  background: "#8073ac",
+  outerCircle: "#d8daeb",
+  innerCircle: "#201d2b",
+  marks: "#542788",
+  text: "#d8daeb",
+  textOutline: "#201d2b",
+};
+
+const orangeChip: iChipColor = {
+  background: "#e08214",
+  outerCircle: "#fee1b7",
+  innerCircle: "#fee1b7",
+  marks: "#fdb863",
+  text: "#fefaec",
+  textOutline: "#090a0b",
+};
+
+const greenChip: iChipColor = {
+  background: "#244f33",
+  outerCircle: "#35764c",
+  innerCircle: "#1b3c26",
+  marks: "#ffffff",
+  text: "#ffffff",
+  textOutline: "#090a0b",
+};
+
+const blueChip: iChipColor = {
+  background: "#1d4e89",
+  outerCircle: "#225ba1",
+  innerCircle: "#163d6a",
+  marks: "#ffffff",
+  text: "#ffffff",
+  textOutline: "#090a0b",
+};
+
+const blackChip: iChipColor = {
+  background: "#101010",
+  outerCircle: "#262626",
+  innerCircle: "#494949",
+  marks: "#ffffff",
+  text: "#ffffff",
+  textOutline: "#090a0b",
+};
+
+var chipColorDict: { [id: string]: iChipColor } = {};
+chipColorDict[ChipColors.RED] = redChip;
+chipColorDict[ChipColors.WHITE] = whiteChip;
+chipColorDict[ChipColors.PURPLE] = purpleChip;
+chipColorDict[ChipColors.ORANGE] = orangeChip;
+chipColorDict[ChipColors.GREEN] = greenChip;
+chipColorDict[ChipColors.BLUE] = blueChip;
+chipColorDict[ChipColors.BLACK] = blackChip;
+
+// const WORKING_INDICATOR_SCALE = 0.8;
+
+export interface ChipProps extends CircleProps {
+  denom: number;
+  chipColor: ChipColors;
+}
+
+const CHIP_SIZE = 320;
+const CHIP_LINE_WIDTH = 10;
+const CHIP_INNER_CIRCLE_SIZE = 190;
+const CHIP_MARK_CIRCLE_SIZE = 255;
+const CHIP_MARK_CIRCLE_LINE_WIDTH = 40;
+const CHIP_MARK_CIRCLE_LINE_LENGTH =
+  (CHIP_MARK_CIRCLE_LINE_WIDTH * Math.PI) / 4;
+
+// Starting at this scale:
+const ORIGINAL_SCALE = 1.3;
+// Reduce the text size by this much for each
+// additional character in the denomination.
+const SCALE_FACTOR = 0.2;
+
+function getChipColor(denom: number): ChipColors {
+  /**
+   * Figure the chip color based on the denomination
+   */
+
+  if (denom < 5) {
+    return ChipColors.WHITE;
+  }
+
+  if (denom >= 5 && denom < 25) {
+    return ChipColors.RED;
+  }
+
+  if (denom >= 25 && denom < 100) {
+    return ChipColors.GREEN;
+  }
+
+  if (denom >= 100 && denom < 500) {
+    return ChipColors.BLACK;
+  }
+
+  if (denom >= 500 && denom < 1000) {
+    return ChipColors.PURPLE;
+  }
+
+  if (denom >= 1000 && denom < 5000) {
+    return ChipColors.ORANGE;
+  }
+
+  if (denom >= 5000) {
+    return ChipColors.BLUE;
+  }
+}
+
+export class CrapsChip extends Circle {
   //public isWorking = createSignal(true);
   //private readonly workingIndicator = createRef<Rect>();
+  private declare readonly denom: number;
+  private declare readonly denom_scale: number;
+  private declare readonly chipColor: iChipColor;
 
   public constructor(props?: ChipProps) {
     super({
@@ -112,24 +160,59 @@ export class CrapsChip extends Layout {
       ...props,
     });
 
-    if (props.denom in chipPngs === false) {
-      const logger = useLogger();
-      logger.error("CrapsChip " + props.denom.toString() + " does not exist.");
+    this.chipColor = chipColorDict[props.chipColor];
+    if (props.chipColor == ChipColors.AUTO) {
+      this.chipColor = chipColorDict[getChipColor(props.denom)];
     }
 
-    const chipPng = chipPngs[props.denom];
+    this.denom = props.denom;
+    this.denom_scale =
+      ORIGINAL_SCALE - this.denom.toFixed(0).length * SCALE_FACTOR;
+
+    this.size(CHIP_SIZE);
+    this.fill(this.chipColor.background);
 
     this.add(
-      <Img
-        src={chipPng}
-        scale={0.6}
-        opacity={1}
-        shadowColor={"black"}
-        shadowBlur={5}
-        shadowOffsetX={5}
-        shadowOffsetY={5}
-      ></Img>
+      <Circle
+        size={CHIP_SIZE}
+        stroke={this.chipColor.outerCircle}
+        lineWidth={CHIP_LINE_WIDTH}
+      />
     );
+    this.add(
+      <Circle
+        size={CHIP_INNER_CIRCLE_SIZE}
+        stroke={this.chipColor.innerCircle}
+        lineWidth={CHIP_LINE_WIDTH}
+      />
+    );
+    this.add(
+      <Circle
+        size={CHIP_MARK_CIRCLE_SIZE}
+        stroke={this.chipColor.marks}
+        lineWidth={CHIP_MARK_CIRCLE_LINE_WIDTH}
+        lineDash={[
+          3 * CHIP_MARK_CIRCLE_LINE_LENGTH,
+          CHIP_MARK_CIRCLE_LINE_LENGTH,
+        ]}
+        lineDashOffset={CHIP_MARK_CIRCLE_LINE_LENGTH}
+      />
+    );
+    this.add(
+      <Txt
+        fontFamily={"Battambang"}
+        fontWeight={700}
+        text={this.denom.toFixed(0)}
+        fontSize={150}
+        fill={this.chipColor.text}
+        scale={this.denom_scale}
+        stroke={this.chipColor.textOutline}
+        lineWidth={3}
+        strokeFirst
+      />
+    );
+
+    this.scale(0.25);
 
     //   this.add(
     //     <Rect
