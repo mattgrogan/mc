@@ -1,4 +1,5 @@
 import { Circle, CircleProps, Txt } from "@motion-canvas/2d";
+import { Vector2 } from "@motion-canvas/core";
 
 export enum ChipColors {
   WHITE = "WHITE",
@@ -171,6 +172,9 @@ export class CrapsChip extends Circle {
 
     this.size(CHIP_SIZE);
     this.fill(this.chipColor.background);
+    this.shadowColor("#000");
+    this.shadowBlur(5);
+    this.shadowOffset(new Vector2(5, 5));
 
     this.add(
       <Circle

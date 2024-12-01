@@ -21,6 +21,7 @@ export default defineConfig({
         "./src/scenes/boxcars/boxcars.ts",
         "./src/scenes/sixeight_lowroller/sixeight_lowroller_demo.ts",
         "./src/scenes/sixeight_lowroller/sixeight_lowroller.ts",
+        "./src/scenes/skill66/skill66_demo.ts",
       ],
     }),
     ffmpeg(),
