@@ -29,7 +29,7 @@ import {
   SimpleSignal,
   useLogger,
 } from "@motion-canvas/core";
-import { dollarFormatter } from "../../styles";
+import { dollarFormatter, Grays } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
 export interface HistogramProps extends LayoutProps {
@@ -191,21 +191,7 @@ export class HistogramV2 extends Layout {
     //this.addTickLabels(this.tickLabelsEvery());
 
     // Add a vertical line at zero
-    const bottomZero = this.barContainer.bottom();
-    bottomZero.x = this.c2pX(0);
-    this.zeroLine = new Line({
-      stroke: "#797979",
-      lineWidth: 0,
-      lineDash: [20, 10],
-      height: "100%",
-      points: [
-        bottomZero.addY(-50),
-        bottomZero.addY(-this.barContainer.height() - 40),
-      ],
-      zIndex: -50,
-      end: 0,
-    });
-    this.add(this.zeroLine);
+
   }
 
   public addBars(container: Rect) {
@@ -484,5 +470,22 @@ export class HistogramV2 extends Layout {
       this.sumOfBars += bin.count;
     }
     this.yMax(Math.max(...this.barValues));
+
+    const bottomZero = this.barContainer.bottom();
+    bottomZero.x = this.c2pX(0);
+    this.zeroLine = new Line({
+      stroke: Grays.GRAY2,
+      lineWidth: 2,
+      lineDash: [20, 10],
+      height: "100%",
+      // opacity: 1,
+      points: [
+        bottomZero.addY(-50),
+        bottomZero.addY(-this.barContainer.height() - 40),
+      ],
+      zIndex: -50,
+      end: 0,
+    });
+    this.add(this.zeroLine);
   }
 }

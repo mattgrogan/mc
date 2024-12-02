@@ -8,20 +8,19 @@ import {
   sequence,
   useLogger,
   waitFor,
-  sound,
 } from "@motion-canvas/core";
 import { CrapsScoreBug } from "./CrapsScoreBug";
 import { CrapsTable } from "./CrapsTable";
 import { c } from "./CrapsTableCoords";
 
-import diceRollSfx from "../../../assets/sfx/dice_roll.mp3";
-import chime_012 from "../../../assets/sfx/chime_012.mp3";
-import chime_018 from "../../../assets/sfx/chime_018.mp3";
-import error_01 from "../../../assets/sfx/error_01.wav";
-const diceRoll = sound(diceRollSfx);
-const popup = sound(chime_012).gain(-15);
-const win = sound(chime_018).gain(-15);
-const sevenOut = sound(error_01).gain(-15);
+// import diceRollSfx from "../../../assets/sfx/dice_roll.mp3";
+// import chime_012 from "../../../assets/sfx/chime_012.mp3";
+// import chime_018 from "../../../assets/sfx/chime_018.mp3";
+// import error_01 from "../../../assets/sfx/error_01.wav";
+// const diceRoll = sound(diceRollSfx);
+// const popup = sound(chime_012).gain(-15);
+// const win = sound(chime_018).gain(-15);
+// const sevenOut = sound(error_01).gain(-15);
 
 export class CrapsProcessor {
   private declare table: Reference<CrapsTable>;
@@ -38,7 +37,7 @@ export class CrapsProcessor {
     const logger = useLogger();
 
     if (data.SHOOTER_ROLL == 1) {
-      popup.play();
+      // popup.play();
       yield this.scoreBug().newShooter();
     }
 
@@ -76,24 +75,24 @@ export class CrapsProcessor {
 
     // Throw the dice
     yield* this.scoreBug().updateLabel("DICE ARE OUT");
-    diceRoll.play();
+    // diceRoll.play();
     yield* this.table().dice().throw(data.D1, data.D2);
     yield* this.scoreBug().updateLabel("THROW IS " + data.THROW);
 
     yield* waitFor(0.6);
 
     if (data.IS_SEVEN_OUT) {
-      sevenOut.play();
+      // sevenOut.play();
       yield delay(0.4, this.scoreBug().sevenOut());
     }
 
     if (data.IS_POINT_SET) {
-      popup.play();
+      // popup.play();
       yield delay(0.4, this.scoreBug().pointSet(data.POINTS_SET));
     }
 
     if (data.IS_POINT_HIT) {
-      popup.play();
+      // popup.play();
       yield delay(0.4, this.scoreBug().pointHit());
     }
 
@@ -143,7 +142,7 @@ export class CrapsProcessor {
     for (const bet of data.PLYR_WON) {
       logger.debug({ message: "Won Bet", object: bet });
       wonBets.push(this.table().bets().winBet(bet.won, bet.bet, true));
-      win.play(0.4);
+      // win.play(0.4);
     }
     yield* sequence(0.2, ...wonBets);
 

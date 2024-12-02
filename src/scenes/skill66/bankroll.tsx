@@ -14,6 +14,7 @@ import {
   waitUntil,
 } from "@motion-canvas/core";
 import { Theme } from "../../styles";
+import { FadeOut } from "../../utils/FadeOut";
 
 // Create our number formatter.
 // https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-strings
@@ -55,14 +56,14 @@ const LabelFont = {
   fill: "#FFF",
 };
 
-const GROUP000 = 97;
-const GROUP100 = 16846;
-const GROUP200 = 32198;
-const GROUP300 = 16135;
-const GROUP400 = 34724;
-const GROUP500 = 0;
-const GROUP600 = 0;
-const GROUP700 = 0;
+const GROUP000 = 0;
+const GROUP100 = 26294;
+const GROUP200 = 32337;
+const GROUP300 = 22755;
+const GROUP400 = 12774;
+const GROUP500 = 4614;
+const GROUP600 = 1170;
+const GROUP700 = 56;
 const GROUP800 = 0;
 const GROUP900 = 0;
 const GROUP1000 = 0;
@@ -320,10 +321,11 @@ export default makeScene2D(function* (view) {
   cumulativePct += barSignals[1]();
   yield* all(
     box().height(box().height() + 60, 1, easeInOutCubic),
-    cumPctLabel().opacity(1, 3, easeInOutCubic),
-    cumPct(cumulativePct, 3, easeInOutCubic)
+    cumPctLabel().opacity(1, 1, easeInOutCubic),
+    cumPct(cumulativePct, 1, easeInOutCubic)
   );
-
+  yield* waitFor(2)
+  
   yield* waitUntil("expand2");
   cumulativePct += barSignals[2]();
   // cumulativePct += barSignals[4]();
@@ -331,19 +333,70 @@ export default makeScene2D(function* (view) {
   // cumulativePct += barSignals[6]();
   yield* all(
     box().height(box().height() + 60, 1, easeInOutCubic),
-    cumPctLabel().opacity(1, 3, easeInOutCubic),
-    cumPct(cumulativePct, 3, easeInOutCubic)
+    cumPctLabel().opacity(1, 1, easeInOutCubic),
+    cumPct(cumulativePct, 1, easeInOutCubic)
   );
-
+  yield* waitFor(2)
+  
   yield* waitUntil("expand3");
   cumulativePct += barSignals[3]();
   // cumulativePct += barSignals[8]();
   // cumulativePct += barSignals[9]();
   yield* all(
     box().height(box().height() + 60 * 1, 1, easeInOutCubic),
-    cumPctLabel().opacity(1, 3, easeInOutCubic),
-    cumPct(cumulativePct, 3, easeInOutCubic)
+    cumPctLabel().opacity(1, 1, easeInOutCubic),
+    cumPct(cumulativePct, 1, easeInOutCubic)
   );
+  yield* waitFor(2)
+  
+  yield* waitUntil("expand4");
+  cumulativePct += barSignals[4]();
+  // cumulativePct += barSignals[8]();
+  // cumulativePct += barSignals[9]();
+  yield* all(
+    box().height(box().height() + 60 * 1, 1, easeInOutCubic),
+    cumPctLabel().opacity(1, 1, easeInOutCubic),
+    cumPct(cumulativePct, 1, easeInOutCubic)
+  );
+  yield* waitFor(2)
+  
+  yield* waitUntil("expand5");
+  cumulativePct += barSignals[5]();
+  // cumulativePct += barSignals[8]();
+  // cumulativePct += barSignals[9]();
+  yield* all(
+    box().height(box().height() + 60 * 1, 1, easeInOutCubic),
+    cumPctLabel().opacity(1, 1, easeInOutCubic),
+    cumPct(cumulativePct, 1, easeInOutCubic)
+  );
+  yield* waitFor(2)
+  
+  yield* waitUntil("expand6");
+  cumulativePct += barSignals[6]();
+  // cumulativePct += barSignals[8]();
+  // cumulativePct += barSignals[9]();
+  yield* all(
+    box().height(box().height() + 60 * 1, 1, easeInOutCubic),
+    cumPctLabel().opacity(1, 1, easeInOutCubic),
+    cumPct(cumulativePct, 1, easeInOutCubic)
+  );
+  yield* waitFor(2)
+  
+  yield* waitUntil("expand7");
+  cumulativePct += barSignals[7]();
+  // cumulativePct += barSignals[8]();
+  // cumulativePct += barSignals[9]();
+  yield* all(
+    box().height(box().height() + 60 * 1, 1, easeInOutCubic),
+    cumPctLabel().opacity(1, 1, easeInOutCubic),
+    cumPct(cumulativePct, 1, easeInOutCubic)
+  );
+  yield* waitFor(2)
+
+
+  yield* waitUntil("undraw")
+  yield* all(box().end(0, 1, easeInOutCubic), FadeOut(cumPctLabel, 1, easeInOutCubic))
+  yield* waitFor(1)
   
   // yield* waitUntil("expand4");
   // cumulativePct += barSignals[4]();

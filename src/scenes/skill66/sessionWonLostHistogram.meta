@@ -1,0 +1,62 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-min",
+      "targetTime": 2.880000000000001
+    },
+    {
+      "name": "show-max",
+      "targetTime": 4.880000000000001
+    },
+    {
+      "name": "hist",
+      "targetTime": 10.580000000000002
+    },
+    {
+      "name": "zoomin",
+      "targetTime": 14.580000000000002
+    },
+    {
+      "name": "hide-minmax",
+      "targetTime": 14.580000000000002
+    },
+    {
+      "name": "highlight-1",
+      "targetTime": 15.680000000000001
+    },
+    {
+      "name": "highlight-2",
+      "targetTime": 20.68
+    },
+    {
+      "name": "highlight-3",
+      "targetTime": 22.68
+    },
+    {
+      "name": "highlight-4",
+      "targetTime": 24.68
+    },
+    {
+      "name": "highlight-5",
+      "targetTime": 26.68
+    },
+    {
+      "name": "highlight-6",
+      "targetTime": 28.68
+    },
+    {
+      "name": "highlight-7",
+      "targetTime": 30.68
+    },
+    {
+      "name": "hide-box",
+      "targetTime": 33.68
+    },
+    {
+      "name": "end",
+      "targetTime": 34.68
+    }
+  ],
+  "seed": 502367801
+}

@@ -1,0 +1,46 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-step2",
+      "targetTime": 1
+    },
+    {
+      "name": "show-step3",
+      "targetTime": 3
+    },
+    {
+      "name": "show-step4",
+      "targetTime": 5
+    },
+    {
+      "name": "Show-table",
+      "targetTime": 11
+    },
+    {
+      "name": "step1",
+      "targetTime": 14
+    },
+    {
+      "name": "step2",
+      "targetTime": 20.700000000000003
+    },
+    {
+      "name": "step3",
+      "targetTime": 36.80000000000001
+    },
+    {
+      "name": "step4",
+      "targetTime": 55.500000000000014
+    },
+    {
+      "name": "pointis4",
+      "targetTime": 85.79999999999998
+    },
+    {
+      "name": "end",
+      "targetTime": 102.67703125689475
+    }
+  ],
+  "seed": 762331342
+}

@@ -11,7 +11,7 @@ import { CrapsProcessor } from "../../components/craps/CrapsProcessor";
 import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
-import simData from "../../../../dicedata/output/skill66-test/skill66-test-sessions.json";
+import simData from "../../../../dicedata/output/skill66-100k/skill66-100k-sessions.json";
 import { Theme } from "../../styles";
 
 export default makeScene2D(function* (view) {
@@ -46,8 +46,8 @@ export default makeScene2D(function* (view) {
 
   const processor = new CrapsProcessor(table, bug);
 
-  const session = simData[0].SESSION;
-  //const session = 67949;
+  //const session = simData[0].SESSION;
+  const session = 61200;
   const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
   for (const roll of firstSession) {
