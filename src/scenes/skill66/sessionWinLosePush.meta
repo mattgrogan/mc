@@ -3,23 +3,23 @@
   "timeEvents": [
     {
       "name": "show-chart",
-      "targetTime": 2.8
+      "targetTime": 5.328194499810589
     },
     {
       "name": "show-pushes",
-      "targetTime": 6.3
+      "targetTime": 11.212945340057459
     },
     {
       "name": "box",
-      "targetTime": 7.3
+      "targetTime": 12.212945340057459
     },
     {
       "name": "show-losers",
-      "targetTime": 12.8
+      "targetTime": 27.46711419039051
     },
     {
       "name": "end",
-      "targetTime": 17.8
+      "targetTime": 34.43946450939168
     }
   ],
   "seed": 3696965070

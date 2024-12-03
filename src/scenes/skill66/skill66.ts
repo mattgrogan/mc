@@ -1,7 +1,7 @@
 import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
-// import audio from "../../../audio/DD - 6 8 LOW ROLLER00108000.flac"
+import audio from "../../../audio/DD - Skill66 $10.wav"
 
 import intro from "./intro?scene";
 
@@ -40,5 +40,5 @@ export default makeProject({
     reportCard,
     endCard,
   ],
-  // audio: audio,
+  audio: audio,
 });

@@ -3,59 +3,59 @@
   "timeEvents": [
     {
       "name": "show-min",
-      "targetTime": 2.880000000000001
+      "targetTime": 5.3799330636739615
     },
     {
       "name": "show-max",
-      "targetTime": 4.880000000000001
+      "targetTime": 10.87637226553967
     },
     {
       "name": "hist",
-      "targetTime": 10.580000000000002
+      "targetTime": 16.576372265539668
     },
     {
       "name": "zoomin",
-      "targetTime": 14.580000000000002
+      "targetTime": 20.576372265539668
     },
     {
       "name": "hide-minmax",
-      "targetTime": 14.580000000000002
+      "targetTime": 20.576372265539668
     },
     {
       "name": "highlight-1",
-      "targetTime": 15.680000000000001
+      "targetTime": 21.25637226553967
     },
     {
       "name": "highlight-2",
-      "targetTime": 20.68
+      "targetTime": 26.25637226553967
     },
     {
       "name": "highlight-3",
-      "targetTime": 22.68
+      "targetTime": 28.25637226553967
     },
     {
       "name": "highlight-4",
-      "targetTime": 24.68
+      "targetTime": 32.58733173345014
     },
     {
       "name": "highlight-5",
-      "targetTime": 26.68
+      "targetTime": 34.58733173345014
     },
     {
       "name": "highlight-6",
-      "targetTime": 28.68
+      "targetTime": 37.8424637546327
     },
     {
       "name": "highlight-7",
-      "targetTime": 30.68
+      "targetTime": 41.58171812684282
     },
     {
       "name": "hide-box",
-      "targetTime": 33.68
+      "targetTime": 52.56077169007483
     },
     {
       "name": "end",
-      "targetTime": 34.68
+      "targetTime": 53.56077169007483
     }
   ],
   "seed": 502367801

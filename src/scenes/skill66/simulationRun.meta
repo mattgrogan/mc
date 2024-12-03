@@ -3,51 +3,51 @@
   "timeEvents": [
     {
       "name": "circ",
-      "targetTime": 2.1
+      "targetTime": 4.7895686168197775
     },
     {
       "name": "run",
-      "targetTime": 7.7
+      "targetTime": 10.389568616819778
     },
     {
       "name": "results",
-      "targetTime": 22.7
+      "targetTime": 25.38956861681978
     },
     {
       "name": "tps",
-      "targetTime": 25.7
+      "targetTime": 28.38956861681978
     },
     {
       "name": "total-bet",
-      "targetTime": 30.2
+      "targetTime": 35.758441808094204
     },
     {
       "name": "total-won",
-      "targetTime": 33.7
+      "targetTime": 39.258441808094204
     },
     {
       "name": "total-lost",
-      "targetTime": 35.7
+      "targetTime": 41.258441808094204
     },
     {
       "name": "zoom-in",
-      "targetTime": 37.7
+      "targetTime": 43.258441808094204
     },
     {
       "name": "house-take",
-      "targetTime": 39.7
+      "targetTime": 45.258441808094204
     },
     {
       "name": "house-edge",
-      "targetTime": 44.7
+      "targetTime": 50.258441808094204
     },
     {
       "name": "zoom-out",
-      "targetTime": 51.2
+      "targetTime": 56.758441808094204
     },
     {
       "name": "end",
-      "targetTime": 52.2
+      "targetTime": 58.493590563358275
     }
   ],
   "seed": 3366710649

@@ -279,6 +279,7 @@ stepContainer().position([650, 0], 1, easeInOutCubic))
   );
   // yield camera().restore(1, easeInOutCubic);
   yield* processor.round(firstSession[1]);
+  yield* waitUntil("roll8")
   yield* processor.round(firstSession[2]);
 
   yield* waitUntil("step3");
