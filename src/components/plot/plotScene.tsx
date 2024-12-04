@@ -19,6 +19,12 @@ export default makeScene2D(function* (view) {
       xAxisProps={{ stroke: "white", lineWidth: 12 }}
       yAxisProps={{ opacity: 1, stroke: "blue", lineWidth: 12 }}
       xLabelProps={{ fill: "red" }}
+      xTitleProps={{ fill: "white", text: "THIS IS THE X LABEL" }}
+      yTitleProps={{
+        fill: "white",
+        text: "THIS IS THE Y LABEL",
+        rotation: -90,
+      }}
     ></Plot>
   );
 

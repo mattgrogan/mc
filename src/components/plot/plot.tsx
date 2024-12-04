@@ -31,12 +31,17 @@ export interface PlotProps extends LayoutProps {
   yAxisProps?: SignalValue<LineProps>;
   xLabelProps?: SignalValue<TickLabelProps>;
   yLabelProps?: SignalValue<TickLabelProps>;
+  xTitleProps?: SignalValue<TxtProps>;
+  yTitleProps?: SignalValue<TxtProps>;
 }
 
 export enum PlotSpace {
   "WORLD" = 1,
   "LOCAL" = 2,
 }
+
+const DEFAULT_X_TITLE_PADDING = 100;
+const DEFAULT_Y_TITLE_PADDING = -250;
 
 export class Plot extends Layout {
   /**
@@ -92,6 +97,22 @@ export class Plot extends Layout {
   @initial({})
   @signal()
   public declare readonly yLabelProps: SimpleSignal<TickLabelProps>;
+
+  /**
+   * Properties for the X axis title
+   */
+  @initial({})
+  @signal()
+  public declare readonly xTitleProps: SimpleSignal<TickLabelProps>;
+  public declare xTitle: Txt;
+
+  /**
+   * Properties for the Y axis title
+   */
+  @initial({})
+  @signal()
+  public declare readonly yTitleProps: SimpleSignal<TickLabelProps>;
+  public declare yTitle: Txt;
 
   /**
    * The X axis.
@@ -153,6 +174,28 @@ export class Plot extends Layout {
 
     this.add(this.yAxis);
     this.add(this.xAxis);
+
+    // Oof...this finds the middle position of the X axis
+    this.xTitle = new Txt({
+      ...this.xTitleProps(),
+      position: () =>
+        this.c2p(
+          [this.xMin() + (this.xMax() - this.xMin()) / 2, this.yMin()],
+          PlotSpace.LOCAL
+        ).addY(DEFAULT_X_TITLE_PADDING),
+    });
+    this.add(this.xTitle);
+
+    // Oof...this finds the middle position of the Y axis
+    this.yTitle = new Txt({
+      ...this.yTitleProps(),
+      position: () =>
+        this.c2p(
+          [this.xMin(), this.yMin() + (this.yMax() - this.yMin()) / 2],
+          PlotSpace.LOCAL
+        ).addX(DEFAULT_Y_TITLE_PADDING),
+    });
+    this.add(this.yTitle);
   }
 
   public *rescale(

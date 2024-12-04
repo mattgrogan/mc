@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import motionCanvas from "@motion-canvas/vite-plugin";
-//import ffmpeg from "@motion-canvas/ffmpeg";
+import ffmpeg from "@motion-canvas/ffmpeg";
 
 export default defineConfig({
   plugins: [
@@ -24,8 +24,9 @@ export default defineConfig({
         "./src/scenes/skill66/skill66_demo.ts",
         "./src/scenes/skill66/skill66.ts",
         "./src/components/plot/plotProject.ts",
+        "./src/scenes/skill66baseline/skill66baseline.ts",
       ],
     }),
-    //ffmpeg(),
+    ffmpeg(),
   ],
 });

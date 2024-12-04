@@ -1,0 +1,30 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "agenda",
+      "targetTime": 10.4
+    },
+    {
+      "name": "step1",
+      "targetTime": 13.4
+    },
+    {
+      "name": "step2",
+      "targetTime": 16.4
+    },
+    {
+      "name": "step3",
+      "targetTime": 20.4
+    },
+    {
+      "name": "step3-end ",
+      "targetTime": 24.4
+    },
+    {
+      "name": "end",
+      "targetTime": 28.4
+    }
+  ],
+  "seed": 2027296123
+}
