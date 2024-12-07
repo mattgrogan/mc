@@ -14,6 +14,7 @@ import {
   easeOutBounce,
   easeOutCubic,
   easeOutExpo,
+  fadeTransition,
   sequence,
   waitFor,
   waitUntil,
@@ -47,7 +48,7 @@ const HOUSE_EDGE =
   casinostats[0].TOTAL_BET;
 const HOUSE_EDGE_PERCENT = HOUSE_EDGE * 100;
 const HOUSE_EDGE_LABEL =
-  "SKILL66 BASELINE (" + HOUSE_EDGE_PERCENT.toFixed(3) + "%)";
+  "SKILL66 BASELINE (" + (HOUSE_EDGE_PERCENT*-1).toFixed(3) + "%)";
 
 export default makeScene2D(function* (view) {
   view.fill("#000");
@@ -86,14 +87,14 @@ export default makeScene2D(function* (view) {
           xAxisProps={{ opacity: 0 }}
           yAxisProps={{
             opacity: 0,
-            stroke: Grays.GRAY4,
-            lineWidth: 4,
+            stroke: Grays.GRAY2,
+            lineWidth: 6,
             start: 0.5,
             end: 0.5,
           }}
-          yTickProps={{ lineWidth: 2, stroke: Grays.GRAY4 }}
+          yTickProps={{ lineWidth: 2, stroke: Grays.GRAY2 }}
           yLabelProps={{
-            fill: Grays.GRAY2,
+            fill: Grays.GRAY1,
             suffix: "%",
             decimalNumbers: 1,
             fontSize: 25,
@@ -119,6 +120,8 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
+  yield* fadeTransition()
+
   yield* waitFor(1);
   yield* frame().scale(1, 1.2, easeOutExpo);
   yield* all(
@@ -137,11 +140,11 @@ export default makeScene2D(function* (view) {
 
   const lineProps = {
     lineWidth: 1,
-    stroke: Grays.GRAY2,
+    stroke: Grays.GRAY1,
     // fill: Grays.GRAY2,
     startOffset: 15,
     endOffset: 20,
-    lineDash: [20, 5],
+    //lineDash: [20, 5],
     start: 1,
     startArrow: true,
     arrowSize: 5,
@@ -150,9 +153,9 @@ export default makeScene2D(function* (view) {
   const edgeLabelProps: TxtProps = {
     //...MonoWhite,
     ...PoppinsWhite,
-    fill: Darker.RED,
-    fontWeight: 300,
-    fontSize: 25,
+    fill: Bright.RED,
+    fontWeight: 400,
+    fontSize: 30,
     opacity: 0,
     offset: [-1, 0],
   };
@@ -194,7 +197,7 @@ export default makeScene2D(function* (view) {
 
   const skill66Line = plot().hLine([-30, HOUSE_EDGE_PERCENT], {
     lineWidth: 6,
-    stroke: Bright.YELLOW,
+    stroke: Bright.ORANGE,
     startOffset: 0,
     endOffset: 20,
     lineDash: [20, 5],
@@ -208,12 +211,12 @@ export default makeScene2D(function* (view) {
     fontWeight: 500,
     fontSize: 40,
     opacity: 0,
-    fill: Bright.YELLOW,
+    fill: Bright.ORANGE,
     offset: [1, 0],
     text: HOUSE_EDGE_LABEL,
   });
 
-  yield* skill66Label.opacity(1, 1.2);
+  yield skill66Label.opacity(1, 1.2);
   yield* skill66Line.start(0, 1, easeOutExpo);
 
   const field3Line = plot().hLine([10, -2.78], lineProps);

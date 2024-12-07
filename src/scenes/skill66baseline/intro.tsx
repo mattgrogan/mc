@@ -13,6 +13,7 @@ import {
   easeInElastic,
   easeInOutCubic,
   easeOutCubic,
+  easeOutElastic,
   linear,
   sequence,
   waitFor,
@@ -129,6 +130,7 @@ export default makeScene2D(function* (view) {
   const rect = createRef<Rect>();
   const table = createRef<CrapsTable>();
   const bug = createRef<CrapsScoreBug>();
+  const icon = createRef<Icon>()
 
   view.add(
     <Layout
@@ -151,12 +153,12 @@ export default makeScene2D(function* (view) {
         end={0}
         clip
       >
-        <Txt
+        {/* <Txt
           {...PoppinsWhite}
           fontSize={50}
           text={"TWO HITS: THEN LOCK IN PROFITS"}
           opacity={0}
-        />
+        /> */}
         {/* <Txt
           {...PoppinsWhite}
           fontSize={50}
@@ -164,11 +166,12 @@ export default makeScene2D(function* (view) {
           opacity={0}
         /> */}
         <Icon
+        ref={icon}
           //icon={"fluent-emoji-flat:dollar-banknote"}
           icon={"fluent-emoji-flat:victory-hand-light"}
-          //scale={20}
+          scale={0}
           size={[300, 300]}
-          opacity={0}
+          opacity={1}
           margin={50}
         ></Icon>
       </Rect>
@@ -176,13 +179,14 @@ export default makeScene2D(function* (view) {
   );
 
   yield* rect().end(1, 1, easeInOutCubic);
-  yield* rect().fill("#101010", 1, linear);
-  yield* sequence(
-    0.2,
-    ...rect()
-      .children()
-      .map((node) => node.opacity(1, 1, linear))
-  );
+  yield* rect().fill(Theme.BG, 1, linear);
+  yield* icon().scale(1, 1, easeOutElastic)
+  // yield* sequence(
+  //   0.2,
+  //   ...rect()
+  //     .children()
+  //     .map((node) => node.opacity(1, 1, linear))
+  // );
 
   yield* waitFor(2);
 
@@ -236,8 +240,10 @@ export default makeScene2D(function* (view) {
 
   // THROW A POINT
   yield* waitUntil("set-point");
+  yield bug().updateLabel("DICE ARE OUT")
   yield* bug().updateRoll(true);
   yield* table().dice().throw(2, 2);
+  yield bug().updateLabel("")
   yield* table().movePuckTo(c.PUCK4);
 
   yield* waitUntil("place66");
@@ -251,6 +257,7 @@ export default makeScene2D(function* (view) {
   yield table().dice().removeDice();
   yield* all(
     bug().updateRoll(false),
+    bug().updateBets(66),
     bug().updateBankroll(-66),
     bug().updateExposure(-66)
   );
@@ -268,7 +275,6 @@ export default makeScene2D(function* (view) {
   yield table().bets().removeBet(c.PLACE6);
   yield table().bets().removeBet(c.PLACE8);
   yield* table().bets().removeBet(c.PLACE9);
-  yield* waitFor(1);
   yield* sequence(
     0.2,
     table().bets().makeBet(20, c.PLACE5, true),
@@ -279,6 +285,7 @@ export default makeScene2D(function* (view) {
   yield table().dice().removeDice();
   yield* all(
     bug().updateRoll(false),
+    bug().updateBets(88),
     bug().updateBankroll(-67),
     bug().updateExposure(-67)
   );
@@ -296,7 +303,7 @@ export default makeScene2D(function* (view) {
   yield table().bets().removeBet(c.PLACE6);
   yield table().bets().removeBet(c.PLACE8);
   yield* table().bets().removeBet(c.PLACE9);
-  yield* all(bug().updateBankroll(49), bug().updateExposure(49));
+  yield* all(bug().updateBets(0), bug().updateBankroll(49), bug().updateExposure(49));
   yield* waitFor(1);
 
   yield* waitFor(1);
