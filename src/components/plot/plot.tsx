@@ -29,6 +29,8 @@ export interface PlotProps extends LayoutProps {
   yMax?: SignalValue<number>;
   xAxisProps?: SignalValue<LineProps>;
   yAxisProps?: SignalValue<LineProps>;
+  xTickProps?: SignalValue<LineProps>;
+  yTickProps?: SignalValue<LineProps>;
   xLabelProps?: SignalValue<TickLabelProps>;
   yLabelProps?: SignalValue<TickLabelProps>;
   xTitleProps?: SignalValue<TxtProps>;
@@ -85,6 +87,18 @@ export class Plot extends Layout {
   public declare readonly yAxisProps: SimpleSignal<LineProps>;
 
   /**
+   * Properties for drawing the X Axis tick marks
+   */
+  @signal()
+  public declare readonly xTickProps: SimpleSignal<LineProps>;
+
+  /**
+   * Properties for drawing the Y Axis tick marks
+   */
+  @signal()
+  public declare readonly yTickProps: SimpleSignal<LineProps>;
+
+  /**
    * Properties for drawing the X Axis tick labels
    */
   @initial({})
@@ -136,8 +150,11 @@ export class Plot extends Layout {
       ...this.yAxisProps(),
       plot: this,
       dir: AxisDirection.Y,
-      tickLength: 40,
-      tickProps: { rotation: 90 },
+      tickLength: 20,
+      tickProps: {
+        rotation: 90,
+        ...this.yTickProps(),
+      },
       tickLabelProps: this.yLabelProps(),
       points: [
         () =>
@@ -158,7 +175,10 @@ export class Plot extends Layout {
       ...this.xAxisProps(),
       plot: this,
       dir: AxisDirection.X,
-      tickLength: 50,
+      tickLength: 20,
+      tickProps: {
+        ...this.xTickProps(),
+      },
       tickLabelProps: this.xLabelProps(),
       points: [
         () =>
@@ -354,16 +374,8 @@ export class Plot extends Layout {
   ): PlotBox {
     /**
      * Create a Line box given upper-left and lower-right coordinates.
+     *
      */
-    // const vectorUL = new Vector2(ul);
-    // const vectorLR = new Vector2(lr);
-
-    // const p1 = () => this.c2p(vectorUL, PlotSpace.LOCAL);
-    // const p2 = () => this.c2p([vectorLR.x, vectorUL.y], PlotSpace.LOCAL);
-    // const p3 = () => this.c2p(vectorLR, PlotSpace.LOCAL);
-    // const p4 = () => this.c2p([vectorUL.x, vectorLR.y], PlotSpace.LOCAL);
-
-    // const box = new Line({ closed: true, points: [p1, p2, p3, p4], ...props });
     const box = new PlotBox({
       plot: this,
       upperLeft: ul,

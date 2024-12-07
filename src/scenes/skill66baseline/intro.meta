@@ -2,24 +2,32 @@
   "version": 0,
   "timeEvents": [
     {
-      "name": "agenda",
-      "targetTime": 10.4
+      "name": "table",
+      "targetTime": 11.399999999999999
     },
     {
-      "name": "step1",
-      "targetTime": 13.4
+      "name": "set-point",
+      "targetTime": 15.399999999999999
     },
     {
-      "name": "step2",
-      "targetTime": 16.4
+      "name": "place66",
+      "targetTime": 18.1
     },
     {
-      "name": "step3",
-      "targetTime": 20.4
+      "name": "roll5",
+      "targetTime": 21.099999999999998
     },
     {
-      "name": "step3-end ",
-      "targetTime": 24.4
+      "name": "place88",
+      "targetTime": 26.900000000000006
+    },
+    {
+      "name": "roll6",
+      "targetTime": 31.500000000000004
+    },
+    {
+      "name": "place44",
+      "targetTime": 37.30000000000001
     },
     {
       "name": "end",

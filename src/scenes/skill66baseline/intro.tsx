@@ -30,6 +30,9 @@ import {
 
 import { FadeIn } from "../../utils/FadeIn";
 import bg from "../../../assets/dark_craps_layout_bg.png";
+import { CrapsTable } from "../../components/craps/CrapsTable";
+import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
+import { c } from "../../components/craps/CrapsTableCoords";
 
 export default makeScene2D(function* (view) {
   view.fill("#000");
@@ -49,7 +52,7 @@ export default makeScene2D(function* (view) {
       layout
       ref={container}
       direction={"column"}
-      gap={50}
+      gap={0}
     >
       <Txt
         ref={header}
@@ -88,7 +91,7 @@ export default makeScene2D(function* (view) {
   );
 
   // Draw lines
-  const line1 = (
+  const line1: Line = (
     <Line
       stroke={Grays.GRAY1}
       lineWidth={5}
@@ -120,9 +123,12 @@ export default makeScene2D(function* (view) {
   yield* waitFor(0.6);
 
   // Move Up
-  yield* container().y(-280, 1, easeInOutCubic);
+  yield* container().y(-350, 1, easeInOutCubic);
+  yield* container().x(-350, 1, easeInOutCubic);
 
   const rect = createRef<Rect>();
+  const table = createRef<CrapsTable>();
+  const bug = createRef<CrapsScoreBug>();
 
   view.add(
     <Layout
@@ -146,22 +152,24 @@ export default makeScene2D(function* (view) {
         clip
       >
         <Txt
-          {...ITCBenguiatNormal}
+          {...PoppinsWhite}
           fontSize={50}
-          text={"PROFIT IN"}
+          text={"TWO HITS: THEN LOCK IN PROFITS"}
           opacity={0}
         />
-        <Txt
-          {...ITCBenguiatNormal}
+        {/* <Txt
+          {...PoppinsWhite}
           fontSize={50}
-          text={"TWO HITS"}
+          text={"BASELINE AND MOVE INTO ANY STRATEGY"}
           opacity={0}
-        />
+        /> */}
         <Icon
-          icon={"fluent-emoji-flat:dollar-banknote"}
+          //icon={"fluent-emoji-flat:dollar-banknote"}
+          icon={"fluent-emoji-flat:victory-hand-light"}
           //scale={20}
           size={[300, 300]}
           opacity={0}
+          margin={50}
         ></Icon>
       </Rect>
     </Layout>
@@ -189,196 +197,109 @@ export default makeScene2D(function* (view) {
     .children()
     .forEach((ref) => ref.restore());
 
-  yield* waitUntil("agenda");
+  yield* waitUntil("table");
   yield* rect().height(0, 1, easeInElastic);
   rect().remove();
 
   yield* waitFor(1);
 
-  // show the agenda
-  const agenda = createRef<Layout>();
-  const step1 = createRef<Rect>();
-  const step2 = createRef<Rect>();
-  const step3 = createRef<Rect>();
-
+  const tableContainer = createRef<Layout>();
   view.add(
-    <Layout
-      ref={agenda}
-      layout
-      y={150}
-      gap={100}
-      justifyContent={"space-evenly"}
-    >
-      <Rect
-        ref={step1}
+    <Layout ref={tableContainer}>
+      <CrapsTable
+        ref={table}
         opacity={0}
-        direction={"column"}
-        width={"100%"}
-        height={"100%"}
-        alignItems={"center"}
-        padding={30}
-        paddingLeft={100}
-        paddingRight={100}
-        radius={20}
-        gap={10}
-        stroke={Grays.GRAY2}
-        lineWidth={5}
-        end={1}
-        fill={"#101010"}
-        clip
-      >
-        <Txt
-          {...ITCBenguiatNormal}
-          fill={Bright.GREEN}
-          text={"1"}
-        />
-        <Txt
-          {...PoppinsWhite}
-          text={"REVIEW"}
-        />
-        <Txt
-          {...PoppinsWhite}
-          text={"STRATEGY"}
-        />
-      </Rect>
-      <Rect
-        ref={step2}
-        opacity={0}
-        direction={"column"}
-        width={"100%"}
-        height={"100%"}
-        alignItems={"center"}
-        padding={30}
-        paddingLeft={100}
-        paddingRight={100}
-        radius={20}
-        gap={10}
-        stroke={Grays.GRAY2}
-        lineWidth={5}
-        end={1}
-        fill={"#101010"}
-        clip
-      >
-        <Txt
-          {...ITCBenguiatNormal}
-          fill={Bright.GREEN}
-          text={"2"}
-        />
-        <Txt
-          {...MonoWhite}
-          text={"SIMULATE"}
-        />
-        <Txt
-          {...PoppinsWhite}
-          text={"100K SESSIONS"}
-        />
-      </Rect>
-      <Rect
-        ref={step3}
-        opacity={0}
-        direction={"column"}
-        width={"100%"}
-        height={"100%"}
-        alignItems={"center"}
-        padding={30}
-        paddingLeft={100}
-        paddingRight={100}
-        radius={20}
-        gap={10}
-        stroke={Grays.GRAY2}
-        lineWidth={5}
-        end={1}
-        fill={"#101010"}
-        clip
-      >
-        <Txt
-          {...ITCBenguiatNormal}
-          fill={Bright.GREEN}
-          text={"3"}
-        />
-        <Txt
-          {...MonoWhite}
-          text={"ANALYZE"}
-        />
-        <Txt
-          {...PoppinsWhite}
-          text={"DATA"}
-        />
-      </Rect>
+        scale={0.7}
+        x={0}
+        y={150}
+      ></CrapsTable>
     </Layout>
   );
-  // suppress the layout for a while and remember the positions
-  step1()
-    .children()
-    .forEach((ref) => ref.save());
-  step1().width(step1().width());
-  step1().height(step1().height());
-  //step1().layout(false);
-  step1()
-    .children()
-    .forEach((ref) => ref.restore());
+  yield* FadeIn(table(), 1, easeOutCubic, [0, 500]);
 
-  // suppress the layout for a while and remember the positions
-  step2()
-    .children()
-    .forEach((ref) => ref.save());
-  step2().width(step2().width());
-  step2().height(step2().height());
-  //step2().layout(false);
-  step2()
-    .children()
-    .forEach((ref) => ref.restore());
-
-  // suppress the layout for a while and remember the positions
-  step3()
-    .children()
-    .forEach((ref) => ref.save());
-  step3().width(step3().width());
-  step3().height(step3().height());
-  //step2().layout(false);
-  step3()
-    .children()
-    .forEach((ref) => ref.restore());
-
-  // suppress the layout for a while and remember the positions
-  agenda()
-    .children()
-    .forEach((ref) => ref.save());
-
-  agenda().layout(false);
-  agenda()
-    .children()
-    .forEach((ref) => ref.restore());
-
-  yield* waitFor(1);
-  yield* waitUntil("step1");
-  yield* FadeIn(step1, 1, easeOutCubic, [0, 100]),
-    yield* step1().stroke(Bright.YELLOW, 1, linear);
-
-  yield* waitFor(1);
-  yield* waitUntil("step2");
-  yield* FadeIn(step2, 1, easeOutCubic, [0, 100]),
-    yield* all(
-      step1().opacity(0.3, 1, linear),
-      step1().stroke(Grays.GRAY2, 1, linear)
-    );
-  yield* step2().stroke(Bright.YELLOW, 1, linear);
-
-  yield* waitFor(1);
-  yield* waitUntil("step3");
-  yield* FadeIn(step3, 1, easeOutCubic, [0, 100]);
-  yield* all(
-    step2().opacity(0.3, 1, linear),
-    step2().stroke(Grays.GRAY2, 1, linear)
+  view.add(
+    <CrapsScoreBug
+      ref={bug}
+      opacity={0}
+      scale={0.7}
+      //position={[640, -370]}
+      //y={-370}
+      // x={640}
+    />
   );
-  yield* step3().stroke(Bright.YELLOW, 1, linear);
+  bug().position([0, 450]);
+  yield* sequence(
+    0.5,
+    FadeIn(bug(), 0.6, easeOutCubic, [0, 100]),
+    bug().updateLabel("GOOD LUCK!")
+  );
+
+  // THROW A POINT
+  yield* waitUntil("set-point");
+  yield* bug().updateRoll(true);
+  yield* table().dice().throw(2, 2);
+  yield* table().movePuckTo(c.PUCK4);
+
+  yield* waitUntil("place66");
+  yield* sequence(
+    0.2,
+    table().bets().makeBet(15, c.PLACE5, true),
+    table().bets().makeBet(18, c.PLACE6, true),
+    table().bets().makeBet(18, c.PLACE8, true),
+    table().bets().makeBet(15, c.PLACE9, true)
+  );
+  yield table().dice().removeDice();
+  yield* all(
+    bug().updateRoll(false),
+    bug().updateBankroll(-66),
+    bug().updateExposure(-66)
+  );
+  yield* waitFor(1);
+
+  // ROLL #2
+  yield* waitUntil("roll5");
+  yield* table().dice().throw(3, 2);
+  yield* table().bets().winBet(21, c.PLACE5, false);
+  yield* all(bug().updateBankroll(-45), bug().updateExposure(-45));
+
+  yield* waitFor(2);
+  yield* waitUntil("place88");
+  yield table().bets().removeBet(c.PLACE5);
+  yield table().bets().removeBet(c.PLACE6);
+  yield table().bets().removeBet(c.PLACE8);
+  yield* table().bets().removeBet(c.PLACE9);
+  yield* waitFor(1);
+  yield* sequence(
+    0.2,
+    table().bets().makeBet(20, c.PLACE5, true),
+    table().bets().makeBet(24, c.PLACE6, true),
+    table().bets().makeBet(24, c.PLACE8, true),
+    table().bets().makeBet(20, c.PLACE9, true)
+  );
+  yield table().dice().removeDice();
+  yield* all(
+    bug().updateRoll(false),
+    bug().updateBankroll(-67),
+    bug().updateExposure(-67)
+  );
+  yield* waitFor(1);
+
+  // ROLL #3
+  yield* waitUntil("roll6");
+  yield* table().dice().throw(3, 3);
+  yield* table().bets().winBet(28, c.PLACE5, false);
+  yield* all(bug().updateBankroll(-39), bug().updateExposure(-39));
+
+  yield* waitFor(2);
+  yield* waitUntil("place44");
+  yield table().bets().removeBet(c.PLACE5);
+  yield table().bets().removeBet(c.PLACE6);
+  yield table().bets().removeBet(c.PLACE8);
+  yield* table().bets().removeBet(c.PLACE9);
+  yield* all(bug().updateBankroll(49), bug().updateExposure(49));
+  yield* waitFor(1);
 
   yield* waitFor(1);
-  yield* waitUntil("step3-end ");
-  yield* all(
-    step3().opacity(0.3, 1, linear),
-    step3().stroke(Grays.GRAY2, 1, linear)
-  );
 
   yield* waitFor(3);
 

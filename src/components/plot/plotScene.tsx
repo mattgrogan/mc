@@ -16,8 +16,7 @@ export default makeScene2D(function* (view) {
     <Plot
       ref={plot}
       size={[500, 500]}
-      xAxisProps={{ stroke: "white", lineWidth: 12 }}
-      yAxisProps={{ opacity: 1, stroke: "blue", lineWidth: 12 }}
+      xAxisProps={{ opacity: 1, stroke: "blue", lineWidth: 12 }}
       xLabelProps={{ fill: "red" }}
       xTitleProps={{ fill: "white", text: "THIS IS THE X LABEL" }}
       yTitleProps={{
