@@ -1,0 +1,38 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-min",
+      "targetTime": 3.000000000000001
+    },
+    {
+      "name": "show-max",
+      "targetTime": 5.000000000000001
+    },
+    {
+      "name": "hist",
+      "targetTime": 10.700000000000001
+    },
+    {
+      "name": "zoomin",
+      "targetTime": 14.700000000000001
+    },
+    {
+      "name": "hide-minmax",
+      "targetTime": 14.700000000000001
+    },
+    {
+      "name": "highlight-1",
+      "targetTime": 15.3
+    },
+    {
+      "name": "hide-box",
+      "targetTime": 32.3
+    },
+    {
+      "name": "end",
+      "targetTime": 33.3
+    }
+  ],
+  "seed": 3244505667
+}

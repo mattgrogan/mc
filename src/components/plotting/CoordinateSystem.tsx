@@ -21,9 +21,9 @@ export class CoordinateSystem extends Layout {
       minNumber: 0,
       maxNumber: 10,
       tickStep: 2,
-      length: 2800,
-      width: 2800,
-      height: 1000,
+      length: 1000,
+      width: 1000,
+      height: 800,
       position: [0, 0],
       numberLineProps: {
         lineWidth: 10,

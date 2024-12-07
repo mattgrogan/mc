@@ -23,6 +23,8 @@ export default defineConfig({
         "./src/scenes/sixeight_lowroller/sixeight_lowroller.ts",
         "./src/scenes/skill66/skill66_demo.ts",
         "./src/scenes/skill66/skill66.ts",
+        "./src/components/plot/plotProject.ts",
+        "./src/scenes/skill66baseline/skill66baseline.ts",
       ],
     }),
     ffmpeg(),

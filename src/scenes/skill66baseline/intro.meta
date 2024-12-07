@@ -1,0 +1,38 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "table",
+      "targetTime": 11.399999999999999
+    },
+    {
+      "name": "set-point",
+      "targetTime": 15.399999999999999
+    },
+    {
+      "name": "place66",
+      "targetTime": 18.1
+    },
+    {
+      "name": "roll5",
+      "targetTime": 21.099999999999998
+    },
+    {
+      "name": "place88",
+      "targetTime": 26.900000000000006
+    },
+    {
+      "name": "roll6",
+      "targetTime": 31.500000000000004
+    },
+    {
+      "name": "place44",
+      "targetTime": 37.30000000000001
+    },
+    {
+      "name": "end",
+      "targetTime": 28.4
+    }
+  ],
+  "seed": 2027296123
+}
