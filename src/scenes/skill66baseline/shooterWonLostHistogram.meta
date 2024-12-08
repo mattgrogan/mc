@@ -18,12 +18,12 @@
       "targetTime": 14.700000000000001
     },
     {
-      "name": "hide-minmax",
-      "targetTime": 14.700000000000001
-    },
-    {
       "name": "highlight-1",
       "targetTime": 15.3
+    },
+    {
+      "name": "highlight-2",
+      "targetTime": 21.3
     },
     {
       "name": "hide-box",

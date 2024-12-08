@@ -116,37 +116,37 @@ export default makeScene2D(function* (view) {
     camera().zoom(1.3, 1, easeInOutCubic)
   );
 
-  yield* waitUntil("hide-minmax");
-  yield* sequence(
-    0.5,
-    FadeOut(min, 0.6, easeInExpo, [0, 100])
-    // FadeOut(max, 0.6, easeInExpo, [0, 100])
-  );
+  // yield* waitUntil("hide-minmax");
+  // yield* sequence(
+  //   0.5,
+  //   FadeOut(min, 0.6, easeInExpo, [0, 100])
+  //   // FadeOut(max, 0.6, easeInExpo, [0, 100])
+  // );
 
   yield* waitUntil("highlight-1");
   yield* all(
     //chart().highlightBar(lowerBar, Bright.ORANGE),
-    chart().highlightBar(8, Bright.ORANGE)
+    chart().highlightBar(17, Bright.ORANGE)
   );
   yield* chart().moveBox(
-    histogramData[8].cuts,
-    histogramData[9].cuts,
-    chart().getPercentForBars([8])
+    histogramData[17].cuts,
+    histogramData[18].cuts,
+    chart().getPercentForBars([17])
   );
   yield* chart().drawBox();
-  yield* waitFor(1);
+  yield* waitFor(2);
 
-  // yield* waitUntil("highlight-2");
-  // yield* all(
-  //   chart().highlightBar(8, Bright.BLUE),
-  //   chart().highlightBar(10, Bright.ORANGE),
-  //   chart().moveBox(
-  //     histogramData[10].cuts,
-  //     histogramData[11].cuts,
-  //     chart().getPercentForBars([10])
-  //   )
-  // );
-  // yield* waitFor(1);
+  yield* waitUntil("highlight-2");
+  yield* all(
+    chart().highlightBar(17, Bright.BLUE),
+    chart().highlightBar(21, Bright.ORANGE),
+    chart().moveBox(
+      histogramData[21].cuts,
+      histogramData[22].cuts,
+      chart().getPercentForBars([21])
+    )
+  );
+  yield* waitFor(1);
 
   // yield* waitUntil("highlight-3");
   // yield* all(

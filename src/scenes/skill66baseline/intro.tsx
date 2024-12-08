@@ -130,7 +130,7 @@ export default makeScene2D(function* (view) {
   const rect = createRef<Rect>();
   const table = createRef<CrapsTable>();
   const bug = createRef<CrapsScoreBug>();
-  const icon = createRef<Icon>()
+  const icon = createRef<Icon>();
 
   view.add(
     <Layout
@@ -166,7 +166,7 @@ export default makeScene2D(function* (view) {
           opacity={0}
         /> */}
         <Icon
-        ref={icon}
+          ref={icon}
           //icon={"fluent-emoji-flat:dollar-banknote"}
           icon={"fluent-emoji-flat:victory-hand-light"}
           scale={0}
@@ -180,7 +180,7 @@ export default makeScene2D(function* (view) {
 
   yield* rect().end(1, 1, easeInOutCubic);
   yield* rect().fill(Theme.BG, 1, linear);
-  yield* icon().scale(1, 1, easeOutElastic)
+  yield* icon().scale(1, 1, easeOutElastic);
   // yield* sequence(
   //   0.2,
   //   ...rect()
@@ -240,10 +240,10 @@ export default makeScene2D(function* (view) {
 
   // THROW A POINT
   yield* waitUntil("set-point");
-  yield bug().updateLabel("DICE ARE OUT")
+  yield bug().updateLabel("DICE ARE OUT");
   yield* bug().updateRoll(true);
   yield* table().dice().throw(2, 2);
-  yield bug().updateLabel("")
+  yield bug().updateLabel("");
   yield* table().movePuckTo(c.PUCK4);
 
   yield* waitUntil("place66");
@@ -294,7 +294,7 @@ export default makeScene2D(function* (view) {
   // ROLL #3
   yield* waitUntil("roll6");
   yield* table().dice().throw(3, 3);
-  yield* table().bets().winBet(28, c.PLACE5, false);
+  yield* table().bets().winBet(28, c.PLACE6, false);
   yield* all(bug().updateBankroll(-39), bug().updateExposure(-39));
 
   yield* waitFor(2);
@@ -303,7 +303,11 @@ export default makeScene2D(function* (view) {
   yield table().bets().removeBet(c.PLACE6);
   yield table().bets().removeBet(c.PLACE8);
   yield* table().bets().removeBet(c.PLACE9);
-  yield* all(bug().updateBets(0), bug().updateBankroll(49), bug().updateExposure(49));
+  yield* all(
+    bug().updateBets(0),
+    bug().updateBankroll(49),
+    bug().updateExposure(49)
+  );
   yield* waitFor(1);
 
   yield* waitFor(1);
