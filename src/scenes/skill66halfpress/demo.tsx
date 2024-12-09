@@ -11,7 +11,7 @@ import { CrapsProcessor } from "../../components/craps/CrapsProcessor";
 import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
-import simData from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-sessions.json";
+import simData from "../../../../dicedata/output/skill66baseline-100k/skill66baseline-100k-sessions.json";
 import { Theme } from "../../styles";
 import { c } from "../../components/craps/CrapsTableCoords";
 
@@ -43,8 +43,8 @@ export default makeScene2D(function* (view) {
     bug().updateLabel("GOOD LUCK!")
   );
 
-  const chip = table().bets().newChip(15, c.PLAYER);
-  chip.opacity(0);
+  const chip = table().bets().newChip(15, c.PLAYER)
+  chip.opacity(0)
 
   yield* waitFor(1);
 

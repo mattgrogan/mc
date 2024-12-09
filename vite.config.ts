@@ -27,6 +27,8 @@ export default defineConfig({
         "./src/scenes/skill66baseline/skill66baseline.ts",
         "./src/scenes/skill66baseline/skill66baseline_demo.ts",
         "./src/scenes/jungle/jungle_demo.ts",
+        "./src/scenes/skill66halfpress/skill66halfpress.ts",
+        "./src/scenes/skill66halfpress/skill66halfpress_demo.ts",
       ],
     }),
     ffmpeg(),
