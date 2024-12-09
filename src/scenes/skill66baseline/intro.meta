@@ -2,36 +2,40 @@
   "version": 0,
   "timeEvents": [
     {
+      "name": "show-rect",
+      "targetTime": 7.910634181471682
+    },
+    {
       "name": "table",
-      "targetTime": 11.399999999999999
+      "targetTime": 14.715031955886763
     },
     {
       "name": "set-point",
-      "targetTime": 15.399999999999999
+      "targetTime": 23.957028299924456
     },
     {
       "name": "place66",
-      "targetTime": 18.1
+      "targetTime": 26.65702829992446
     },
     {
       "name": "roll5",
-      "targetTime": 21.099999999999998
+      "targetTime": 36.05846931818855
     },
     {
       "name": "place88",
-      "targetTime": 26.900000000000006
+      "targetTime": 42.25846931818855
     },
     {
       "name": "roll6",
-      "targetTime": 31.500000000000004
+      "targetTime": 48.49974515309421
     },
     {
       "name": "place44",
-      "targetTime": 37.30000000000001
+      "targetTime": 54.69974515309421
     },
     {
       "name": "end",
-      "targetTime": 28.4
+      "targetTime": 88.00385072079207
     }
   ],
   "seed": 2027296123

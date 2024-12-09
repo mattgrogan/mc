@@ -159,29 +159,8 @@ export default makeScene2D(function* (view) {
     opacity: 0,
     offset: [-1, 0],
   };
-
-  const oddsLine = plot().hLine([10, 0], lineProps);
-  const oddsLabel = plot().text([10, 0], {
-    ...edgeLabelProps,
-    text: "TAKE/LAY ODDS (0.00%)",
-  });
-
-  yield* sequence(
-    0.4,
-    oddsLine.start(0, 0.6, easeInOutCubic),
-    oddsLabel.opacity(1, 0.6)
-  );
-
-  const passLine = plot().hLine([10, -1.41], lineProps);
-  const passLabel = plot().text([10, -1.41], {
-    ...edgeLabelProps,
-    //offsetY: 1,
-    text: "PASS/COME (1.41%)",
-  });
-
-  yield passLine.start(0, 0.6, easeInOutCubic);
-  yield* passLabel.opacity(1, 0.6);
-
+  
+  yield * waitUntil("place68")
   const place68Line = plot().hLine([60, -1.52], lineProps);
   const place68Label = plot().text([60, -1.52], {
     ...edgeLabelProps,
@@ -189,12 +168,21 @@ export default makeScene2D(function* (view) {
   });
   yield place68Line.start(0, 0.6, easeInOutCubic);
   yield* place68Label.opacity(1, 1);
-
+  
   yield* waitFor(0.5);
-
-  yield passLabel.offset([-1, 1], 1, easeInOutCubic);
+  
+  yield * waitUntil("place59")
   yield* plot().rescale(0, 100, 1, -5, 0, 1, 1, easeInOutCubic);
-
+  const place59Line = plot().hLine([10, -4], lineProps);
+  const place59Label = plot().text([10, -4], {
+    ...edgeLabelProps,
+    text: "PLACE 5/9 (4.00%)",
+  });
+  
+  yield place59Line.start(0, 0.6, easeInOutCubic);
+  yield* place59Label.opacity(1, 0.6);
+  
+  yield * waitUntil("skill66")
   const skill66Line = plot().hLine([-30, HOUSE_EDGE_PERCENT], {
     lineWidth: 6,
     stroke: Bright.ORANGE,
@@ -215,9 +203,38 @@ export default makeScene2D(function* (view) {
     offset: [1, 0],
     text: HOUSE_EDGE_LABEL,
   });
-
+  
   yield skill66Label.opacity(1, 1.2);
   yield* skill66Line.start(0, 1, easeOutExpo);
+  
+  
+  yield * waitUntil("others")
+    ///////////////////////////
+
+    const oddsLine = plot().hLine([10, 0], lineProps);
+    const oddsLabel = plot().text([10, 0], {
+      ...edgeLabelProps,
+      text: "TAKE/LAY ODDS (0.00%)",
+    });
+    
+    yield* sequence(
+    0.4,
+    oddsLine.start(0, 0.6, easeInOutCubic),
+    oddsLabel.opacity(1, 0.6)
+  );
+
+  const passLine = plot().hLine([10, -1.41], lineProps);
+  const passLabel = plot().text([10, -1.41], {
+    ...edgeLabelProps,
+    offsetY: 1,
+    text: "PASS/COME (1.41%)",
+  });
+
+  yield passLine.start(0, 0.6, easeInOutCubic);
+  yield* passLabel.opacity(1, 0.6);
+
+  //yield passLabel.offset([-1, 1], 1, easeInOutCubic);
+
 
   const field3Line = plot().hLine([10, -2.78], lineProps);
   const field3Label = plot().text([10, -2.78], {
@@ -228,14 +245,6 @@ export default makeScene2D(function* (view) {
   yield field3Line.start(0, 0.6, easeInOutCubic);
   yield* field3Label.opacity(1, 0.6);
 
-  const place59Line = plot().hLine([10, -4], lineProps);
-  const place59Label = plot().text([10, -4], {
-    ...edgeLabelProps,
-    text: "PLACE 5/9 (4.00%)",
-  });
-
-  yield place59Line.start(0, 0.6, easeInOutCubic);
-  yield* place59Label.opacity(1, 0.6);
 
   yield* waitFor(1);
   yield* plot().rescale(0, 100, 1, -10, 0, 2, 2, easeInOutCubic);

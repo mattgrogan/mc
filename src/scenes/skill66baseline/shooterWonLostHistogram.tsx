@@ -106,7 +106,7 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("hist");
 
-  yield* all(...chart().growBars(3));
+  yield* all(...chart().growBars(2));
   yield* chart().addZeroLine();
 
   yield* waitUntil("zoomin");
@@ -134,7 +134,7 @@ export default makeScene2D(function* (view) {
     chart().getPercentForBars([17])
   );
   yield* chart().drawBox();
-  yield* waitFor(2);
+  yield* waitFor(.2);
 
   yield* waitUntil("highlight-2");
   yield* all(
@@ -146,7 +146,7 @@ export default makeScene2D(function* (view) {
       chart().getPercentForBars([21])
     )
   );
-  yield* waitFor(1);
+  //yield* waitFor(1);
 
   // yield* waitUntil("highlight-3");
   // yield* all(

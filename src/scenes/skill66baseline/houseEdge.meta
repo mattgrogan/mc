@@ -2,8 +2,24 @@
   "version": 0,
   "timeEvents": [
     {
+      "name": "place68",
+      "targetTime": 4.4
+    },
+    {
+      "name": "place59",
+      "targetTime": 8.890575310833794
+    },
+    {
+      "name": "skill66",
+      "targetTime": 16.164685346173478
+    },
+    {
+      "name": "others",
+      "targetTime": 29.60713283092332
+    },
+    {
       "name": "end",
-      "targetTime": 3
+      "targetTime": 48.80713283092333
     }
   ],
   "seed": 1728191366

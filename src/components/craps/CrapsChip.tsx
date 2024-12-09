@@ -202,6 +202,8 @@ export class CrapsChip extends Circle {
         lineDashOffset={CHIP_MARK_CIRCLE_LINE_LENGTH}
       />
     );
+    
+    this.scale(0.25);
     this.add(
       <Txt
         fontFamily={"Battambang"}
@@ -215,8 +217,6 @@ export class CrapsChip extends Circle {
         strokeFirst
       />
     );
-
-    this.scale(0.25);
 
     //   this.add(
     //     <Rect

@@ -1,6 +1,8 @@
 import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
+import audio from "../../../audio/DD - Skill66 Baseline00108000.flac"
+
 import intro from "./intro?scene";
 import code_strategy from "./code_strategy?scene";
 import houseEdge from "./houseEdge?scene";
@@ -42,5 +44,5 @@ export default makeProject({
     reportCard,
     endCard,
   ],
-  // audio: audio,
+  audio: audio,
 });

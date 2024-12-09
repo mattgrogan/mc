@@ -3,35 +3,35 @@
   "timeEvents": [
     {
       "name": "show-min",
-      "targetTime": 3.000000000000001
+      "targetTime": 3.6000000000000014
     },
     {
       "name": "show-max",
-      "targetTime": 5.000000000000001
+      "targetTime": 10.467923621410229
     },
     {
       "name": "hist",
-      "targetTime": 10.700000000000001
+      "targetTime": 16.167923621410228
     },
     {
       "name": "zoomin",
-      "targetTime": 14.700000000000001
+      "targetTime": 20.167923621410228
     },
     {
       "name": "highlight-1",
-      "targetTime": 15.3
+      "targetTime": 20.167923621410228
     },
     {
       "name": "highlight-2",
-      "targetTime": 21.3
+      "targetTime": 24.367923621410227
     },
     {
       "name": "hide-box",
-      "targetTime": 32.3
+      "targetTime": 27.367923621410227
     },
     {
       "name": "end",
-      "targetTime": 33.3
+      "targetTime": 28.367923621410227
     }
   ],
   "seed": 3244505667

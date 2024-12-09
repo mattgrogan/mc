@@ -114,7 +114,7 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("house-edge");
   yield* sim.moveArrowTo(arrow, 7, 1);
-  yield* CircumscribeRect(sim.resultRows[7], Bright.YELLOW, 1, 15, 3.5);
+  yield* CircumscribeRect(sim.resultRows[7], Bright.YELLOW, 1, 15, 2);
 
   //yield* waitFor(1);
 

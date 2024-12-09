@@ -178,6 +178,7 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
+  yield* waitUntil("show-rect")
   yield* rect().end(1, 1, easeInOutCubic);
   yield* rect().fill(Theme.BG, 1, linear);
   yield* icon().scale(1, 1, easeOutElastic);
