@@ -1,7 +1,7 @@
 import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
-// import audio from "../../../audio/DD - Skill66 Baseline00108000.flac"
+import audio from "../../../audio/DD - The Jungle00108000.flac"
 
 import intro from "./intro?scene";
 
@@ -42,5 +42,5 @@ export default makeProject({
     reportCard,
     endCard,
   ],
-  // audio: audio,
+  audio: audio,
 });

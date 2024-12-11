@@ -9,9 +9,12 @@
   },
   "dependencies": {
     "@hhenrichsen/canvas-commons": "^0.10.2",
+    "@lezer/markdown": "^1.3.2",
     "@motion-canvas/2d": "^3.17.1",
     "@motion-canvas/core": "^3.17.0",
-    "@motion-canvas/ffmpeg": "^1.1.0"
+    "@motion-canvas/ffmpeg": "^1.1.0",
+    "i": "^0.3.7",
+    "npm": "^10.9.2"
   },
   "devDependencies": {
     "@motion-canvas/ui": "^3.17.0",

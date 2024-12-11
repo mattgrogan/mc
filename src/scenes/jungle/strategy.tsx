@@ -86,19 +86,23 @@ export default makeScene2D(function* (view) {
   yield* fadeTransition();
   yield* waitFor(1);
 
+  yield* waitUntil("step1")
+  
   const step1 = CODE`\
 1. Wait for a point 
    to be established
 `;
   yield* code().code.append(step1, 1);
   yield* waitFor(1);
-
+  
+  yield* waitUntil("step2")
   const step2 = CODE`\
 2. Place $66 Inside
 `;
   yield* code().code.append(step2, 1);
   yield* waitFor(1);
-
+  
+  yield* waitUntil("step3")
   const step3 = CODE`\
 3. With each hit: 
    - Go up one unit
@@ -106,24 +110,27 @@ export default makeScene2D(function* (view) {
 `;
   yield* code().code.append(step3, 1);
   yield* waitFor(1);
-
+  
+  yield* waitUntil("step4")
   const step4 = CODE`\
 4. On an 11: 
    - Wait for another win 
-     before replacing the 
-     Don't Come
+   before replacing the 
+   Don't Come
 `;
   yield* code().code.append(step4, 1);
   yield* waitFor(1);
-
+  
+  yield* waitUntil("step5")
   const step5 = CODE`\
 5. After three hits:
    - Regress the number 
-     to the base bet.
+   to the base bet.
 `;
   yield* code().code.append(step5, 1);
   yield* waitFor(1);
-
+  
+  yield* waitUntil("scale-down")
   yield code().scale(0.7, 1, easeInOutCubic);
   yield code().y(-100, 1, easeInOutCubic);
   yield* code().x(420, 1, easeInOutCubic);

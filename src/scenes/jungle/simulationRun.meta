@@ -11,43 +11,43 @@
     },
     {
       "name": "results",
-      "targetTime": 22.7
+      "targetTime": 33.17337336962056
     },
     {
       "name": "tps",
-      "targetTime": 25.7
+      "targetTime": 39.06733180069993
     },
     {
       "name": "total-bet",
-      "targetTime": 30.2
+      "targetTime": 43.56733180069993
     },
     {
       "name": "total-won",
-      "targetTime": 33.7
+      "targetTime": 47.06733180069993
     },
     {
       "name": "total-lost",
-      "targetTime": 35.7
+      "targetTime": 49.06733180069993
     },
     {
       "name": "zoom-in",
-      "targetTime": 37.7
+      "targetTime": 51.06733180069993
     },
     {
       "name": "house-take",
-      "targetTime": 39.7
+      "targetTime": 53.06733180069993
     },
     {
       "name": "house-edge",
-      "targetTime": 44.7
+      "targetTime": 58.06733180069993
     },
     {
       "name": "zoom-out",
-      "targetTime": 49.7
+      "targetTime": 63.06733180069993
     },
     {
       "name": "end",
-      "targetTime": 50.7
+      "targetTime": 64.06733180069993
     }
   ],
   "seed": 3164110131

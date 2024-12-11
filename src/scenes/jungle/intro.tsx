@@ -195,9 +195,9 @@ export default makeScene2D(function* (view) {
   );
 
   yield* FadeIn(priority, 1, easeOutCubic, [0, 100]);
-  yield* waitFor(1);
+  yield* waitFor(1.5);
   yield priority().scale(0.8, 1, easeInOutCubic);
-  yield* priority().position([500, -380], 1, easeInOutCubic);
+  yield* priority().position([500, -380], 1.5, easeInOutCubic);
 
   yield* FadeIn(video, 0.6, easeOutCubic, [0, 100]);
   video().play();
