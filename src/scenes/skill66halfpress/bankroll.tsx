@@ -57,13 +57,13 @@ const LabelFont = {
 };
 
 const GROUP000 = 0;
-const GROUP100 = 32877;
-const GROUP200 = 29312;
-const GROUP300 = 22368;
-const GROUP400 = 11262;
-const GROUP500 = 3362;
-const GROUP600 = 753;
-const GROUP700 = 66;
+const GROUP100 = 21220;
+const GROUP200 = 30176;
+const GROUP300 = 25060;
+const GROUP400 = 15658;
+const GROUP500 = 5853;
+const GROUP600 = 1440;
+const GROUP700 = 53;
 const GROUP800 = 0;
 const GROUP900 = 0;
 const GROUP1000 = 0;

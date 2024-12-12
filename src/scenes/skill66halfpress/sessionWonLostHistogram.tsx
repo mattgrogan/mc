@@ -13,16 +13,18 @@ import {
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
-import { HistogramV2 } from "../../components/charts/HistogramV2";
+import { HistogramV2 } from "../../components/charts/HistogramV3";
 import { FadeIn } from "../../utils/FadeIn";
 import { FadeOut } from "../../utils/FadeOut";
 import { Bright, Grays, PoppinsWhite, Theme } from "../../styles";
 
 // -amount-wonlost-quantiles.json
-import winlose from "../../../../dicedata/output/skill66baseline-100k/skill66baseline-100k-amount-wonlost-quantiles.json";
+import winlose from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-amount-wonlost-quantiles.json";
 
 // -session_hist.json
-import histogramData from "../../../../dicedata/output/skill66baseline-100k/skill66baseline-100k-session_hist.json";
+import histogramData from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-session_hist.json";
+
+const data = histogramData.slice(0, 31);
 
 const MOST_LOST = winlose.find((stat) => stat.STAT == "MIN_WONLOST").BY_SESSION;
 const MOST_WON = winlose.find((stat) => stat.STAT == "MAX_WONLOST").BY_SESSION;
@@ -40,7 +42,7 @@ export default makeScene2D(function* (view) {
         ref={chart}
         height={"60%"}
         width={"80%"}
-        nBars={histogramData.length - 1}
+        nBars={data.length - 1}
         yMax={100000}
         barFill={Bright.BLUE}
         barWidth={50}
@@ -79,7 +81,7 @@ export default makeScene2D(function* (view) {
   // https://github.com/motion-canvas/motion-canvas/issues/1057
   camera().scene().position(view.size().div(2));
 
-  chart().setData(histogramData);
+  chart().setData(data);
 
   yield* slideTransition(Direction.Right);
 
@@ -98,6 +100,7 @@ export default makeScene2D(function* (view) {
     camera().x(-400, 1, easeInOutCubic)
   );
   yield* waitUntil("show-max");
+  max.position([450, 0]);
   yield* all(
     camera().x(400, 1.5, easeInOutCubic),
     delay(1.2, FadeIn(max, 1, easeOutExpo, [100, 0]))
@@ -113,7 +116,7 @@ export default makeScene2D(function* (view) {
   yield* waitUntil("zoomin");
   yield all(
     camera().x(0, 1, easeInOutCubic),
-    camera().zoom(1.3, 1, easeInOutCubic)
+    camera().zoom(1.1, 1, easeInOutCubic)
   );
 
   // yield* waitUntil("hide-minmax");
@@ -129,8 +132,8 @@ export default makeScene2D(function* (view) {
     //chart().highlightBar(upperBar, Bright.ORANGE)
   );
   yield* chart().moveBox(
-    histogramData[10].cuts,
-    histogramData[11].cuts,
+    data[10].CUTS,
+    data[11].CUTS,
     chart().getPercentForBars([10])
   );
   yield* chart().drawBox();
@@ -140,8 +143,8 @@ export default makeScene2D(function* (view) {
   yield* all(
     chart().highlightBar(9, Bright.ORANGE),
     chart().moveBox(
-      histogramData[9].cuts,
-      histogramData[11].cuts,
+      data[9].CUTS,
+      data[11].CUTS,
       chart().getPercentForBars([9, 10])
     )
   );
@@ -152,8 +155,8 @@ export default makeScene2D(function* (view) {
     chart().highlightBar(8, Bright.ORANGE),
     chart().highlightBar(11, Bright.ORANGE),
     chart().moveBox(
-      histogramData[8].cuts,
-      histogramData[12].cuts,
+      data[8].CUTS,
+      data[12].CUTS,
       chart().getPercentForBars([8, 9, 10, 11])
     )
   );
@@ -164,8 +167,8 @@ export default makeScene2D(function* (view) {
     chart().highlightBar(7, Bright.ORANGE),
     chart().highlightBar(12, Bright.ORANGE),
     chart().moveBox(
-      histogramData[7].cuts,
-      histogramData[13].cuts,
+      data[7].CUTS,
+      data[13].CUTS,
       chart().getPercentForBars([7, 8, 9, 10, 11, 12])
     )
   );
@@ -176,8 +179,8 @@ export default makeScene2D(function* (view) {
     chart().highlightBar(6, Bright.ORANGE),
     chart().highlightBar(13, Bright.ORANGE),
     chart().moveBox(
-      histogramData[6].cuts,
-      histogramData[14].cuts,
+      data[6].CUTS,
+      data[14].CUTS,
       chart().getPercentForBars([6, 7, 8, 9, 10, 11, 12, 13])
     )
   );
@@ -188,8 +191,8 @@ export default makeScene2D(function* (view) {
     chart().highlightBar(5, Bright.ORANGE),
     chart().highlightBar(14, Bright.ORANGE),
     chart().moveBox(
-      histogramData[5].cuts,
-      histogramData[15].cuts,
+      data[5].CUTS,
+      data[15].CUTS,
       chart().getPercentForBars([5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
     )
   );
@@ -200,8 +203,8 @@ export default makeScene2D(function* (view) {
   //   chart().highlightBar(4, Bright.ORANGE),
   //   chart().highlightBar(15, Bright.ORANGE),
   //   chart().moveBox(
-  //     histogramData[4].cuts,
-  //     histogramData[16].cuts,
+  //     histogramData[4].CUTS,
+  //     histogramData[16].CUTS,
   //     chart().getPercentForBars([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
   //   )
   // );
@@ -210,8 +213,8 @@ export default makeScene2D(function* (view) {
   // yield* waitUntil("highlight-7");
   // yield* all(
   //   chart().moveBox(
-  //     histogramData[2].cuts,
-  //     histogramData[16].cuts,
+  //     histogramData[2].CUTS,
+  //     histogramData[16].CUTS,
   //     chart().getPercentForBars([
   //       2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
   //     ])
@@ -227,8 +230,8 @@ export default makeScene2D(function* (view) {
   //   chart().highlightBar(lowerBar, Bright.ORANGE),
   //   chart().highlightBar(upperBar, Bright.ORANGE),
   //   chart().moveBox(
-  //     histogramData[lowerBar].cuts,
-  //     histogramData[upperBar + 1].cuts,
+  //     histogramData[lowerBar].CUTS,
+  //     histogramData[upperBar + 1].CUTS,
   //     chart().getPercentForBars(bars)
   //   )
   // );
@@ -242,8 +245,8 @@ export default makeScene2D(function* (view) {
   //   chart().highlightBar(lowerBar, Bright.ORANGE),
   //   chart().highlightBar(upperBar, Bright.ORANGE),
   //   chart().moveBox(
-  //     histogramData[lowerBar].cuts,
-  //     histogramData[upperBar + 1].cuts,
+  //     histogramData[lowerBar].CUTS,
+  //     histogramData[upperBar + 1].CUTS,
   //     chart().getPercentForBars(bars)
   //   )
   // );
@@ -257,8 +260,8 @@ export default makeScene2D(function* (view) {
   //   chart().highlightBar(lowerBar, Bright.ORANGE),
   //   chart().highlightBar(upperBar, Bright.ORANGE),
   //   chart().moveBox(
-  //     histogramData[lowerBar].cuts,
-  //     histogramData[upperBar + 1].cuts,
+  //     histogramData[lowerBar].CUTS,
+  //     histogramData[upperBar + 1].CUTS,
   //     chart().getPercentForBars(bars)
   //   )
   // );
@@ -272,8 +275,8 @@ export default makeScene2D(function* (view) {
   //   chart().highlightBar(lowerBar, Bright.ORANGE),
   //   chart().highlightBar(upperBar, Bright.ORANGE),
   //   chart().moveBox(
-  //     histogramData[lowerBar].cuts,
-  //     histogramData[upperBar + 1].cuts,
+  //     histogramData[lowerBar].CUTS,
+  //     histogramData[upperBar + 1].CUTS,
   //     chart().getPercentForBars(bars)
   //   )
   // );
@@ -287,8 +290,8 @@ export default makeScene2D(function* (view) {
   //   chart().highlightBar(lowerBar, Bright.ORANGE),
   //   chart().highlightBar(upperBar, Bright.ORANGE),
   //   chart().moveBox(
-  //     histogramData[lowerBar].cuts,
-  //     histogramData[upperBar + 1].cuts,
+  //     histogramData[lowerBar].CUTS,
+  //     histogramData[upperBar + 1].CUTS,
   //     chart().getPercentForBars(bars)
   //   )
   // );

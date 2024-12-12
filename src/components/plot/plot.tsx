@@ -33,8 +33,8 @@ export interface PlotProps extends LayoutProps {
   yTickProps?: SignalValue<LineProps>;
   xLabelProps?: SignalValue<TickLabelProps>;
   yLabelProps?: SignalValue<TickLabelProps>;
-  xTitleProps?: SignalValue<TxtProps>;
-  yTitleProps?: SignalValue<TxtProps>;
+  xTitleProps?: SignalValue<TickLabelProps>;
+  yTitleProps?: SignalValue<TickLabelProps>;
 }
 
 export enum PlotSpace {
@@ -202,7 +202,7 @@ export class Plot extends Layout {
         this.c2p(
           [this.xMin() + (this.xMax() - this.xMin()) / 2, this.yMin()],
           PlotSpace.LOCAL
-        ).addY(DEFAULT_X_TITLE_PADDING),
+        ).addY(this.xTitleProps().lineToLabelPadding),
     });
     this.add(this.xTitle);
 
@@ -213,7 +213,8 @@ export class Plot extends Layout {
         this.c2p(
           [this.xMin(), this.yMin() + (this.yMax() - this.yMin()) / 2],
           PlotSpace.LOCAL
-        ).addX(DEFAULT_Y_TITLE_PADDING),
+          //).addX(DEFAULT_Y_TITLE_PADDING),
+        ).addX(this.yTitleProps().lineToLabelPadding),
     });
     this.add(this.yTitle);
   }
@@ -334,7 +335,7 @@ export class Plot extends Layout {
     const start = () => this.c2p([vectorC.x, this.yMin()], PlotSpace.LOCAL);
     const end = () => this.c2p([vectorC.x, vectorC.y], PlotSpace.LOCAL);
 
-    const line = new Line({ ...props, points: [start, end] });
+    const line = new Line({ ...props, points: [start, end], zIndex: -100 });
     this.add(line);
 
     return line;

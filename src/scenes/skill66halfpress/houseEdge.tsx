@@ -48,7 +48,7 @@ const HOUSE_EDGE =
   casinostats[0].TOTAL_BET;
 const HOUSE_EDGE_PERCENT = HOUSE_EDGE * 100;
 const HOUSE_EDGE_LABEL =
-  "SKILL66 HALF-PRESS (" + (HOUSE_EDGE_PERCENT * -1).toFixed(3) + "%)";
+  "SKILL66 + HALF-PRESS (" + (HOUSE_EDGE_PERCENT * -1).toFixed(3) + "%)";
 
 export default makeScene2D(function* (view) {
   view.fill("#000");

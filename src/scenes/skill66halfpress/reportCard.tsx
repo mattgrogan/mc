@@ -83,7 +83,7 @@ export default makeScene2D(function* (view) {
           {...TitleFont}
           fontSize={70}
         >
-          SKILL 66 BASELINE
+          SKILL 66 + HALF PRESS
         </Txt>
       </Layout>
       <Icon
@@ -173,12 +173,12 @@ export default makeScene2D(function* (view) {
       })}`
   );
   fields[1].text("10");
-  fields[2].text("2.498 %");
-  fields[3].text("53.6 %");
-  fields[4].text("46.4 %");
-  fields[5].text("-$89 to +$143");
-  fields[6].text("-$318 to +$260");
-  fields[7].text("$483"); //USE R THIS IS THE p01 after group by session
+  fields[2].text("2.553 %");
+  fields[3].text("35.9 %");
+  fields[4].text("63.9 %");
+  fields[5].text("-$213 to +$78");
+  fields[6].text("-$380 to +$423");
+  fields[7].text("$515"); //USE R THIS IS THE p01 after group by session
 
   yield* slideTransition(Direction.Right);
 

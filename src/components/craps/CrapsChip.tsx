@@ -25,8 +25,8 @@ const redChip: iChipColor = {
   background: "#820000",
   outerCircle: "#9a0000",
   innerCircle: "#9a0000",
-  marks: "#fff",
-  text: "#fff",
+  marks: "#c00000",
+  text: "#e4e4e4",
   textOutline: "#222222",
 };
 
@@ -61,8 +61,8 @@ const greenChip: iChipColor = {
   background: "#244f33",
   outerCircle: "#35764c",
   innerCircle: "#1b3c26",
-  marks: "#ffffff",
-  text: "#ffffff",
+  marks: "#35764c",
+  text: "#e4e4e4",
   textOutline: "#090a0b",
 };
 
@@ -202,7 +202,7 @@ export class CrapsChip extends Circle {
         lineDashOffset={CHIP_MARK_CIRCLE_LINE_LENGTH}
       />
     );
-    
+
     this.scale(0.25);
     this.add(
       <Txt

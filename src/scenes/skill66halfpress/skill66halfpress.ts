@@ -4,8 +4,8 @@ import "../../global.css";
 import intro from "./intro?scene";
 import houseEdge from "./houseEdge?scene";
 
-// import strategyTitle from "../titles/strategyTitle?scene";
-// import strategy from "./strategy_demo?scene";
+import strategyTitle from "../titles/strategyTitle?scene";
+import strategy from "./strategy?scene";
 
 import simulationTitle from "../titles/simulationTitle?scene";
 import simulationRun from "./simulationRun?scene";
@@ -26,6 +26,8 @@ import endCard from "./endCard?scene";
 export default makeProject({
   scenes: [
     intro,
+    strategyTitle,
+    strategy,
     simulationTitle,
     simulationRun,
     houseEdge,

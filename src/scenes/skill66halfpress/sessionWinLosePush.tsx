@@ -13,7 +13,7 @@ import {
 import { Bright, Theme } from "../../styles";
 
 //-winloss-outcomes.json
-import winlose from "../../../../dicedata/output/skill66baseline-100k/skill66baseline-100k-winloss-outcomes.json";
+import winlose from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-winloss-outcomes.json";
 
 import { FadeIn } from "../../utils/FadeIn";
 import { FadeOut } from "../../utils/FadeOut";
@@ -308,7 +308,7 @@ export default makeScene2D(function* (view) {
   // yield* waitFor(2);
 
   yield* waitUntil("show-losers");
- // yield* all(rect.start(1, 1, easeInOutCubic), FadeOut(pct, 1));
+  // yield* all(rect.start(1, 1, easeInOutCubic), FadeOut(pct, 1));
   yield* all(
     lose_pct().opacity(1, 0.1),
     lose_pct_signal(LOSERS / TOTAL, 1, easeOutCubic),

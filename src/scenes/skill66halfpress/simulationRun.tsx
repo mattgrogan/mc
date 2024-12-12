@@ -37,7 +37,7 @@ export default makeScene2D(function* (view) {
 
   const sim = new SimulationScreen();
   sim.name = "Skill 66";
-  sim.options = "Then Half Press";
+  sim.options = "+ Half Press";
   sim.sessions = simstats[0].SESSIONS;
   sim.shooters = "10 Per Session";
   sim.tableMin = "$10";

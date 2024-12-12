@@ -61,7 +61,7 @@ export default makeScene2D(function* (view) {
         {...PoppinsWhite}
         fontWeight={600}
         fontSize={120}
-        text={"SKILL 66 HALF PRESS"}
+        text={"SKILL 66 + HALF PRESS"}
         alignSelf={"center"}
       />
     </Layout>
@@ -118,7 +118,7 @@ export default makeScene2D(function* (view) {
 
   // Move Up
   yield* container().y(-350, 1, easeInOutCubic);
-  yield* container().x(-350, 1, easeInOutCubic);
+  yield* container().x(-250, 1, easeInOutCubic);
 
   const rect = createRef<Rect>();
   const table = createRef<CrapsTable>();
@@ -198,113 +198,6 @@ export default makeScene2D(function* (view) {
   yield* waitUntil("table");
   yield* rect().height(0, 1, easeInElastic);
   rect().remove();
-
-  yield* waitFor(1);
-
-  const tableContainer = createRef<Layout>();
-  view.add(
-    <Layout ref={tableContainer}>
-      <CrapsTable
-        ref={table}
-        opacity={0}
-        scale={0.7}
-        x={0}
-        y={150}
-      ></CrapsTable>
-    </Layout>
-  );
-  yield* FadeIn(table(), 1, easeOutCubic, [0, 500]);
-
-  view.add(
-    <CrapsScoreBug
-      ref={bug}
-      opacity={0}
-      scale={0.7}
-      //position={[640, -370]}
-      //y={-370}
-      // x={640}
-    />
-  );
-  bug().position([0, 450]);
-  yield* sequence(
-    0.5,
-    FadeIn(bug(), 0.6, easeOutCubic, [0, 100]),
-    bug().updateLabel("GOOD LUCK!")
-  );
-
-  // THROW A POINT
-  yield* waitUntil("set-point");
-  yield bug().updateLabel("DICE ARE OUT");
-  yield* bug().updateRoll(true);
-  yield* table().dice().throw(2, 2);
-  yield bug().updateLabel("");
-  yield* table().movePuckTo(c.PUCK4);
-
-  yield* waitUntil("place66");
-  yield* sequence(
-    0.2,
-    table().bets().makeBet(15, c.PLACE5, true),
-    table().bets().makeBet(18, c.PLACE6, true),
-    table().bets().makeBet(18, c.PLACE8, true),
-    table().bets().makeBet(15, c.PLACE9, true)
-  );
-  yield table().dice().removeDice();
-  yield* all(
-    bug().updateRoll(false),
-    bug().updateBets(66),
-    bug().updateBankroll(-66),
-    bug().updateExposure(-66)
-  );
-  yield* waitFor(1);
-
-  // ROLL #2
-  yield* waitUntil("roll5");
-  yield* table().dice().throw(3, 2);
-  yield* table().bets().winBet(21, c.PLACE5, false);
-  yield* all(bug().updateBankroll(-45), bug().updateExposure(-45));
-
-  yield* waitFor(2);
-  yield* waitUntil("place88");
-  yield table().bets().removeBet(c.PLACE5);
-  yield table().bets().removeBet(c.PLACE6);
-  yield table().bets().removeBet(c.PLACE8);
-  yield* table().bets().removeBet(c.PLACE9);
-  yield* sequence(
-    0.2,
-    table().bets().makeBet(20, c.PLACE5, true),
-    table().bets().makeBet(24, c.PLACE6, true),
-    table().bets().makeBet(24, c.PLACE8, true),
-    table().bets().makeBet(20, c.PLACE9, true)
-  );
-  yield table().dice().removeDice();
-  yield* all(
-    bug().updateRoll(false),
-    bug().updateBets(88),
-    bug().updateBankroll(-67),
-    bug().updateExposure(-67)
-  );
-  yield* waitFor(1);
-
-  // ROLL #3
-  yield* waitUntil("roll6");
-  yield* table().dice().throw(3, 3);
-  yield* table().bets().winBet(28, c.PLACE6, false);
-  yield* all(bug().updateBankroll(-39), bug().updateExposure(-39));
-
-  yield* waitFor(2);
-  yield* waitUntil("place44");
-  yield table().bets().removeBet(c.PLACE5);
-  yield table().bets().removeBet(c.PLACE6);
-  yield table().bets().removeBet(c.PLACE8);
-  yield* table().bets().removeBet(c.PLACE9);
-  yield* all(
-    bug().updateBets(0),
-    bug().updateBankroll(49),
-    bug().updateExposure(49)
-  );
-  yield* waitFor(1);
-
-  yield* waitFor(1);
 
   yield* waitFor(3);
 
