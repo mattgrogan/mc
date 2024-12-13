@@ -49,6 +49,9 @@ export enum c {
   PLACE9 = "PLACE9",
   PLACE10 = "PLACE10",
 
+  BUY4 = "BUY4",
+  BUY10 = "BUY10",
+
   LAY4 = "LAY4",
   LAY5 = "LAY5",
   LAY6 = "LAY6",
@@ -136,6 +139,9 @@ export const tableCoords: { [id: string]: Vector2 } = {
   PLACE8: new Vector2(BOX_8, PLACE_Y),
   PLACE9: new Vector2(BOX_9, PLACE_Y),
   PLACE10: new Vector2(BOX_10, PLACE_Y),
+
+  BUY4: new Vector2(BOX_4, PLACE_Y),
+  BUY10: new Vector2(BOX_10, PLACE_Y),
 
   LAY4: new Vector2(BOX_4, LAY_Y),
   LAY5: new Vector2(BOX_5, LAY_Y),
