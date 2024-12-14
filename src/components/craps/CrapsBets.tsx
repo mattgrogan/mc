@@ -9,6 +9,7 @@ import {
   easeOutExpo,
   sequence,
   TimingFunction,
+  useLogger,
   waitFor,
 } from "@motion-canvas/core";
 import { Indicate } from "../../utils/Indicate";
@@ -69,7 +70,13 @@ export class CrapsBets extends Layout {
   }
 
   public *removeBet(where: c) {
+    useLogger().debug("Removing chip from " + where.toString());
     const chip = this.chips[where];
+
+    if (chip === undefined) {
+      useLogger().error("NO CHIP AT " + where.toString());
+      return;
+    }
     yield* this.moveChipTo(chip, c.PLAYER, 0.6, easeInOutCubic, 0);
     delete this.chips[where];
     chip.remove();
