@@ -32,7 +32,7 @@ export default defineConfig({
         "./src/scenes/skill66halfpress/skill66halfpress.ts",
         // "./src/scenes/skill66halfpress/skill66halfpress_demo.ts",
         "./src/scenes/push_it/push_it_demo.ts",
-        "./src/scenes/dp679/dp679_demo.ts",
+        "./src/scenes/dp678/dp678_demo.ts",
       ],
     }),
     ffmpeg(),
