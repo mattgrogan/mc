@@ -28,6 +28,8 @@ import { CrapsTable } from "../../components/craps/CrapsTable";
 import { c } from "../../components/craps/CrapsTableCoords";
 import { FadeIn } from "../../utils/FadeIn";
 
+import surveySrc from "../../../assets/Other/skill66_survey.png"
+
 export default makeScene2D(function* (view) {
   view.fill("#000");
   view.add(
@@ -123,12 +125,14 @@ export default makeScene2D(function* (view) {
   const rect = createRef<Rect>();
   const table = createRef<CrapsTable>();
   const bug = createRef<CrapsScoreBug>();
-  const icon = createRef<Icon>();
+  const survey = createRef<Img>();
 
   view.add(
     <Layout
       layout
       y={150}
+      width={1200}
+      height={500}
     >
       <Rect
         ref={rect}
@@ -136,11 +140,11 @@ export default makeScene2D(function* (view) {
         width={"100%"}
         height={"100%"}
         alignItems={"center"}
-        padding={30}
-        paddingLeft={100}
-        paddingRight={100}
+        // padding={10}
+        // paddingLeft={100}
+        // paddingRight={100}
         radius={10}
-        gap={10}
+        // gap={10}
         stroke={Grays.GRAY2}
         lineWidth={5}
         end={0}
@@ -158,23 +162,15 @@ export default makeScene2D(function* (view) {
           text={"BASELINE AND MOVE INTO ANY STRATEGY"}
           opacity={0}
         /> */}
-        <Icon
-          ref={icon}
-          //icon={"fluent-emoji-flat:dollar-banknote"}
-          icon={"fluent-emoji-flat:victory-hand-light"}
-          scale={0}
-          size={[300, 300]}
-          opacity={1}
-          margin={50}
-        ></Icon>
+        <Img ref={survey} src={surveySrc} scale={0.72} opacity={0} offsetY={-1.35}></Img>
       </Rect>
     </Layout>
   );
 
   yield* waitUntil("show-rect");
   yield* rect().end(1, 1, easeInOutCubic);
-  yield* rect().fill(Theme.BG, 1, linear);
-  yield* icon().scale(1, 1, easeOutElastic);
+  yield rect().fill(Theme.BG, 1, linear);
+  yield* survey().opacity(1, 1, easeOutElastic);
   // yield* sequence(
   //   0.2,
   //   ...rect()

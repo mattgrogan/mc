@@ -358,7 +358,7 @@ export default makeScene2D(function* (view) {
     cumPctLabel().opacity(1, 1, easeInOutCubic),
     cumPct(cumulativePct, 1, easeInOutCubic)
   );
-  yield* waitFor(2);
+  yield* waitFor(1);
 
   yield* waitUntil("expand5");
   cumulativePct += barSignals[5]();
@@ -369,7 +369,7 @@ export default makeScene2D(function* (view) {
     cumPctLabel().opacity(1, 1, easeInOutCubic),
     cumPct(cumulativePct, 1, easeInOutCubic)
   );
-  yield* waitFor(2);
+  yield* waitFor(1);
 
   yield* waitUntil("expand6");
   cumulativePct += barSignals[6]();
@@ -380,18 +380,18 @@ export default makeScene2D(function* (view) {
     cumPctLabel().opacity(1, 1, easeInOutCubic),
     cumPct(cumulativePct, 1, easeInOutCubic)
   );
-  yield* waitFor(2);
+  yield* waitFor(1);
 
-  yield* waitUntil("expand7");
-  cumulativePct += barSignals[7]();
-  // cumulativePct += barSignals[8]();
-  // cumulativePct += barSignals[9]();
-  yield* all(
-    box().height(box().height() + 60 * 1, 1, easeInOutCubic),
-    cumPctLabel().opacity(1, 1, easeInOutCubic),
-    cumPct(cumulativePct, 1, easeInOutCubic)
-  );
-  yield* waitFor(2);
+  // yield* waitUntil("expand7");
+  // cumulativePct += barSignals[7]();
+  // // cumulativePct += barSignals[8]();
+  // // cumulativePct += barSignals[9]();
+  // yield* all(
+  //   box().height(box().height() + 60 * 1, 1, easeInOutCubic),
+  //   cumPctLabel().opacity(1, 1, easeInOutCubic),
+  //   cumPct(cumulativePct, 1, easeInOutCubic)
+  // );
+  // yield* waitFor(2);
 
   yield* waitUntil("undraw");
   yield* all(

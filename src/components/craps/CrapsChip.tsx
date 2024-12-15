@@ -25,8 +25,8 @@ const redChip: iChipColor = {
   background: "#820000",
   outerCircle: "#9a0000",
   innerCircle: "#9a0000",
-  marks: "#c00000",
-  text: "#e4e4e4",
+  marks: "#da371f",
+  text: "#fdfdfd",
   textOutline: "#222222",
 };
 
@@ -62,7 +62,7 @@ const greenChip: iChipColor = {
   outerCircle: "#35764c",
   innerCircle: "#1b3c26",
   marks: "#35764c",
-  text: "#e4e4e4",
+  text: "#fdfdfd",
   textOutline: "#090a0b",
 };
 

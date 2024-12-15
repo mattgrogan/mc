@@ -3,51 +3,51 @@
   "timeEvents": [
     {
       "name": "show-min",
-      "targetTime": 5.044272386943928
+      "targetTime": 3.300000000000001
     },
     {
       "name": "show-max",
-      "targetTime": 9.497399251276642
+      "targetTime": 10.95326558528339
     },
     {
       "name": "hist",
-      "targetTime": 15.197399251276641
+      "targetTime": 16.65326558528339
     },
     {
       "name": "zoomin",
-      "targetTime": 19.197399251276643
+      "targetTime": 20.65326558528339
     },
     {
       "name": "highlight-1",
-      "targetTime": 19.797399251276644
+      "targetTime": 21.25326558528339
     },
     {
       "name": "highlight-2",
-      "targetTime": 29.218138288042887
+      "targetTime": 26.25326558528339
     },
     {
       "name": "highlight-3",
-      "targetTime": 37.19763501985386
+      "targetTime": 34.23276231709437
     },
     {
       "name": "highlight-4",
-      "targetTime": 61.1863398819195
+      "targetTime": 39.256434548683906
     },
     {
       "name": "highlight-5",
-      "targetTime": 63.1863398819195
+      "targetTime": 41.256434548683906
     },
     {
       "name": "highlight-6",
-      "targetTime": 65.18633988191951
+      "targetTime": 43.256434548683906
     },
     {
       "name": "hide-box",
-      "targetTime": 67.70424240138516
+      "targetTime": 51.366158412126524
     },
     {
       "name": "end",
-      "targetTime": 68.70424240138516
+      "targetTime": 61.4444466784024
     }
   ],
   "seed": 2743687843

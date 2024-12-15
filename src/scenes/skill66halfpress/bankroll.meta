@@ -31,23 +31,19 @@
     },
     {
       "name": "expand5",
-      "targetTime": 21.950000000000003
+      "targetTime": 20.950000000000003
     },
     {
       "name": "expand6",
-      "targetTime": 24.950000000000003
-    },
-    {
-      "name": "expand7",
-      "targetTime": 27.950000000000003
+      "targetTime": 22.950000000000003
     },
     {
       "name": "undraw",
-      "targetTime": 30.950000000000003
+      "targetTime": 25.160362040979468
     },
     {
       "name": "end",
-      "targetTime": 32.95
+      "targetTime": 27.160362040979468
     }
   ],
   "seed": 3922981337

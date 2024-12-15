@@ -3,23 +3,23 @@
   "timeEvents": [
     {
       "name": "place68",
-      "targetTime": 4.4
+      "targetTime": 8.432781109087356
     },
     {
       "name": "place59",
-      "targetTime": 8.890575310833794
+      "targetTime": 15.677450835883253
     },
     {
       "name": "skill66",
-      "targetTime": 16.164685346173478
+      "targetTime": 22.951560871222938
     },
     {
       "name": "others",
-      "targetTime": 29.60713283092332
+      "targetTime": 31.34943129264362
     },
     {
       "name": "end",
-      "targetTime": 48.80713283092333
+      "targetTime": 49.549431292643625
     }
   ],
   "seed": 1728191366

@@ -1,6 +1,8 @@
 import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
+import audio from "../../../audio/DD - Skill66 HalfPress00108000.flac"
+
 import intro from "./intro?scene";
 import houseEdge from "./houseEdge?scene";
 
@@ -40,5 +42,5 @@ export default makeProject({
     reportCard,
     endCard,
   ],
-  //audio: audio,
+  audio: audio,
 });

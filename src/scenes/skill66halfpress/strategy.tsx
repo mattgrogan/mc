@@ -164,14 +164,21 @@ export default makeScene2D(function* (view) {
   yield* processor.round(firstSession[2]);
   yield* processor.round(firstSession[3]);
   yield* code().selection(lines(5, 6), 0.6);
+
+  yield* waitUntil("second-hit")
   yield* processor.round(firstSession[4]);
   yield* code().selection(lines(7, 8), 0.6);
+  yield* waitUntil("nine-hits")
   yield* processor.round(firstSession[5]);
+  yield* waitUntil("point-is-4")
   yield* processor.round(firstSession[6]);
   yield* code().selection(lines(9, 11), 0.6);
+  yield* waitUntil("nine-hits-again")
   yield* processor.round(firstSession[7]);
+  yield* waitUntil("start-six")
   yield* processor.round(firstSession[8]);
   yield* processor.round(firstSession[9]);
+  yield* waitUntil("nine-well")
   yield* processor.round(firstSession[10]);
   yield* processor.round(firstSession[11]);
   // yield* code().selection(lines(12, 14), 0.6);

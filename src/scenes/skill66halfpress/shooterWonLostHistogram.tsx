@@ -78,7 +78,7 @@ export default makeScene2D(function* (view) {
   // Add the ticks. Wait for them to be drawn
   plot().xAxis.updateTicks(-300, 300, 100);
   plot().yAxis.updateTicks(0, 100, 10);
-  yield* waitFor(2);
+  // yield* waitFor(2);
 
   // Draw the Titles
   yield* plot().xTitle.opacity(1, 1);
@@ -143,7 +143,11 @@ export default makeScene2D(function* (view) {
   yield* waitFor(0.2);
   yield* sequence(0.2, ...pcts.map((pct) => pct.opacity(1, 1)));
 
-  yield* waitFor(2);
+  // yield* waitFor(1);
+  yield* waitUntil("highlight-loss")
+  yield* lines[2].stroke(Bright.ORANGE, 1, linear, Color.createLerp("rgb"))
+  
+  yield* waitFor(1);
   yield* waitUntil("draw-box");
 
   const box = plot().box([-90, 70], [290, -3], {
@@ -186,10 +190,10 @@ export default makeScene2D(function* (view) {
   yield* waitFor(2);
   yield* waitUntil("zoom1");
 
-  yield* plot().rescale(-300, 300, 100, 0, 20, 10, 5);
+  yield* plot().rescale(-300, 300, 100, 0, 20, 10, 1);
   yield* all(
-    plot().rescale(-1000, 1000, 200, 0, 5, 1, 5),
-    ...lines.map((line) => line.lineWidth(30, 5, easeInOutCubic))
+    plot().rescale(-1000, 1000, 200, 0, 5, 1, 3),
+    ...lines.map((line) => line.lineWidth(30, 1, easeInOutCubic))
   );
 
   // SHOW THE BIG WINNERS
@@ -211,19 +215,17 @@ export default makeScene2D(function* (view) {
   }
   yield* all(...bigWinLines.map((line) => line.end(1, 1, easeOutCubic)));
 
-  yield* waitFor(2);
   yield* waitUntil("zoom2");
   yield* all(
-    ...lines.map((line) => line.lineWidth(10, 5, easeInOutCubic)),
-    ...bigWinLines.map((line) => line.lineWidth(10, 5, easeInOutCubic)),
-    plot().rescale(-5000, 5000, 1000, 0, 1, 0.2, 5)
+    ...lines.map((line) => line.lineWidth(10, 1, easeInOutCubic)),
+    ...bigWinLines.map((line) => line.lineWidth(10, 1, easeInOutCubic)),
+    plot().rescale(-5000, 5000, 1000, 0, 1, 0.2, 1)
   );
 
-  yield* waitFor(2);
   yield* waitUntil("zoom-all");
 
   plot().yLabelProps().decimalNumbers = 3;
-  yield* plot().rescale(-5000, 5000, 1000, 0, 0.2, 0.02, 5);
+  yield* plot().rescale(-5000, 5000, 1000, 0, 0.2, 0.02, 1);
   yield* all(
     ...lines.map((line) => line.lineWidth(5, 5, easeInOutCubic)),
     ...bigWinLines.map((line) => line.lineWidth(5, 5, easeInOutCubic)),
@@ -248,7 +250,7 @@ export default makeScene2D(function* (view) {
     startOffset: 100,
     start: 1,
   });
-  yield* maxLine.start(0, 5, easeOutCirc);
+  yield* maxLine.start(0, 1, easeOutCirc);
 
   yield* waitFor(2);
   yield* waitUntil("zoomout");
