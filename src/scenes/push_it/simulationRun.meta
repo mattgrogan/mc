@@ -1,0 +1,54 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "circ",
+      "targetTime": 2.1
+    },
+    {
+      "name": "run",
+      "targetTime": 7.7
+    },
+    {
+      "name": "results",
+      "targetTime": 22.7
+    },
+    {
+      "name": "tps",
+      "targetTime": 25.7
+    },
+    {
+      "name": "total-bet",
+      "targetTime": 30.2
+    },
+    {
+      "name": "total-won",
+      "targetTime": 33.7
+    },
+    {
+      "name": "total-lost",
+      "targetTime": 35.7
+    },
+    {
+      "name": "zoom-in",
+      "targetTime": 37.7
+    },
+    {
+      "name": "house-take",
+      "targetTime": 39.7
+    },
+    {
+      "name": "house-edge",
+      "targetTime": 44.7
+    },
+    {
+      "name": "zoom-out",
+      "targetTime": 49.7
+    },
+    {
+      "name": "end",
+      "targetTime": 50.7
+    }
+  ],
+  "seed": 3208474186
+}
