@@ -12,7 +12,7 @@ import { CrapsProcessor } from "../../components/craps/CrapsProcessor";
 import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
-import simData from "../../../../dicedata/output/dp678-test/dp678-test-sessions.json";
+import simData from "../../../../dicedata/output/dp678-100k/dp678-100k-sessions.json";
 import { Theme } from "../../styles";
 import { c } from "../../components/craps/CrapsTableCoords";
 
@@ -52,7 +52,7 @@ export default makeScene2D(function* (view) {
   const processor = new CrapsProcessor(table, bug);
 
   // let session = simData[15].SESSION;
-  let session = 187;
+  let session = 15574;
   useLogger().debug("SESSION=" + session);
   const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
