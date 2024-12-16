@@ -6,6 +6,7 @@ import {
   makeScene2D,
   Rect,
   Txt,
+  Node,
 } from "@motion-canvas/2d";
 import {
   createRef,
@@ -41,11 +42,12 @@ import { sim } from "./DD_00_Params";
 const titleGradient = new Gradient({
   type: "linear",
 
-  from: [0, -200],
-  to: [0, 200],
+  from: [0, -300],
+  to: [0, 300],
   stops: [
     { offset: 0, color: "#fff" },
-    { offset: 1, color: "#c9c9c9" },
+    //{ offset: 1, color: "#000" },
+    { offset: 1, color: "#797979" },
   ],
 });
 
@@ -145,49 +147,52 @@ export default makeScene2D(function* (view) {
   );
 
   const rows = createRefArray<Rect>();
+  const rowNodes = createRefArray<Node>();
 
   container().add(
-    <Rect
-      ref={rows}
-      opacity={0}
-      width={"100%"}
-      height={"18%"}
-      stroke={Grays.GRAY3}
-      lineWidth={5}
-    >
+    <Node ref={rowNodes}>
       <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.WHITE}
-        justifyContent={"start"}
-        alignItems={"center"}
-        padding={50}
+        ref={rows}
+        opacity={0}
+        width={"100%"}
+        height={"18%"}
+        stroke={Grays.GRAY3}
+        lineWidth={5}
       >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"SESSIONS"}
-          fontSize={90}
-          fontWeight={600}
-        ></Txt>
+        <Rect
+          width={"50%"}
+          height={"100%"}
+          fill={Grays.WHITE}
+          justifyContent={"start"}
+          alignItems={"center"}
+          padding={50}
+        >
+          <Txt
+            {...PoppinsWhite}
+            fill={Grays.BLACK}
+            text={"SESSIONS"}
+            fontSize={90}
+            fontWeight={600}
+          ></Txt>
+        </Rect>
+        <Rect
+          width={"50%"}
+          height={"100%"}
+          fill={Grays.GRAY1}
+          justifyContent={"center"}
+          alignItems={"center"}
+          padding={50}
+        >
+          <Txt
+            {...PoppinsWhite}
+            fill={Grays.BLACK}
+            text={"100,000"}
+            fontSize={150}
+            fontWeight={600}
+          ></Txt>
+        </Rect>
       </Rect>
-      <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.GRAY1}
-        justifyContent={"center"}
-        alignItems={"center"}
-        padding={50}
-      >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"100,000"}
-          fontSize={150}
-          fontWeight={600}
-        ></Txt>
-      </Rect>
-    </Rect>
+    </Node>
   );
 
   container().add(
