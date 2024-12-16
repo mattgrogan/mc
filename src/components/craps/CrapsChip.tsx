@@ -22,11 +22,11 @@ interface iChipColor {
 }
 
 const redChip: iChipColor = {
-  background: "#820000",
-  outerCircle: "#9a0000",
-  innerCircle: "#9a0000",
-  marks: "#da371f",
-  text: "#fdfdfd",
+  background: "#4e0000",
+  outerCircle: "#740000",
+  innerCircle: "#740000",
+  marks: "#853C3C",
+  text: "#fff",
   textOutline: "#222222",
 };
 

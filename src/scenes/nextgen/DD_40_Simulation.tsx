@@ -6,6 +6,7 @@ import {
   makeScene2D,
   Rect,
   Txt,
+  Node,
 } from "@motion-canvas/2d";
 import {
   createRef,
@@ -17,6 +18,7 @@ import {
   easeOutCubic,
   easeOutQuint,
   linear,
+  range,
   sequence,
   SimpleSignal,
   useLogger,
@@ -41,11 +43,12 @@ import { sim } from "./DD_00_Params";
 const titleGradient = new Gradient({
   type: "linear",
 
-  from: [0, -200],
-  to: [0, 200],
+  from: [0, -300],
+  to: [0, 300],
   stops: [
     { offset: 0, color: "#fff" },
-    { offset: 1, color: "#c9c9c9" },
+    //{ offset: 1, color: "#000" },
+    { offset: 1, color: "#797979" },
   ],
 });
 
@@ -53,6 +56,8 @@ export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
   const title = createRef<Rect>();
+  const headNode = createRef<Node>();
+  const subNode = createRef<Node>();
   const titleLines = createRefArray<Txt>();
 
   view.add(
@@ -73,46 +78,55 @@ export default makeScene2D(function* (view) {
       // gap={0}
       layout
     >
-      <Txt
-        ref={titleLines}
-        {...PoppinsWhite}
-        fill={Darker.BLUE}
-        text={sim.name}
-        fontSize={240}
-        fontWeight={600}
-        lineHeight={200}
+      <Node
+        ref={headNode}
         opacity={0}
-      />
-      <Txt
-        ref={titleLines}
-        {...PoppinsWhite}
-        fill={Grays.GRAY3}
-        fontSize={120}
-        fontWeight={600}
-        text={"SIMULATION"}
+      >
+        <Txt
+          ref={titleLines}
+          {...PoppinsWhite}
+          fill={Darker.BLUE}
+          text={sim.name}
+          fontSize={240}
+          fontWeight={600}
+          lineHeight={200}
+          opacity={1}
+        />
+      </Node>
+      <Node
+        ref={subNode}
         opacity={0}
-      />
+      >
+        <Txt
+          ref={titleLines}
+          {...PoppinsWhite}
+          fill={Grays.GRAY4}
+          fontSize={120}
+          fontWeight={600}
+          text={"SIMULATION"}
+          opacity={1}
+        />
+      </Node>
     </Rect>
   );
 
-  // suppress the layout for a while and remember the positions
-  title()
-    .children()
-    .forEach((ref) => ref.save());
-  title().layout(false);
-  title()
-    .children()
-    .forEach((ref) => ref.restore());
+  yield* waitFor(1);
 
   // Animate the title
-  yield FadeIn(titleLines[0], 0.6, easeOutCubic, [80, 0]);
+  yield FadeIn(headNode, 0.6, easeOutCubic, [80, 0]);
   yield* waitFor(0.4);
-  yield* FadeIn(titleLines[1], 0.6, easeOutCubic, [80, 0]);
+  yield* FadeIn(subNode, 0.6, easeOutCubic, [80, 0]);
 
-  const container = createRef<Layout>();
+  const parameterTable = createRef<Layout>();
+  const rowNodes = createRefArray<Node>();
+  const rowRects = createRefArray<Rect>();
+  const rowTitles = createRefArray<Txt>();
+  const rowValues = createRefArray<Txt>();
+
+  let z = -100;
   view.add(
     <Layout
-      ref={container}
+      ref={parameterTable}
       direction={"column"}
       width={"45%"}
       height={"60%"}
@@ -120,219 +134,104 @@ export default makeScene2D(function* (view) {
       x={view.width() / -4}
       gap={20}
       layout
-      opacity={0}
-    ></Layout>
-  );
-
-  container().add(
-    <Rect
-      width={"100%"}
-      height={"18%"}
-      fill={Darker.BLUE}
-      justifyContent={"center"}
-      alignItems={"center"}
-      stroke={Grays.GRAY3}
-      lineWidth={5}
+      opacity={1}
     >
-      <Txt
-        {...PoppinsWhite}
-        // fill={Darker.BLUE}
-        text={"SIMULATION PARAMETERS"}
-        fontSize={120}
-        fontWeight={600}
-      />
-    </Rect>
+      <Node
+        ref={rowNodes}
+        opacity={0}
+      >
+        <Rect
+          width={"100%"}
+          height={"18%"}
+          fill={Darker.BLUE}
+          justifyContent={"center"}
+          alignItems={"center"}
+          stroke={Grays.GRAY3}
+          lineWidth={5}
+        >
+          <Txt
+            {...PoppinsWhite}
+            // fill={Darker.BLUE}
+            text={"SIMULATION PARAMETERS"}
+            fontSize={120}
+            fontWeight={600}
+          />
+        </Rect>
+      </Node>
+      {range(4).map((index) => (
+        <Node
+          ref={rowNodes}
+          opacity={0}
+          zIndex={z--}
+        >
+          <Rect
+            ref={rowRects}
+            opacity={1}
+            width={"100%"}
+            height={"18%"}
+            stroke={Grays.GRAY3}
+            lineWidth={5}
+          >
+            <Rect
+              width={"50%"}
+              height={"100%"}
+              fill={Grays.WHITE}
+              justifyContent={"start"}
+              alignItems={"center"}
+              padding={50}
+            >
+              <Txt
+                ref={rowTitles}
+                {...PoppinsWhite}
+                fill={Grays.BLACK}
+                textWrap={"wrap"}
+                textAlign={"left"}
+                // text={"SESSIONS"}
+                fontSize={90}
+                fontWeight={600}
+              ></Txt>
+            </Rect>
+            <Rect
+              width={"50%"}
+              height={"100%"}
+              fill={Grays.GRAY1}
+              justifyContent={"center"}
+              alignItems={"center"}
+              padding={50}
+            >
+              <Txt
+                ref={rowValues}
+                {...PoppinsWhite}
+                fill={Grays.BLACK}
+                // text={"100,000"}
+                fontSize={150}
+                fontWeight={600}
+              ></Txt>
+            </Rect>
+          </Rect>
+        </Node>
+      ))}
+    </Layout>
   );
 
-  const rows = createRefArray<Rect>();
+  rowTitles[0].text("SESSIONS");
+  rowTitles[1].text("SHOOTERS PER SESSION");
+  rowTitles[2].text("TABLE MINIMUM");
+  rowTitles[3].text("TABLE MAXIMUM");
 
-  container().add(
-    <Rect
-      ref={rows}
-      opacity={0}
-      width={"100%"}
-      height={"18%"}
-      stroke={Grays.GRAY3}
-      lineWidth={5}
-    >
-      <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.WHITE}
-        justifyContent={"start"}
-        alignItems={"center"}
-        padding={50}
-      >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"SESSIONS"}
-          fontSize={90}
-          fontWeight={600}
-        ></Txt>
-      </Rect>
-      <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.GRAY1}
-        justifyContent={"center"}
-        alignItems={"center"}
-        padding={50}
-      >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"100,000"}
-          fontSize={150}
-          fontWeight={600}
-        ></Txt>
-      </Rect>
-    </Rect>
-  );
-
-  container().add(
-    <Rect
-      ref={rows}
-      opacity={0}
-      width={"100%"}
-      height={"18%"}
-      stroke={Grays.GRAY3}
-      lineWidth={5}
-    >
-      <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.WHITE}
-        justifyContent={"start"}
-        alignItems={"center"}
-        padding={50}
-      >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"SHOOTERS PER SESSION"}
-          textWrap={"wrap"}
-          textAlign={"left"}
-          fontSize={90}
-          fontWeight={600}
-        ></Txt>
-      </Rect>
-      <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.GRAY1}
-        justifyContent={"center"}
-        alignItems={"center"}
-        padding={50}
-      >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"10"}
-          fontSize={150}
-          fontWeight={600}
-        ></Txt>
-      </Rect>
-    </Rect>
-  );
-
-  container().add(
-    <Rect
-      ref={rows}
-      opacity={0}
-      width={"100%"}
-      height={"18%"}
-      stroke={Grays.GRAY3}
-      lineWidth={5}
-    >
-      <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.WHITE}
-        justifyContent={"start"}
-        alignItems={"center"}
-        padding={50}
-      >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"TABLE MINIMUM"}
-          textWrap={"wrap"}
-          textAlign={"left"}
-          fontSize={90}
-          fontWeight={600}
-        ></Txt>
-      </Rect>
-      <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.GRAY1}
-        justifyContent={"center"}
-        alignItems={"center"}
-        padding={50}
-      >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"$15"}
-          fontSize={150}
-          fontWeight={600}
-        ></Txt>
-      </Rect>
-    </Rect>
-  );
-
-  container().add(
-    <Rect
-      ref={rows}
-      opacity={0}
-      width={"100%"}
-      height={"18%"}
-      stroke={Grays.GRAY3}
-      lineWidth={5}
-    >
-      <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.WHITE}
-        justifyContent={"start"}
-        alignItems={"center"}
-        padding={50}
-      >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"TABLE MAXIMUM"}
-          textWrap={"wrap"}
-          textAlign={"left"}
-          fontSize={90}
-          fontWeight={600}
-        ></Txt>
-      </Rect>
-      <Rect
-        width={"50%"}
-        height={"100%"}
-        fill={Grays.GRAY1}
-        justifyContent={"center"}
-        alignItems={"center"}
-        padding={50}
-      >
-        <Txt
-          {...PoppinsWhite}
-          fill={Grays.BLACK}
-          text={"$5,000"}
-          fontSize={150}
-          fontWeight={600}
-        ></Txt>
-      </Rect>
-    </Rect>
-  );
+  rowValues[0].text(sim.sessions);
+  rowValues[1].text(sim.shooters_per_session);
+  rowValues[2].text(sim.table_min);
+  rowValues[3].text(sim.table_max);
 
   yield* waitFor(1);
-  yield* FadeIn(container, 1, easeOutCubic, [0, 100]);
+  //yield* FadeIn(parameterTable, 1, easeOutCubic, [0, 100]);
 
-  yield* waitFor(1);
-  yield* sequence(1.2, ...rows.map((r) => r.opacity(1, 1, easeInCubic)));
+  //yield* waitFor(1);
+  yield* sequence(
+    0.4,
+    ...rowNodes.map((r) => FadeIn(r, 1, easeOutCubic, [0, 50]))
+  );
   yield* waitFor(1);
 
   const term = createRef<Rect>();
