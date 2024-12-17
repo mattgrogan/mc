@@ -38,30 +38,6 @@
       "targetTime": 17.6
     },
     {
-      "name": "second-hit",
-      "targetTime": 48.300000000000004
-    },
-    {
-      "name": "nine-hits",
-      "targetTime": 59.900000000000006
-    },
-    {
-      "name": "point-is-4",
-      "targetTime": 71.49999999999997
-    },
-    {
-      "name": "nine-hits-again",
-      "targetTime": 77.79999999999995
-    },
-    {
-      "name": "start-six",
-      "targetTime": 86.89999999999993
-    },
-    {
-      "name": "nine-well",
-      "targetTime": 105.0999999999999
-    },
-    {
       "name": "end",
       "targetTime": 172.0999999999998
     }

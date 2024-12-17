@@ -11,17 +11,17 @@ import simulationTitle from "../titles/simulationTitle?scene";
 import simulationRun from "./simulationRun?scene";
 
 import shooterWinLosePush from "./shooterWinLosePush?scene";
-// import shooterWonLostHistogram from "./shooterWonLostHistogram?scene";
+import shooterWonLostHistogram from "./shooterWonLostHistogram?scene";
 
-// import sessionWinLosePush from "./sessionWinLosePush?scene";
-// import sessionWonLostHistogram from "./sessionWonLostHistogram?scene";
+import sessionWinLosePush from "./sessionWinLosePush?scene";
+import sessionWonLostHistogram from "./sessionWonLostHistogram?scene";
 
-// import bankroll from "./bankroll?scene";
+import bankroll from "./bankroll?scene";
 
-// import reportCardTitle from "../titles/reportCardTitle?scene";
-// import reportCard from "./reportCard?scene";
+import reportCardTitle from "../titles/reportCardTitle?scene";
+import reportCard from "./reportCard?scene";
 
-// import endCard from "./endCard?scene";
+import endCard from "./endCard?scene";
 
 export default makeProject({
   scenes: [
@@ -32,13 +32,13 @@ export default makeProject({
     simulationRun,
     // houseEdge,
     shooterWinLosePush,
-    // shooterWonLostHistogram,
-    // sessionWinLosePush,
-    // sessionWonLostHistogram,
-    // bankroll,
-    // reportCardTitle,
-    // reportCard,
-    // endCard,
+    shooterWonLostHistogram,
+    sessionWinLosePush,
+    sessionWonLostHistogram,
+    bankroll,
+    reportCardTitle,
+    reportCard,
+    endCard,
   ],
   // audio: audio,
 });
