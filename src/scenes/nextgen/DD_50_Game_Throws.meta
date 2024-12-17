@@ -2,6 +2,14 @@
   "version": 0,
   "timeEvents": [
     {
+      "name": "end-dice",
+      "targetTime": 26.400000000000034
+    },
+    {
+      "name": "end-throws",
+      "targetTime": 41.3000000000001
+    },
+    {
       "name": "end",
       "targetTime": 54.900000000000006
     }

@@ -12,6 +12,7 @@ import {
   easeInOutCubic,
   easeOutCubic,
   fadeTransition,
+  linear,
   sequence,
   waitFor,
   waitUntil,
@@ -26,10 +27,14 @@ import { CrapsProcessor } from "../../components/craps/CrapsProcessor";
 import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { CrapsTable } from "../../components/craps/CrapsTable";
 
-import simData from "../../../../dicedata/output/pushit-100k/pushit-100k-sessions.json";
+import simData from "../../../../dicedata/output/pushit-test/pushit-test-sessions.json";
 import { c } from "../../components/craps/CrapsTableCoords";
 
 Code.defaultHighlighter = new LezerHighlighter(parser);
+
+function roll(r: number): number {
+  return r - 1;
+}
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
@@ -81,14 +86,14 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("step3");
   const step3 = CODE`\
-3. First hit: Collect
+3. Next hit: Collect
 `;
   yield* code().code.append(step3, 1);
   yield* waitFor(1);
 
   yield* waitUntil("step4");
   const step4 = CODE`\
-4. Second Hit: Press to 
+4. Next hit: Press to 
    $88 Inside
 `;
   yield* code().code.append(step4, 1);
@@ -96,14 +101,14 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("step5");
   const step5 = CODE`\
-5. Third hit: Collect
+5. Next hit: Collect
 `;
   yield* code().code.append(step5, 1);
   yield* waitFor(1);
 
   yield* waitUntil("step6");
   const step6 = CODE`\
-6. Fourth hit: Add 4 & 10 
+6. Next hit: Add 4 & 10 
      for $15 each
 `;
   yield* code().code.append(step6, 1);
@@ -111,14 +116,14 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("step7");
   const step7 = CODE`\
-7. Fifth hit: Collect
+7. Next hit: Collect
 `;
   yield* code().code.append(step7, 1);
   yield* waitFor(1);
 
   yield* waitUntil("step8");
   const step8 = CODE`\
-8. Next Hits: Alternate 
+8. Future hits: Alternate 
    full press and 
    collect
 `;
@@ -158,46 +163,46 @@ export default makeScene2D(function* (view) {
   );
 
   const badChip = table().bets().newChip(15, c.PLAYER);
-  yield table().bets().moveChipTo(badChip, c.PASSLINE, 0);
+  yield table().bets().moveChipTo(badChip, c.PASSLINE, 0, linear, 0);
 
   const processor = new CrapsProcessor(table, bug);
-  //const session = simData[0].SESSION;
-  const session = 6228;
+  const session = simData[0].SESSION;
+  //const session = 6228;
   const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
   yield* code().selection(lines(2, 3), 0.6);
-  yield* processor.round(firstSession[0]);
-  yield* processor.round(firstSession[1]);
+  yield* processor.round(firstSession[roll(1)]);
+  yield* processor.round(firstSession[roll(2)]);
+  yield* processor.round(firstSession[roll(3)]);
   yield* code().selection(lines(4), 0.6);
-  yield* processor.round(firstSession[2]);
-  yield* processor.round(firstSession[3]);
-  yield* code().selection(lines(5, 6), 0.6);
-
-  yield* waitUntil("second-hit");
-  yield* processor.round(firstSession[4]);
-  yield* code().selection(lines(7, 8), 0.6);
-  yield* waitUntil("nine-hits");
-  yield* processor.round(firstSession[5]);
-  yield* waitUntil("point-is-4");
-  yield* processor.round(firstSession[6]);
-  yield* code().selection(lines(9, 11), 0.6);
-  yield* waitUntil("nine-hits-again");
-  yield* processor.round(firstSession[7]);
-  yield* waitUntil("start-six");
-  yield* processor.round(firstSession[8]);
-  yield* processor.round(firstSession[9]);
-  yield* waitUntil("nine-well");
-  yield* processor.round(firstSession[10]);
-  yield* processor.round(firstSession[11]);
-  // yield* code().selection(lines(12, 14), 0.6);
-  yield* processor.round(firstSession[12]);
+  yield* processor.round(firstSession[roll(4)]);
+  yield* code().selection(lines(5), 0.6);
+  yield* processor.round(firstSession[roll(5)]);
+  yield* code().selection(lines(6, 7), 0.6);
+  yield* processor.round(firstSession[roll(6)]);
+  yield* processor.round(firstSession[roll(7)]);
+  yield* processor.round(firstSession[roll(8)]);
+  yield* code().selection(lines(8), 0.6);
+  yield* processor.round(firstSession[roll(9)]);
+  yield* code().selection(lines(9, 10), 0.6);
+  yield* processor.round(firstSession[roll(10)]);
+  yield* processor.round(firstSession[roll(11)]);
+  yield* processor.round(firstSession[roll(12)]);
+  yield* processor.round(firstSession[roll(13)]);
+  yield* processor.round(firstSession[roll(14)]);
+  yield* code().selection(lines(11), 0.6);
+  yield* processor.round(firstSession[roll(15)]);
+  yield* code().selection(lines(12, 14), 0.6);
+  yield* processor.round(firstSession[roll(16)]);
+  yield* processor.round(firstSession[roll(17)]);
+  yield* processor.round(firstSession[roll(18)]);
+  yield* processor.round(firstSession[roll(19)]);
+  yield* processor.round(firstSession[roll(20)]);
+  yield* processor.round(firstSession[roll(21)]);
+  yield* processor.round(firstSession[roll(22)]);
+  yield* processor.round(firstSession[roll(23)]);
+  yield* processor.round(firstSession[roll(24)]);
   yield* code().selection(DEFAULT, 0.6);
-  yield* processor.round(firstSession[13]);
-  yield* processor.round(firstSession[14]);
-  yield* processor.round(firstSession[15]);
-  yield* processor.round(firstSession[16]);
-  yield* processor.round(firstSession[17]);
-  // yield* processor.round(firstSession[18]);
 
   yield* waitFor(3);
 

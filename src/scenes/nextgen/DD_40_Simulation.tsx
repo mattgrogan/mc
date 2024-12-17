@@ -43,12 +43,11 @@ import { sim } from "./DD_00_Params";
 const titleGradient = new Gradient({
   type: "linear",
 
-  from: [0, -300],
-  to: [0, 300],
+  from: [0, -200],
+  to: [0, 200],
   stops: [
     { offset: 0, color: "#fff" },
-    //{ offset: 1, color: "#000" },
-    { offset: 1, color: "#797979" },
+    { offset: 1, color: "#c9c9c9" },
   ],
 });
 
@@ -146,8 +145,8 @@ export default makeScene2D(function* (view) {
           fill={Darker.BLUE}
           justifyContent={"center"}
           alignItems={"center"}
-          stroke={Grays.GRAY3}
-          lineWidth={5}
+          stroke={Grays.GRAY2}
+          lineWidth={3}
         >
           <Txt
             {...PoppinsWhite}
