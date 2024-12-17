@@ -15,7 +15,9 @@ import {
   SimpleSignal,
   spawn,
   Vector2,
+  clamp,
 } from "@motion-canvas/core";
+
 import { Plot } from "./plot";
 
 const DEFAULT_LABEL_DECIMALS = 0;
@@ -55,6 +57,7 @@ export interface TickLabelProps extends TxtProps {
 export interface PlotAxisProps extends LineProps {
   plot: Plot;
   dir: AxisDirection;
+  axisLineWidth?: number;
   tickLength?: number;
   tickProps?: LineProps;
   tickLabelProps?: TickLabelProps;
@@ -78,6 +81,13 @@ export class PlotAxis extends Line {
    */
   @signal()
   public declare readonly dir: SimpleSignal<AxisDirection, this>;
+
+  /**
+   * The width of the axis line
+   */
+  @initial(10)
+  @signal()
+  public declare readonly axisLineWidth: SimpleSignal<number, this>;
 
   /**
    * The length of the tick marks
@@ -109,6 +119,7 @@ export class PlotAxis extends Line {
     super({
       ...props,
     });
+    this.lineWidth(() => clamp(0, this.axisLineWidth(), this.arcLength()));
   }
 
   public enableTickEffect(start: number, stop: number, step: number) {

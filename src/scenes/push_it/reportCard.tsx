@@ -173,12 +173,12 @@ export default makeScene2D(function* (view) {
       })}`
   );
   fields[1].text("10");
-  fields[2].text("2.921 %");
-  fields[3].text("28.1 %");
-  fields[4].text("71.8 %");
-  fields[5].text("-$363 to +$47");
-  fields[6].text("-$475 to +$812");
-  fields[7].text("$537"); //USE R THIS IS THE p01 after group by session
+  fields[2].text("3.372 %");
+  fields[3].text("23.2 %");
+  fields[4].text("76.7 %");
+  fields[5].text("-$340 to -$21");
+  fields[6].text("-$458 to +$650");
+  fields[7].text("$531"); //USE R THIS IS THE p01 after group by session
 
   yield* slideTransition(Direction.Right);
 
