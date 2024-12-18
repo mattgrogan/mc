@@ -79,7 +79,7 @@ const blackChip: iChipColor = {
   background: "#101010",
   outerCircle: "#262626",
   innerCircle: "#494949",
-  marks: "#ffffff",
+  marks: "#797979",
   text: "#ffffff",
   textOutline: "#090a0b",
 };

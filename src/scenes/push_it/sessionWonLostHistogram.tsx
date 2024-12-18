@@ -195,17 +195,17 @@ export default makeScene2D(function* (view) {
   );
   yield* waitFor(1);
 
-  // yield* waitUntil("highlight-7");
-  // yield* all(
-  //   chart().highlightBar(4, Bright.ORANGE),
-  //   chart().highlightBar(15, Bright.ORANGE),
-  //   chart().moveBox(
-  //     histogramData[4].CUTS,
-  //     histogramData[16].CUTS,
-  //     chart().getPercentForBars([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
-  //   )
-  // );
-  // yield* waitFor(1);
+  yield* waitUntil("highlight-7");
+  yield* all(
+    chart().highlightBar(4, Bright.ORANGE),
+    chart().highlightBar(15, Bright.ORANGE),
+    chart().moveBox(
+      histogramData[4].CUTS,
+      histogramData[16].CUTS,
+      chart().getPercentForBars([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+    )
+  );
+  yield* waitFor(1);
 
   // yield* waitUntil("highlight-7");
   // yield* all(

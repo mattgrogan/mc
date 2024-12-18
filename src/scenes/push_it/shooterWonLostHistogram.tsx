@@ -128,13 +128,13 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("highlight-1");
   yield* all(
-    chart().highlightBar(10, Bright.ORANGE)
+    chart().highlightBar(9, Bright.ORANGE)
     //chart().highlightBar(upperBar, Bright.ORANGE)
   );
   yield* chart().moveBox(
+    data[9].CUTS,
     data[10].CUTS,
-    data[11].CUTS,
-    chart().getPercentForBars([10])
+    chart().getPercentForBars([9])
   );
   yield* chart().drawBox();
   yield* waitFor(1);
@@ -162,41 +162,41 @@ export default makeScene2D(function* (view) {
   );
   yield* waitFor(1);
 
-  yield* waitUntil("highlight-4");
-  yield* all(
-    chart().highlightBar(7, Bright.ORANGE),
-    chart().highlightBar(12, Bright.ORANGE),
-    chart().moveBox(
-      data[7].CUTS,
-      data[13].CUTS,
-      chart().getPercentForBars([7, 8, 9, 10, 11, 12])
-    )
-  );
-  yield* waitFor(1);
+  // yield* waitUntil("highlight-4");
+  // yield* all(
+  //   chart().highlightBar(8, Bright.ORANGE),
+  //   chart().highlightBar(12, Bright.ORANGE),
+  //   chart().moveBox(
+  //     data[8].CUTS,
+  //     data[13].CUTS,
+  //     chart().getPercentForBars([8, 9, 10, 11, 12])
+  //   )
+  // );
+  // yield* waitFor(1);
 
-  yield* waitUntil("highlight-5");
-  yield* all(
-    chart().highlightBar(6, Bright.ORANGE),
-    chart().highlightBar(13, Bright.ORANGE),
-    chart().moveBox(
-      data[6].CUTS,
-      data[14].CUTS,
-      chart().getPercentForBars([6, 7, 8, 9, 10, 11, 12, 13])
-    )
-  );
-  yield* waitFor(1);
+  // yield* waitUntil("highlight-5");
+  // yield* all(
+  //   chart().highlightBar(6, Bright.ORANGE),
+  //   chart().highlightBar(13, Bright.ORANGE),
+  //   chart().moveBox(
+  //     data[6].CUTS,
+  //     data[14].CUTS,
+  //     chart().getPercentForBars([6, 7, 8, 9, 10, 11, 12, 13])
+  //   )
+  // );
+  // yield* waitFor(1);
 
-  yield* waitUntil("highlight-6");
-  yield* all(
-    chart().highlightBar(5, Bright.ORANGE),
-    chart().highlightBar(14, Bright.ORANGE),
-    chart().moveBox(
-      data[5].CUTS,
-      data[15].CUTS,
-      chart().getPercentForBars([5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
-    )
-  );
-  yield* waitFor(1);
+  // yield* waitUntil("highlight-6");
+  // yield* all(
+  //   chart().highlightBar(5, Bright.ORANGE),
+  //   chart().highlightBar(14, Bright.ORANGE),
+  //   chart().moveBox(
+  //     data[5].CUTS,
+  //     data[15].CUTS,
+  //     chart().getPercentForBars([5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
+  //   )
+  // );
+  // yield* waitFor(1);
 
   // yield* waitUntil("highlight-7");
   // yield* all(

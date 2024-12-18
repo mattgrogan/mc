@@ -138,6 +138,17 @@ export const grayGradient = new Gradient({
   ],
 });
 
+export const silverGradient = new Gradient({
+  type: "linear",
+
+  from: [0, -100],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: "#d2d2d2" },
+    { offset: 1, color: "#818181" },
+  ],
+});
+
 export const whiteGradientH = new Gradient({
   type: "linear",
 
