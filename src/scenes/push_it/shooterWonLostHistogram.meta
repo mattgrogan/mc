@@ -30,24 +30,12 @@
       "targetTime": 22
     },
     {
-      "name": "highlight-4",
-      "targetTime": 24
-    },
-    {
-      "name": "highlight-5",
-      "targetTime": 26
-    },
-    {
-      "name": "highlight-6",
-      "targetTime": 28
-    },
-    {
       "name": "hide-box",
-      "targetTime": 30
+      "targetTime": 25.088814266277655
     },
     {
       "name": "end",
-      "targetTime": 31
+      "targetTime": 26.088814266277655
     }
   ],
   "seed": 319453344

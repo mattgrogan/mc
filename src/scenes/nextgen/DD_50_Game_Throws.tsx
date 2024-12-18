@@ -46,6 +46,7 @@ import {
   PoppinsBlack,
   PoppinsWhite,
   redGradient,
+  silverGradient,
   Theme,
   whiteGradientH,
 } from "../../styles";
@@ -59,10 +60,12 @@ import { Plot } from "../../components/plot/plot";
 import simstats from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-sessions-shooters-rolls.json";
 
 //-rolls_by_session.json
-import rollsBySession from "../../../../dicedata/output/pushit-100k/pushit-100k-rolls_by_session.json";
+import rollsBySession from "../../../../dicedata/output/pushit-new/pushit-new-rolls_by_session.json";
+//-rolls_by_shooter.json
+import rollsByShooter from "../../../../dicedata/output/pushit-new/pushit-new-rolls_by_shooter.json";
 
 //-quantiles.json
-import quantiles from "../../../../dicedata/output/pushit-100k/pushit-100k-quantiles.json";
+import quantiles from "../../../../dicedata/output/pushit-new/pushit-new-quantiles.json";
 
 // This is the center of the content area
 // OffsetX by the TOC height 14%
@@ -509,6 +512,14 @@ export default makeScene2D(function* (view) {
   yield* doSessionPlot(container());
   yield* camera().restore(2, easeInOutCubic);
 
+  yield* waitFor(2);
+
+  camera().save();
+  yield delay(3, camera().position(CONTENT_CENTER, 2, easeInOutCubic));
+  yield delay(3, camera().zoom(1.3, 2, easeInOutCubic));
+  yield* doShooterPlot(container());
+  yield* camera().restore(2, easeInOutCubic);
+
   yield* waitFor(10);
   yield* waitUntil("end");
 });
@@ -518,7 +529,7 @@ function* doSessionPlot(container: Layout) {
    * Create the histogram of session throws
    */
   const sessionThrowsPlot = createRef<Plot>();
-  const maxX = 300;
+  const maxX = 240;
 
   container.add(
     <Plot
@@ -538,7 +549,7 @@ function* doSessionPlot(container: Layout) {
       yLabelProps={{
         fill: Grays.GRAY1,
         decimalNumbers: 0,
-        fontSize: 80,
+        fontSize: 85,
         suffix: "%",
       }}
       xTitleProps={{
@@ -588,7 +599,7 @@ function* doSessionPlot(container: Layout) {
     );
     const line = sessionThrowsPlot().vLine(point, {
       stroke: Bright.BLUE,
-      lineWidth: 70,
+      lineWidth: 80,
       opacity: 1,
       end: 0,
     });
@@ -599,6 +610,221 @@ function* doSessionPlot(container: Layout) {
     if (rollsBySession[index].PCT > 0.5) {
       const pct = rollsBySession[index].PCT.toFixed(1) + "%";
       const label = sessionThrowsPlot().text(point, {
+        text: pct,
+        offsetY: 1.5,
+        fill: "white",
+        opacity: 0,
+        fontSize: 38,
+      });
+
+      sessionThrowsPcts.push(label);
+    }
+  }
+
+  yield* sequence(
+    0.1,
+    ...sessionThrowslines.map((line) => line.end(1, 1, easeOutCubic))
+  );
+  yield* waitFor(0.2);
+  yield* sequence(0.2, ...sessionThrowsPcts.map((pct) => pct.opacity(1, 1)));
+
+  yield* waitFor(1);
+
+  // Show the table
+  const percentileTable = createRef<Layout>();
+  const percentileNodes = createRefArray<Node>();
+  const percentileHeaders = createRefArray<Txt>();
+  const percentileValues = createRefArray<Txt>();
+  container.add(
+    <Layout
+      ref={percentileTable}
+      width={2800}
+      height={300}
+      position={CONTENT_CENTER.addY(600)}
+      direction={"row"}
+      justifyContent={"center"}
+      layout
+    >
+      {range(7).map((index) => (
+        <Layout
+          direction={"column"}
+          width={"13%"}
+          height={"100%"}
+        >
+          <Node
+            ref={percentileNodes}
+            opacity={0}
+          >
+            <Rect
+              height={"50%"}
+              fill={LightBlueGradient}
+              justifyContent={"center"}
+              alignItems={"center"}
+              stroke={Grays.GRAY1}
+              lineWidth={3}
+            >
+              <Txt
+                ref={percentileHeaders}
+                {...PoppinsWhite}
+                fontSize={80}
+                fontWeight={600}
+              ></Txt>
+            </Rect>
+            <Rect
+              height={"50%"}
+              fill={silverGradient}
+              stroke={Grays.GRAY1}
+              justifyContent={"center"}
+              alignItems={"center"}
+              lineWidth={3}
+            >
+              <Txt
+                ref={percentileValues}
+                {...PoppinsBlack}
+                fontSize={80}
+                fontWeight={600}
+              ></Txt>
+            </Rect>
+          </Node>
+        </Layout>
+      ))}
+    </Layout>
+  );
+
+  percentileHeaders[0].text("MIN");
+  percentileHeaders[1].text("5TH");
+  percentileHeaders[2].text("25TH");
+  percentileHeaders[3].text("MEDIAN");
+  percentileHeaders[4].text("75TH");
+  percentileHeaders[5].text("95TH");
+  percentileHeaders[6].text("MAX");
+
+  const id = "SESSION_ROLL_BY_SESSION";
+  const p00 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0
+  ).VALUE;
+  const p05 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.05
+  ).VALUE;
+  const p25 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.25
+  ).VALUE;
+  const p50 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.5
+  ).VALUE;
+  const p75 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.75
+  ).VALUE;
+  const p95 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.95
+  ).VALUE;
+  const p100 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 1
+  ).VALUE;
+
+  // useLogger().error({ message: minVal.VALUE.toFixed(0) });
+  percentileValues[0].text(p00.toFixed(0));
+  percentileValues[1].text(p05.toFixed(0));
+  percentileValues[2].text(p25.toFixed(0));
+  percentileValues[3].text(p50.toFixed(0));
+  percentileValues[4].text(p75.toFixed(0));
+  percentileValues[5].text(p95.toFixed(0));
+  percentileValues[6].text(p100.toFixed(0));
+
+  yield* sequence(0.2, ...percentileNodes.map((pct) => pct.opacity(1, 1)));
+
+  yield* waitFor(5);
+  yield* waitUntil("end-throws");
+  yield sessionThrowsPlot().opacity(0, 2);
+  yield percentileTable().opacity(0, 2);
+}
+
+function* doShooterPlot(container: Layout) {
+  /**
+   * Create the histogram of session throws
+   */
+  const plot = createRef<Plot>();
+  const maxX = 120;
+
+  container.add(
+    <Plot
+      ref={plot}
+      position={CONTENT_CENTER.addY(-300)}
+      xMin={0}
+      xMax={maxX}
+      yMax={40}
+      size={[2600, 700]}
+      xAxisProps={{
+        opacity: 1,
+        stroke: Grays.GRAY1,
+        lineWidth: 8,
+        end: 0,
+      }}
+      xLabelProps={{ fill: Grays.GRAY1, decimalNumbers: 0, fontSize: 80 }}
+      yLabelProps={{
+        fill: Grays.GRAY1,
+        decimalNumbers: 0,
+        fontSize: 80,
+        suffix: "%",
+      }}
+      xTitleProps={{
+        fill: Grays.GRAY1,
+        text: "THROWS PER SHOOTER",
+        lineToLabelPadding: 200,
+        opacity: 0,
+        fontSize: 100,
+      }}
+      yAxisProps={{ opacity: 1, stroke: Grays.GRAY1, lineWidth: 8, end: 0 }}
+      yTitleProps={{
+        fill: Grays.GRAY1,
+        text: "FREQUENCY",
+        rotation: -90,
+        lineToLabelPadding: -280,
+        opacity: 0,
+        fontSize: 100,
+      }}
+    ></Plot>
+  );
+
+  yield* waitFor(1);
+
+  // Draw the Axis
+  yield* all(
+    plot().xAxis.end(1, 0.6, easeOutCubic)
+    // plot().yAxis.end(1, 0.6, easeOutCubic)
+  );
+
+  // Add the ticks. Wait for them to be drawn
+  plot().xAxis.updateTicks(0, maxX, 20);
+  // plot().yAxis.updateTicks(0, 20, 5);
+  // yield* waitFor(2);
+
+  // Draw the Titles
+  yield* plot().xTitle.opacity(1, 0.6);
+  // yield* plot().yTitle.opacity(1, 1);
+
+  const sessionThrowslines: Line[] = [];
+  const sessionThrowsPcts: Txt[] = [];
+
+  for (let index = 0; index < rollsByShooter.length; index++) {
+    const offset = 50;
+    const point = new Vector2(
+      rollsByShooter[index].MIDPOINT,
+      rollsByShooter[index].PCT
+    );
+    const line = plot().vLine(point, {
+      stroke: Bright.BLUE,
+      lineWidth: 80,
+      opacity: 1,
+      end: 0,
+    });
+    if (rollsByShooter[index].COUNT > 0) {
+      sessionThrowslines.push(line);
+    }
+
+    if (rollsByShooter[index].PCT > 0.5) {
+      const pct = rollsByShooter[index].PCT.toFixed(1) + "%";
+      const label = plot().text(point, {
         text: pct,
         offsetY: 1.5,
         fill: "white",
@@ -621,7 +847,9 @@ function* doSessionPlot(container: Layout) {
 
   // Show the table
   const percentileTable = createRef<Layout>();
+  const percentileNodes = createRefArray<Node>();
   const percentileHeaders = createRefArray<Txt>();
+  const percentileValues = createRefArray<Txt>();
   container.add(
     <Layout
       ref={percentileTable}
@@ -638,27 +866,41 @@ function* doSessionPlot(container: Layout) {
           width={"13%"}
           height={"100%"}
         >
-          <Rect
-            height={"50%"}
-            fill={LightBlueGradient}
-            justifyContent={"center"}
-            alignItems={"center"}
-            stroke={Grays.GRAY1}
-            lineWidth={3}
+          <Node
+            ref={percentileNodes}
+            opacity={0}
           >
-            <Txt
-              ref={percentileHeaders}
-              {...PoppinsWhite}
-              fontSize={80}
-              fontWeight={600}
-            ></Txt>
-          </Rect>
-          <Rect
-            height={"50%"}
-            fill={whiteGradientH}
-            stroke={Grays.GRAY3}
-            lineWidth={3}
-          ></Rect>
+            <Rect
+              height={"50%"}
+              fill={LightBlueGradient}
+              justifyContent={"center"}
+              alignItems={"center"}
+              stroke={Grays.GRAY1}
+              lineWidth={3}
+            >
+              <Txt
+                ref={percentileHeaders}
+                {...PoppinsWhite}
+                fontSize={80}
+                fontWeight={600}
+              ></Txt>
+            </Rect>
+            <Rect
+              height={"50%"}
+              fill={silverGradient}
+              stroke={Grays.GRAY1}
+              justifyContent={"center"}
+              alignItems={"center"}
+              lineWidth={3}
+            >
+              <Txt
+                ref={percentileValues}
+                {...PoppinsBlack}
+                fontSize={80}
+                fontWeight={600}
+              ></Txt>
+            </Rect>
+          </Node>
         </Layout>
       ))}
     </Layout>
@@ -672,7 +914,42 @@ function* doSessionPlot(container: Layout) {
   percentileHeaders[5].text("95TH");
   percentileHeaders[6].text("MAX");
 
-  // const minVal = quantiles.find((stat) => stat.FIELD == "");
+  const id = "SHOOTER_ROLL_BY_SHOOTER";
+  const p00 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0
+  ).VALUE;
+  const p05 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.05
+  ).VALUE;
+  const p25 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.25
+  ).VALUE;
+  const p50 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.5
+  ).VALUE;
+  const p75 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.75
+  ).VALUE;
+  const p95 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 0.95
+  ).VALUE;
+  const p100 = quantiles.find(
+    (stat) => stat.ID === id && stat.QUANTILE === 1
+  ).VALUE;
+
+  // useLogger().error({ message: minVal.VALUE.toFixed(0) });
+  percentileValues[0].text(p00.toFixed(0));
+  percentileValues[1].text(p05.toFixed(0));
+  percentileValues[2].text(p25.toFixed(0));
+  percentileValues[3].text(p50.toFixed(0));
+  percentileValues[4].text(p75.toFixed(0));
+  percentileValues[5].text(p95.toFixed(0));
+  percentileValues[6].text(p100.toFixed(0));
+
+  yield* sequence(0.2, ...percentileNodes.map((pct) => pct.opacity(1, 1)));
+
   yield* waitFor(5);
-  yield* waitUntil("end-throws");
+  yield* waitUntil("end-sessionthrows");
+  yield plot().opacity(0, 2);
+  yield percentileTable().opacity(0, 2);
 }

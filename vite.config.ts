@@ -34,6 +34,7 @@ export default defineConfig({
         "./src/scenes/push_it/push_it_demo.ts",
         "./src/scenes/push_it/pushit.ts",
         "./src/scenes/dp678/dp678_demo.ts",
+        "./src/scenes/dp678hedge/dp678hedge_demo.ts",
       ],
     }),
     ffmpeg(),
