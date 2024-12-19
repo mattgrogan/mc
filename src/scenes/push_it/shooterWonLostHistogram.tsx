@@ -141,7 +141,7 @@ export default makeScene2D(function* (view) {
 
   yield* waitUntil("highlight-2");
   yield* all(
-    chart().highlightBar(9, Bright.ORANGE),
+    chart().highlightBar(10, Bright.ORANGE),
     chart().moveBox(
       data[9].CUTS,
       data[11].CUTS,

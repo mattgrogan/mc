@@ -11,11 +11,11 @@
     },
     {
       "name": "show-losers",
-      "targetTime": 7.3
+      "targetTime": 8.627484502771448
     },
     {
       "name": "end",
-      "targetTime": 11.3
+      "targetTime": 17.570783936901318
     }
   ],
   "seed": 2520946179

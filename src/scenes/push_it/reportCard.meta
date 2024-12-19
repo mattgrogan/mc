@@ -15,35 +15,35 @@
     },
     {
       "name": "win-rate",
-      "targetTime": 7.6
+      "targetTime": 10.354301958548142
     },
     {
       "name": "lose-rate",
-      "targetTime": 10.6
+      "targetTime": 14.858295791176403
     },
     {
       "name": "outcome-50",
-      "targetTime": 13.6
+      "targetTime": 17.858295791176403
     },
     {
       "name": "highlight-50",
-      "targetTime": 16.6
+      "targetTime": 20.858295791176403
     },
     {
       "name": "outcome-90",
-      "targetTime": 21.6
+      "targetTime": 25.858295791176403
     },
     {
       "name": "highlight-90",
-      "targetTime": 22.6
+      "targetTime": 26.858295791176403
     },
     {
       "name": "Bankroll",
-      "targetTime": 28.6
+      "targetTime": 36.161925801759736
     },
     {
       "name": "endslide",
-      "targetTime": 31.6
+      "targetTime": 56.02105416372087
     }
   ],
   "seed": 2176227769

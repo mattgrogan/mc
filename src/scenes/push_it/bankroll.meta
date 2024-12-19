@@ -15,35 +15,35 @@
     },
     {
       "name": "expand-1",
-      "targetTime": 9.950000000000003
+      "targetTime": 10.714540923369775
     },
     {
       "name": "expand2",
-      "targetTime": 12.950000000000003
+      "targetTime": 14.198750174837297
     },
     {
       "name": "expand3",
-      "targetTime": 15.950000000000003
+      "targetTime": 18.549439139457228
     },
     {
       "name": "expand4",
-      "targetTime": 18.950000000000003
+      "targetTime": 21.906224903696454
     },
     {
       "name": "expand5",
-      "targetTime": 20.950000000000003
+      "targetTime": 24.492372944946613
     },
     {
       "name": "expand6",
-      "targetTime": 22.950000000000003
+      "targetTime": 27.002066893859794
     },
     {
       "name": "undraw",
-      "targetTime": 24.950000000000003
+      "targetTime": 36.367144455655264
     },
     {
       "name": "end",
-      "targetTime": 26.950000000000003
+      "targetTime": 38.367144455655264
     }
   ],
   "seed": 4199096558
