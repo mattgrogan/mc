@@ -13,9 +13,9 @@ import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
 //-sessions.json
-import simData from "../../../../dicedata/output/evensteven-test/evensteven-test-sessions.json";
+import simData from "../../../../dicedata/output/threehandband-test/threehandband-test-sessions.json";
 //-all-sessions.json
-import sessions from "../../../../dicedata/output/evensteven-test/evensteven-test-all_sessions.json";
+import sessions from "../../../../dicedata/output/threehandband-test/threehandband-test-all_sessions.json";
 
 import { Theme } from "../../styles";
 import { c } from "../../components/craps/CrapsTableCoords";
@@ -72,10 +72,11 @@ export default makeScene2D(function* (view) {
     session = sessions[0].SESSION;
   }
 
+  useLogger().info("Session: " + session);
+
   const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
   for (const roll of firstSession) {
-    useLogger().debug("ROLL=" + roll.ROLL);
     yield* processor.round(roll);
   }
 
