@@ -13,9 +13,9 @@ import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
 //-sessions.json
-import simData from "../../../../dicedata/output/threehandband-test/threehandband-test-sessions.json";
+import simData from "../../../../dicedata/output/threehandband-throws/threehandband-throws-sessions.json";
 //-all-sessions.json
-import sessions from "../../../../dicedata/output/threehandband-test/threehandband-test-all_sessions.json";
+import sessions from "../../../../dicedata/output/threehandband-throws/threehandband-throws-all_sessions.json";
 
 import { Theme } from "../../styles";
 import { c } from "../../components/craps/CrapsTableCoords";
@@ -23,9 +23,10 @@ import { c } from "../../components/craps/CrapsTableCoords";
 enum s {
   BEST = 1,
   WORST = 2,
+  RANDOM = 3,
 }
 
-const whichSession = s.BEST;
+const whichSession = s.RANDOM;
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
