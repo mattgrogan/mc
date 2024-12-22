@@ -7,6 +7,7 @@ export const Bright = {
   BLUE: "#2191fb",
   RED: "#d81e5b",
   GREEN: "#63c69f",
+  PURPLE: "#6a51a3",
 };
 
 export const Darker = {
@@ -14,6 +15,7 @@ export const Darker = {
   BLUE: "#1d4e89",
   RED: "#982649",
   GREEN: "#5b9279",
+  PURPLE: "#3f007d",
 };
 
 export const Darkest = {

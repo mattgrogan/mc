@@ -355,6 +355,27 @@ export class Plot extends Layout {
     return line;
   }
 
+  public line(
+    cStart: PossibleVector2,
+    cEnd: PossibleVector2,
+    props: LineProps = {}
+  ): Line {
+    /**
+     * Create a line between the given coordinates.
+     */
+    const vectorCStart = new Vector2(cStart);
+    const start = () =>
+      this.c2p([vectorCStart.x, vectorCStart.y], PlotSpace.LOCAL);
+
+    const vectorCEnd = new Vector2(cEnd);
+    const end = () => this.c2p([vectorCEnd.x, vectorCEnd.y], PlotSpace.LOCAL);
+
+    const line = new Line({ ...props, points: [start, end] });
+    this.add(line);
+
+    return line;
+  }
+
   public text(c: PossibleVector2, props: TxtProps = {}): Txt {
     /**
      * Create a Txt at the given coordinates.
