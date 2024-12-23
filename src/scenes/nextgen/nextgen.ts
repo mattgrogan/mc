@@ -1,15 +1,24 @@
 import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
-import dd_40_simulation from "./DD_40_Simulation?scene";
-import dd_50_game_throws from "./DD_50_Game_Throws?scene";
-import DD_51_Game_Throws from "./DD_51_Game_Throws?scene";
+import tableOfContents from "./tableOfContents?scene";
+import DD_40_Simulation from "./DD_40_Simulation?scene";
+import DD_50_Game_Throws from "./DD_50_Game_Throws?scene";
+
+import DD_50_Dice_Throws from "./DD_50_Dice_Throws?scene";
+import DD_51_Dice_Rolls_Per_Session from "./DD_51_Dice_Rolls_Per_Session?scene";
+import DD_52_Dice_Rolls_Per_Shooter from "./DD_52_Dice_Rolls_Per_Shooter?scene";
+
+import DD_60_Won_Lost_Per_Shooter from "./DD_60_Won_Lost_Per_Shooter?scene";
 
 export default makeProject({
   scenes: [
-    // dd_40_simulation,
-
-    // dd_50_game_throws,
-    DD_51_Game_Throws,
+    tableOfContents,
+    DD_40_Simulation,
+    DD_50_Game_Throws,
+    DD_50_Dice_Throws,
+    DD_51_Dice_Rolls_Per_Session,
+    DD_52_Dice_Rolls_Per_Shooter,
+    DD_60_Won_Lost_Per_Shooter,
   ],
 });

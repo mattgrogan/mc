@@ -1,9 +1,25 @@
-import { Node, Rect, RectProps, Txt, TxtProps } from "@motion-canvas/2d";
+import {
+  Gradient,
+  Node,
+  Rect,
+  RectProps,
+  Txt,
+  TxtProps,
+} from "@motion-canvas/2d";
 import { makeRef } from "@motion-canvas/core";
 
 // Reduce the size of the subhead by x%
 // Override in subheadProps by setting fontSize.
 const SUBHEAD_FONT_REDUCTION = 0.8;
+
+export const blueTitleGradient = new Gradient({
+  from: [0, -300],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: "#2191fb" },
+    { offset: 1, color: "#1d4e89" },
+  ],
+});
 
 export function TitleBox({
   refs,
