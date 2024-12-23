@@ -1,4 +1,4 @@
-import { Circle, makeScene2D } from "@motion-canvas/2d";
+import { Circle, Layout, makeScene2D } from "@motion-canvas/2d";
 import {
   createRef,
   createSignal,
@@ -12,7 +12,22 @@ export default makeScene2D(function* (view) {
   view.fill("#333");
   const plot = createRef<Plot>();
 
+  const container = createRef<Layout>();
   view.add(
+    <Layout
+      ref={container}
+      layout
+    ></Layout>
+  );
+  const container2 = createRef<Layout>();
+  view.add(
+    <Layout
+      ref={container2}
+      layout={false}
+    ></Layout>
+  );
+
+  container2().add(
     <Plot
       ref={plot}
       size={[500, 500]}

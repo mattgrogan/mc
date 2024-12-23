@@ -453,8 +453,8 @@ export default makeScene2D(function* (view) {
   // yield* plot().yTitle.opacity(1, 1);
 
   // Add the bars
-  const lines: Line[] = [];
-  const pcts: Txt[] = [];
+  const bars: Line[] = [];
+  const labels: Txt[] = [];
 
   const diceData = [
     {
@@ -482,7 +482,7 @@ export default makeScene2D(function* (view) {
       opacity: 1,
       end: 0,
     });
-    lines.push(line);
+    bars.push(line);
 
     const pct = (diceData[index].pct * 100).toFixed(2) + "%";
     const label = plot().text(point, {
@@ -492,12 +492,12 @@ export default makeScene2D(function* (view) {
       opacity: 0,
       fontSize: 60,
     });
-    pcts.push(label);
+    labels.push(label);
   }
 
-  yield* sequence(0.1, ...lines.map((line) => line.end(1, 0.6, easeOutCubic)));
+  yield* sequence(0.1, ...bars.map((line) => line.end(1, 0.6, easeOutCubic)));
   // yield* waitFor(0.2);
-  yield* sequence(0.1, ...pcts.map((pct) => pct.opacity(1, 0.6)));
+  yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
 
   yield* waitFor(5);
   yield* waitUntil("end-dice");

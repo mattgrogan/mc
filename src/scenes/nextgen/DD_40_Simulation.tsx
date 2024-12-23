@@ -18,6 +18,7 @@ import {
   easeOutCubic,
   easeOutQuint,
   linear,
+  makeRefs,
   range,
   sequence,
   SimpleSignal,
@@ -39,6 +40,8 @@ import {
 import { FadeIn } from "../../utils/FadeIn";
 
 import { sim } from "./DD_00_Params";
+import { TitleBox } from "../../components/styled/titleBox";
+import { blueTitleGradient } from "../../components/styled/titleBox";
 
 const titleGradient = new Gradient({
   type: "linear",
@@ -54,67 +57,41 @@ const titleGradient = new Gradient({
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
-  const title = createRef<Rect>();
-  const headNode = createRef<Node>();
-  const subNode = createRef<Node>();
-  const titleLines = createRefArray<Txt>();
-
+  const container = createRef<Layout>();
   view.add(
-    <Rect
-      ref={title}
-      width={"100%"}
-      height={"20%"}
-      fill={titleGradient}
-      offsetY={-1}
-      y={view.height() / -2}
-      shadowColor={Darker.BLUE}
-      shadowBlur={15}
-      shadowOffsetY={10}
+    <Layout
+      ref={container}
       direction={"column"}
-      justifyContent={"center"}
-      // alignContent={"start"}
+      justifyContent={"start"}
+      alignItems={"center"}
+      width={"100%"}
+      height={"100%"}
+      gap={50}
       padding={100}
-      // gap={0}
       layout
-    >
-      <Node
-        ref={headNode}
-        opacity={0}
-      >
-        <Txt
-          ref={titleLines}
-          {...PoppinsWhite}
-          fill={Darker.BLUE}
-          text={sim.name}
-          fontSize={240}
-          fontWeight={600}
-          lineHeight={200}
-          opacity={1}
-        />
-      </Node>
-      <Node
-        ref={subNode}
-        opacity={0}
-      >
-        <Txt
-          ref={titleLines}
-          {...PoppinsWhite}
-          fill={Grays.GRAY4}
-          fontSize={120}
-          fontWeight={600}
-          text={"SIMULATION"}
-          opacity={1}
-        />
-      </Node>
-    </Rect>
+    ></Layout>
   );
 
   yield* waitFor(1);
 
-  // Animate the title
-  yield FadeIn(headNode, 0.6, easeOutCubic, [80, 0]);
-  yield* waitFor(0.4);
-  yield* FadeIn(subNode, 0.6, easeOutCubic, [80, 0]);
+  const plotTitle = makeRefs<typeof TitleBox>();
+  container().add(
+    <TitleBox
+      refs={plotTitle}
+      fontSize={100}
+      nodeOpacity={0}
+      rectProps={{ fill: blueTitleGradient, stroke: Grays.GRAY1 }}
+      headerProps={{ ...PoppinsWhite }}
+      subheadProps={{ ...PoppinsWhite }}
+    >
+      RUNNING THE SIMULATION
+    </TitleBox>
+  );
+  plotTitle.subhead.text("SIMULATION NAME");
+
+  yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
+  yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
+  yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
 
   const parameterTable = createRef<Layout>();
   const rowNodes = createRefArray<Node>();
@@ -183,7 +160,7 @@ export default makeScene2D(function* (view) {
                 ref={rowTitles}
                 {...PoppinsWhite}
                 fill={Grays.BLACK}
-                textWrap={"wrap"}
+                textWrap
                 textAlign={"left"}
                 // text={"SESSIONS"}
                 fontSize={90}
@@ -322,15 +299,7 @@ export default makeScene2D(function* (view) {
     </Rect>
   );
 
-  // const line1 = createSignal("");
-
-  const template: Txt = (
-    <Txt
-      {...MonoWhite}
-      fontWeight={600}
-      fontSize={50}
-    ></Txt>
-  );
+  const template = new Txt({ ...MonoWhite, fontWeight: 600, fontSize: 50 });
 
   const nLines = 18;
   const lines: SimpleSignal<String, void>[] = [];
@@ -350,27 +319,27 @@ export default makeScene2D(function* (view) {
   yield* waitFor(1);
   //yield* waitUntil("start-sim");
 
-  yield* lines[0]("> python runDiceDataEngine.py -i 100000", 1, linear);
+  yield* lines[0]("> python runDiceDataEngine.py -i 100000", 0.3, linear);
   yield* waitFor(0.5);
   lineTxts[1].fill(Bright.YELLOW);
-  yield* lines[1]("preparing simulation...", 0.2, linear);
+  yield* lines[1]("preparing simulation...", 0.05, linear);
   yield* waitFor(0.1);
-  yield* lines[2]("  initializing engine", 0.3, linear);
+  yield* lines[2]("  initializing engine", 0.1, linear);
   yield* waitFor(0.1);
-  yield* lines[3]("  initializing players", 0.6, linear);
+  yield* lines[3]("  initializing players", 0.1, linear);
   yield* waitFor(0.4);
   yield* lines[4]("  initializing tables", 0.3, linear);
   yield* waitFor(0.2);
-  yield* lines[5]("  initializing rng", 0.2, linear);
-  yield* lines[6]("multiprocessing: allocating thread pool...", 0.4, linear);
+  yield* lines[5]("  initializing rng", 0.1, linear);
+  yield* lines[6]("multiprocessing: allocating thread pool...", 0.2, linear);
   yield* waitFor(0.4);
   lineTxts[7].fill(Bright.YELLOW);
-  yield* lines[7]("running simulation...", 0.2, linear);
+  yield* lines[7]("running simulation...", 0.05, linear);
   yield* waitFor(0.2);
 
   const nComplete = createSignal(0);
   const n = 100000;
-  const delaySeconds = 22;
+  const delaySeconds = 8;
 
   lineTxts[8].text(
     () =>
@@ -380,31 +349,31 @@ export default makeScene2D(function* (view) {
       " / " +
       n
   );
-  yield* waitFor(0.8);
+  yield* waitFor(0.1);
   yield nComplete(n + 1, delaySeconds, easeInOutSine);
   yield* lines[9](
     "██████████████████████████████████████████████",
     delaySeconds,
     easeInOutSine
   );
-  yield* waitFor(0.2);
+  yield* waitFor(0.05);
   lineTxts[10].fill(Bright.GREEN);
-  yield* lines[10]("simulation complete", 0.2, linear);
+  yield* lines[10]("simulation complete", 0.1, linear);
   yield* waitFor(0.1);
-  yield* lines[11]("calculating statistics...............", 1.4, easeOutQuint);
+  yield* lines[11]("calculating statistics...............", 0.4, easeOutQuint);
   yield* waitFor(0.1);
   yield* lines[12]("exporting data", 0.1, easeOutCubic);
-  yield* lines[13]("    saving parquet......", 0.2, easeOutQuint);
+  yield* lines[13]("    saving parquet......", 0.1, easeOutQuint);
   yield* waitFor(0.8);
-  yield* lines[14]("    saving xlsx..........", 0.4, easeOutQuint);
+  yield* lines[14]("    saving xlsx..........", 0.2, easeOutQuint);
   yield* waitFor(0.3);
-  yield* lines[15]("    saving csv...................", 0.7, easeOutQuint);
+  yield* lines[15]("    saving csv...................", 0.3, easeOutQuint);
   yield* waitFor(0.2);
-  yield* lines[16]("    saving json......", 0.3, easeOutQuint);
+  yield* lines[16]("    saving json......", 0.1, easeOutQuint);
   yield* waitFor(0.1);
   lineTxts[17].fill(Bright.GREEN);
   yield* lines[17]("simulation run complete.", 0.1, linear);
 
-  yield* waitFor(10);
+  yield* waitFor(4);
   yield* waitUntil("end");
 });
