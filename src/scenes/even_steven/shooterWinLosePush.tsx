@@ -13,7 +13,7 @@ import {
 import { Bright, Theme } from "../../styles";
 
 // -winloss-outcomes.json
-import winlose from "../../../../dicedata/output/pushit-100k/pushit-100k-winloss-outcomes.json";
+import winlose from "../../../../dicedata/output/evensteven-100k/evensteven-100k-winloss-outcomes.json";
 import { FadeIn } from "../../utils/FadeIn";
 import { FadeOut } from "../../utils/FadeOut";
 
@@ -78,7 +78,7 @@ export default makeScene2D(function* (view) {
         width={1400}
         offsetY={-1}
         {...TitleFont}
-        textWrap={"wrap"}
+        textWrap
         text={() => titleSignal()}
       />
       <Line

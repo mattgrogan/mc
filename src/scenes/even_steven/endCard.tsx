@@ -19,7 +19,6 @@ const producers = [
   "Kevin Osborn",
   "Mike Jacobs",
   "CaseAdams",
-  "Matthew Boley",
   "Ross Allanson",
 ];
 

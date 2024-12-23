@@ -19,10 +19,10 @@ import { FadeOut } from "../../utils/FadeOut";
 import { Bright, Grays, PoppinsWhite, Theme } from "../../styles";
 
 // -amount-wonlost-quantiles.json
-import winlose from "../../../../dicedata/output/pushit-100k/pushit-100k-amount-wonlost-quantiles.json";
+import winlose from "../../../../dicedata/output/evensteven-100k/evensteven-100k-amount-wonlost-quantiles.json";
 
 // -shooter_hist.json
-import histogramData from "../../../../dicedata/output/pushit-100k/pushit-100k-shooter_winloss_histogram.json";
+import histogramData from "../../../../dicedata/output/evensteven-100k/evensteven-100k-shooter_winloss_histogram.json";
 
 const data = histogramData.slice(0, 31);
 
@@ -162,17 +162,17 @@ export default makeScene2D(function* (view) {
   );
   yield* waitFor(1);
 
-  // yield* waitUntil("highlight-4");
-  // yield* all(
-  //   chart().highlightBar(8, Bright.ORANGE),
-  //   chart().highlightBar(12, Bright.ORANGE),
-  //   chart().moveBox(
-  //     data[8].CUTS,
-  //     data[13].CUTS,
-  //     chart().getPercentForBars([8, 9, 10, 11, 12])
-  //   )
-  // );
-  // yield* waitFor(1);
+  yield* waitUntil("highlight-4");
+  yield* all(
+    chart().highlightBar(7, Bright.ORANGE),
+    chart().highlightBar(12, Bright.ORANGE),
+    chart().moveBox(
+      data[7].CUTS,
+      data[13].CUTS,
+      chart().getPercentForBars([7, 8, 9, 10, 11, 12])
+    )
+  );
+  yield* waitFor(1);
 
   // yield* waitUntil("highlight-5");
   // yield* all(

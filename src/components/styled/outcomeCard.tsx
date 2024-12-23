@@ -155,26 +155,8 @@ export function OutcomeCard({
             height={"100%"}
             fill={headerFill}
             padding={30}
-            //   grow={1}
             basis={0}
           >
-            {/* {icon} */}
-            {/* <Icon
-            icon={"iconoir:upload-square-solid"}
-            size={100}
-            /> */}
-            {/* <Icon
-            icon={"iconoir:minus-square-solid"}
-            size={100}
-            /> */}
-            {/* <Icon
-              icon={"iconoir:download-square"}
-              size={100}
-            />
-            <Icon
-              icon={"iconoir:undo-action"}
-              size={100}
-            /> */}
             <Icon
               width={"100%"}
               height={"100%"}
@@ -187,7 +169,6 @@ export function OutcomeCard({
             height={"100%"}
             basis={0}
             grow={1}
-            // alignSelf={"center"}
             justifyContent={"center"}
             alignContent={"center"}
             alignItems={"center"}
@@ -240,36 +221,27 @@ export function OutcomeCard({
         </Rect>
         <Rect
           width={"100%"}
-          height={"10%"}
-          grow={0}
+          height={"30%"}
+          grow={1}
           basis={0}
-          direction={"row"}
+          direction={"column"}
           justifyContent={"space-between"}
           padding={70}
           paddingTop={0}
         >
           <Txt
-            {...MonoWhite}
+            {...PoppinsBlack}
             fill={Grays.BLACK}
-            fontSize={60}
-            textAlign={"left"}
+            fontSize={100}
+            textAlign={"right"}
             basis={0}
             grow={1}
             text={() => valueFormatted()}
             fontWeight={700}
           ></Txt>
+
           <Txt
-            {...MonoWhite}
-            fill={Grays.GRAY4}
-            fontSize={60}
-            textAlign={"center"}
-            grow={1}
-            basis={0}
-          >
-            {"of"}
-          </Txt>
-          <Txt
-            {...MonoWhite}
+            {...PoppinsBlack}
             fill={Grays.GRAY4}
             fontSize={60}
             textAlign={"right"}
@@ -277,20 +249,20 @@ export function OutcomeCard({
             grow={1}
             basis={0}
           >
-            {maximumFormatted}
+            of {maximumFormatted}
           </Txt>
         </Rect>
         <Rect
           width={"100%"}
-          height={"30%"}
+          height={"20%"}
           grow={2}
           basis={2}
           justifyContent={"end"}
           alignItems={"baseline"}
-          padding={100}
-          paddingTop={150}
+          padding={50}
+          // paddingTop={150}
           //fill={blackBgGradient}
-          fill={Grays.BLACK}
+          fill={"#1f2937"}
         >
           <Txt
             {...MonoWhite}

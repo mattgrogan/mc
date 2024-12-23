@@ -83,7 +83,7 @@ export default makeScene2D(function* (view) {
           {...TitleFont}
           fontSize={70}
         >
-          PUSH IT
+          EVEN STEVEN
         </Txt>
       </Layout>
       <Icon
@@ -173,12 +173,12 @@ export default makeScene2D(function* (view) {
       })}`
   );
   fields[1].text("10");
-  fields[2].text("3.372 %");
-  fields[3].text("23.2 %");
-  fields[4].text("76.7 %");
-  fields[5].text("-$340 to -$21");
-  fields[6].text("-$458 to +$650");
-  fields[7].text("$531"); //USE R THIS IS THE p01 after group by session
+  fields[2].text("3.038 %");
+  fields[3].text("33.0 %");
+  fields[4].text("67.0 %");
+  fields[5].text("-$496 to +$154");
+  fields[6].text("-$748 to +$1,134");
+  fields[7].text("$910"); //USE R THIS IS THE p01 after group by session
 
   yield* slideTransition(Direction.Right);
 
