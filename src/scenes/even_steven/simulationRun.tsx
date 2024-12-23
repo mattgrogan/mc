@@ -16,8 +16,8 @@ import { Bright, Theme } from "../../styles";
 import { CircumscribeRect } from "../../utils/Circumscribe";
 import { FadeIn } from "../../utils/FadeIn";
 
-import simstats from "../../../../dicedata/output/pushit-100k/pushit-100k-sessions-shooters-rolls.json";
-import casinostats from "../../../../dicedata/output/pushit-100k/pushit-100k-casinostats.json";
+import simstats from "../../../../dicedata/output/evensteven-100k/evensteven-100k-sessions-shooters-rolls.json";
+import casinostats from "../../../../dicedata/output/evensteven-100k/evensteven-100k-casinostats.json";
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
@@ -36,11 +36,11 @@ export default makeScene2D(function* (view) {
   camera().scene().position(view.size().div(2));
 
   const sim = new SimulationScreen();
-  sim.name = "Push It";
+  sim.name = "Even Steven";
   sim.options = " ";
   sim.sessions = simstats[0].SESSIONS;
   sim.shooters = "10 Per Session";
-  sim.tableMin = "$15";
+  sim.tableMin = "$25";
   sim.tableMax = "$5,000";
 
   sim.totalThrows = simstats[0].ROLLS;

@@ -16,10 +16,10 @@ import { Bright, Grays, PoppinsWhite, Theme } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
 // -amount-wonlost-quantiles.json
-import winlose from "../../../../dicedata/output/pushit-100k/pushit-100k-amount-wonlost-quantiles.json";
+import winlose from "../../../../dicedata/output/evensteven-100k/evensteven-100k-amount-wonlost-quantiles.json";
 
 // -session_hist.json
-import histogramData from "../../../../dicedata/output/pushit-100k/pushit-100k-session_hist.json";
+import histogramData from "../../../../dicedata/output/evensteven-100k/evensteven-100k-session_hist.json";
 
 const data = histogramData.slice(0, 31);
 

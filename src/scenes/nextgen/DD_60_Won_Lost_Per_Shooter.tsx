@@ -15,6 +15,7 @@ import {
   grayGradient,
   Grays,
   greenGradient,
+  PoppinsBlack,
   PoppinsWhite,
   redGradient,
   Theme,
@@ -41,11 +42,11 @@ const LOSERS = winlose.find((stat) => stat.STAT == "N_DOWN").BY_SHOOTER;
 const TOTAL = winlose.find((stat) => stat.STAT == "N").BY_SHOOTER;
 
 let titleGradient = new Gradient({
-  from: [0, -300],
+  from: [0, -100],
   to: [0, 100],
   stops: [
-    { offset: 0, color: "#2191fb" },
-    { offset: 1, color: "#1d4e89" },
+    { offset: 0, color: "#f9fafb" },
+    { offset: 1, color: "#9ca3af" },
   ],
 });
 
@@ -89,10 +90,10 @@ export default makeScene2D(function* (view) {
       fontSize={100}
       nodeOpacity={0}
       rectProps={{ fill: titleGradient, stroke: Grays.GRAY1 }}
-      headerProps={{ ...PoppinsWhite }}
-      subheadProps={{ ...PoppinsWhite }}
+      headerProps={{ ...PoppinsBlack }}
+      subheadProps={{ ...PoppinsBlack }}
     >
-      OUTCOMES
+      HOW MANY PLAYERS WON OR LOST ANY MONEY?
     </TitleBox>
   );
   plotTitle.subhead.text("BY SHOOTER");
