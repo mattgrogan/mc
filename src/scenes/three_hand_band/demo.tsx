@@ -23,6 +23,7 @@ import { c } from "../../components/craps/CrapsTableCoords";
 enum s {
   BEST = 1,
   WORST = 2,
+  RANDOM = 3
 }
 
 const whichSession = s.BEST;
