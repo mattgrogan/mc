@@ -35,36 +35,81 @@ import {
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
+const finishedNumberGradient = new Gradient({
+  type: "linear",
+
+  from: [-160, 0],
+  to: [160, 0],
+  stops: [
+    { offset: 0, color: "#252525" },
+    { offset: 0.2, color: "#000000" },
+    { offset: 0.8, color: "#000000" },
+    { offset: 1, color: "#252525" },
+  ],
+});
+
 const finishedGradient = new Gradient({
   type: "linear",
 
-  from: [-500, -500],
-  to: [300, 300],
+  from: [-600, 0],
+  to: [600, 0],
   stops: [
     { offset: 0, color: "#252525" },
-    { offset: 0.4, color: "#000000" },
+    { offset: 0.2, color: "#000000" },
+    { offset: 0.8, color: "#000000" },
+    { offset: 1, color: "#252525" },
+  ],
+});
+
+const activeNumberGradient = new Gradient({
+  type: "linear",
+
+  from: [-160, 0],
+  to: [160, 0],
+  stops: [
+    { offset: 0, color: "#701a75" },
+    { offset: 0.2, color: "#4a044e" },
+    { offset: 0.8, color: "#4a044e" },
+    { offset: 1, color: "#701a75" },
   ],
 });
 
 const activeGradient = new Gradient({
   type: "linear",
 
-  from: [-500, -500],
-  to: [300, 300],
+  from: [-600, 0],
+  to: [600, 0],
   stops: [
-    { offset: 0, color: "#f7fcb9" },
-    { offset: 0.4, color: "#fffd98" },
+    { offset: 0, color: "#701a75" },
+    { offset: 0.2, color: "#4a044e" },
+    { offset: 0.8, color: "#4a044e" },
+    { offset: 1, color: "#701a75" },
+  ],
+});
+
+const upcomingNumberGradient = new Gradient({
+  type: "linear",
+
+  from: [-160, 0],
+  to: [160, 0],
+  stops: [
+    { offset: 0, color: "#1e3a8a" },
+    { offset: 0.2, color: "#172554" },
+    { offset: 0.8, color: "#172554" },
+    { offset: 1, color: "#1e3a8a" },
   ],
 });
 
 const upcomingGradient = new Gradient({
   type: "linear",
 
-  from: [-500, -500],
-  to: [300, 300],
+  from: [-600, 0],
+  to: [600, 0],
   stops: [
-    { offset: 0, color: "#e2e8f0" },
-    { offset: 0.4, color: "#cbd5e1" },
+    { offset: 0, color: "#1e3a8a" },
+    { offset: 0.2, color: "#172554" },
+    { offset: 0.8, color: "#172554" },
+    { offset: 1, color: "#1e3a8a" },
   ],
 });
 
@@ -97,41 +142,69 @@ export default makeScene2D(function* (view) {
   container().add(
     <TableOfContents
       refs={toc}
-      headerRectProps={{ fill: LightBlueGradient, stroke: Grays.GRAY2 }}
-      valueRectProps={{ fill: silverGradient, stroke: Grays.GRAY1 }}
-      headerTxtProps={{ ...PoppinsBlack }}
-      valueTxtProps={{ ...PoppinsBlack }}
+      numberRectProps={{
+        fill: upcomingNumberGradient,
+        lineWidth: 3,
+        stroke: Grays.GRAY3,
+      }}
+      numberTxtProps={{ ...PoppinsWhite }}
+      titleRectProps={{
+        fill: upcomingGradient,
+        lineWidth: 3,
+        stroke: Grays.GRAY3,
+      }}
+      titleTxtProps={{ ...PoppinsWhite }}
     ></TableOfContents>
   );
 
-  const agenda = createRef<Txt>();
-  view.add(
-    <Txt
-      ref={agenda}
-      text={"AGENDA"}
-      rotation={-90}
-      {...PoppinsWhite}
-      fontSize={300}
-      fontWeight={900}
-      fill={Grays.GRAY2}
-      letterSpacing={25}
-      x={-1400}
-    ></Txt>
-  );
+  // const agenda = createRef<Txt>();
+  // view.add(
+  //   <Txt
+  //     ref={agenda}
+  //     text={"AGENDA"}
+  //     rotation={-90}
+  //     {...PoppinsWhite}
+  //     fontSize={300}
+  //     fontWeight={900}
+  //     fill={Grays.GRAY2}
+  //     letterSpacing={25}
+  //     x={-1400}
+  //   ></Txt>
+  // );
 
   // Highlight the average separately
-  toc.headerRects[0].fill(finishedGradient);
-  toc.headerRects[1].fill(finishedGradient);
-  toc.headerRects[2].fill(activeGradient);
-  toc.headerTxts[2].fill(Grays.BLACK);
-  toc.headerRects[3].fill(upcomingGradient);
-  toc.headerRects[4].fill(upcomingGradient);
-  toc.headerRects[5].fill(upcomingGradient);
-  toc.headerRects[6].fill(upcomingGradient);
-  toc.headerRects[7].fill(upcomingGradient);
+  // toc.headerRects[0].fill(finishedGradient);
+  // toc.headerRects[1].fill(finishedGradient);
+  // toc.rowRects[2].fill(activeGradient);
+  // toc.numberTxts[2].fill(Grays.WHITE);
+  // toc.titleTxts[2].fill("red");
+  // toc.headerTxts[2].fill(Grays.BLACK);
+  // toc.headerRects[3].fill(upcomingGradient);
+  // toc.headerRects[4].fill(upcomingGradient);
+  // toc.headerRects[5].fill(upcomingGradient);
+  // toc.headerRects[6].fill(upcomingGradient);
+  // toc.headerRects[7].fill(upcomingGradient);
+
+  // COMPLETED ITEMS
+  toc.numberRects[0].fill(finishedNumberGradient);
+  toc.numberTxts[0].fill(Grays.GRAY3);
+  toc.titleRects[0].fill(finishedGradient);
+  toc.titleTxts[0].fill(Grays.GRAY3);
+
+  toc.numberRects[1].fill(finishedNumberGradient);
+  toc.numberTxts[1].fill(Grays.GRAY3);
+  toc.titleRects[1].fill(finishedGradient);
+  toc.titleTxts[1].fill(Grays.GRAY3);
+
+  // ACTIVE ITEMS
+
+  toc.numberRects[2].fill(activeNumberGradient);
+  toc.titleRects[2].fill(activeGradient);
+
+  //UPCOMING ITEMS
 
   // Show the data table
-  yield* sequence(0.1, ...toc.columns.map((pct) => pct.opacity(1, 0.6)));
+  yield* sequence(0.1, ...toc.rowContainers.map((pct) => pct.opacity(1, 0.6)));
 
   yield* waitFor(10);
   yield* waitUntil("end");
@@ -139,32 +212,33 @@ export default makeScene2D(function* (view) {
 
 export function TableOfContents({
   refs,
-  headerRectProps = {},
-  headerTxtProps = {},
-  valueRectProps = {},
-  valueTxtProps = {},
+  numberRectProps = {},
+  numberTxtProps = {},
+  titleRectProps = {},
+  titleTxtProps = {},
   fontSize = 65,
 }: {
   refs: {
     container: Node;
-    columns: Node[];
-    headerRects: Rect[];
-    headerTxts: Txt[];
-    valueRects: Rect[];
-    valueTxts: Txt[];
+    rowContainers: Node[];
+    rowRects: Rect[];
+    numberRects: Rect[];
+    numberTxts: Txt[];
+    titleRects: Txt[];
+    titleTxts: Txt[];
   };
-  headerRectProps?: RectProps;
-  headerTxtProps?: TxtProps;
-  valueRectProps?: RectProps;
-  valueTxtProps?: TxtProps;
+  numberRectProps?: RectProps;
+  numberTxtProps?: TxtProps;
+  titleRectProps?: RectProps;
+  titleTxtProps?: TxtProps;
   fontSize?: number;
 }) {
-  // Initialize the arrays
-  refs.columns = [];
-  refs.headerRects = [];
-  refs.headerTxts = [];
-  refs.valueRects = [];
-  refs.valueTxts = [];
+  refs.rowContainers = [];
+  refs.rowRects = [];
+  refs.numberRects = [];
+  refs.numberTxts = [];
+  refs.titleRects = [];
+  refs.titleTxts = [];
 
   const entries = [
     "STRATEGY",
@@ -180,73 +254,65 @@ export function TableOfContents({
   return (
     <Node ref={makeRef(refs, "container")}>
       <Layout
-        width={"25%"}
+        width={"40%"}
         height={"100%"}
         direction={"column"}
-        gap={0}
+        gap={10}
         justifyContent={"stretch"}
         layout
       >
         {range(entries.length).map((index) => (
           <Node
-            ref={makeRef(refs.columns, index)}
+            ref={makeRef(refs.rowContainers, index)}
             opacity={0}
           >
             <Rect
-              ref={makeRef(refs.headerRects, index)}
+              ref={makeRef(refs.rowRects, index)}
               direction={"row"}
               grow={1}
               basis={0}
               gap={0}
               justifyContent={"space-evenly"}
               lineWidth={3}
-              // alignContent={"stretch"}
-              // height={"100%"}
-              // basis={2}
-              {...headerRectProps}
             >
               <Rect
-                // height={"100%"}
-                // width={"20%"}
+                ref={makeRef(refs.numberRects, index)}
                 justifyContent={"center"}
                 alignItems={"center"}
                 lineWidth={3}
                 grow={1}
                 basis={0}
+                {...numberRectProps}
               >
                 <Txt
-                  ref={makeRef(refs.headerTxts, index)}
-                  //   {...PoppinsWhite}
+                  ref={makeRef(refs.numberTxts, index)}
                   fontSize={fontSize * 2}
                   fontWeight={600}
                   text={(index + 1).toFixed(0)}
                   textAlign={"center"}
                   textWrap
-                  {...headerTxtProps}
+                  {...numberTxtProps}
                 ></Txt>
               </Rect>
               <Rect
-                // ref={makeRef(refs.headerRects, index)}
-                // height={"100%"}
-                // width={"80%"}
-                justifyContent={"center"}
+                ref={makeRef(refs.titleRects, index)}
+                justifyContent={"start"}
                 alignItems={"center"}
                 lineWidth={3}
                 grow={3}
                 basis={0}
-                // {...headerRectProps}
                 padding={50}
-                // paddingLeft={120}
+                {...titleRectProps}
               >
                 <Txt
-                  ref={makeRef(refs.headerTxts, index)}
+                  ref={makeRef(refs.titleTxts, index)}
                   //   {...PoppinsWhite}
                   fontSize={fontSize}
                   fontWeight={600}
                   text={entries[index]}
                   textAlign={"left"}
                   textWrap
-                  {...headerTxtProps}
+                  {...titleTxtProps}
                 ></Txt>
               </Rect>
             </Rect>

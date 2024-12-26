@@ -1,16 +1,51 @@
-export function getQuantileData(id: string, source: any, decimals: number = 0) {
+const default_formatter = (n: number) => {
+  return n.toFixed(0);
+};
+
+export const plusCommaFormmatter = (n: number) => {
+  /**
+   * Add a leading plus to positive numbers
+   * and comma separator.
+   */
+
+  let nFormatted = n.toLocaleString("en-US", {
+    maximumFractionDigits: 0,
+  });
+
+  if (n > 0) {
+    nFormatted = "+" + nFormatted;
+  }
+  return nFormatted;
+};
+
+export const commaFormmatter = (n: number, decimals: number = 0) => {
+  /**
+   * Format with comma separator.
+   */
+
+  let nFormatted = n.toLocaleString("en-US", {
+    maximumFractionDigits: decimals,
+  });
+  return nFormatted;
+};
+
+export function getQuantileData(
+  id: string,
+  source: any,
+  formatter: (n: number) => string = default_formatter
+) {
   /**
    * Return the min/max, 5th/95, 25th/75th and median from the source.
    */
 
   const data = [
-    { label: "MIN", value: getQuantile(id, source, 0).toFixed(0) },
-    { label: "5TH", value: getQuantile(id, source, 0.05).toFixed(0) },
-    { label: "25TH", value: getQuantile(id, source, 0.25).toFixed(0) },
-    { label: "MEDIAN", value: getQuantile(id, source, 0.5).toFixed(0) },
-    { label: "75TH", value: getQuantile(id, source, 0.75).toFixed(0) },
-    { label: "95TH", value: getQuantile(id, source, 0.95).toFixed(0) },
-    { label: "MAX", value: getQuantile(id, source, 1).toFixed(0) },
+    { label: "MIN", value: formatter(getQuantile(id, source, 0)) },
+    { label: "5TH", value: formatter(getQuantile(id, source, 0.05)) },
+    { label: "25TH", value: formatter(getQuantile(id, source, 0.25)) },
+    { label: "MEDIAN", value: formatter(getQuantile(id, source, 0.5)) },
+    { label: "75TH", value: formatter(getQuantile(id, source, 0.75)) },
+    { label: "95TH", value: formatter(getQuantile(id, source, 0.95)) },
+    { label: "MAX", value: formatter(getQuantile(id, source, 1)) },
   ];
   return data;
 }

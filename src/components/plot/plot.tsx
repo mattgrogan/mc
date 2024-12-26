@@ -349,7 +349,7 @@ export class Plot extends Layout {
     const start = () => this.c2p([this.xMin(), vectorC.y], PlotSpace.LOCAL);
     const end = () => this.c2p([vectorC.x, vectorC.y], PlotSpace.LOCAL);
 
-    const line = new Line({ ...props, points: [start, end] });
+    const line = new Line({ ...props, points: [start, end], zIndex: -100 });
     this.add(line);
 
     return line;
