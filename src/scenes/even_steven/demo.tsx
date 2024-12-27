@@ -13,9 +13,9 @@ import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
 //-sessions.json
-import simData from "../../../../dicedata/output/evensteven-test/evensteven-test-sessions.json";
+import simData from "../../../../dicedata/output/evensteven-100k/evensteven-100k-sessions.json";
 //-all-sessions.json
-import sessions from "../../../../dicedata/output/evensteven-test/evensteven-test-all_sessions.json";
+import sessions from "../../../../dicedata/output/evensteven-100k/evensteven-100k-all_sessions.json";
 
 import { Theme } from "../../styles";
 import { c } from "../../components/craps/CrapsTableCoords";
@@ -25,7 +25,7 @@ enum s {
   WORST = 2,
 }
 
-const whichSession = s.BEST;
+const whichSession = s.WORST;
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
@@ -70,6 +70,9 @@ export default makeScene2D(function* (view) {
 
   if (whichSession == s.BEST) {
     session = sessions[0].SESSION;
+  }
+  if (whichSession == s.WORST) {
+    session = sessions[sessions.length - 1].SESSION;
   }
 
   const firstSession = simData.filter(({ SESSION }) => SESSION === session);

@@ -7,51 +7,51 @@
     },
     {
       "name": "show-max",
-      "targetTime": 5.300000000000001
+      "targetTime": 13.678733384620164
     },
     {
       "name": "hist",
-      "targetTime": 11
+      "targetTime": 19.378733384620162
     },
     {
       "name": "zoomin",
-      "targetTime": 15
+      "targetTime": 23.378733384620162
     },
     {
       "name": "highlight-1",
-      "targetTime": 15
+      "targetTime": 28.131135691614286
     },
     {
       "name": "highlight-2",
-      "targetTime": 20
+      "targetTime": 34.31446478010279
     },
     {
       "name": "highlight-3",
-      "targetTime": 22
+      "targetTime": 36.31446478010279
     },
     {
       "name": "highlight-4",
-      "targetTime": 24
+      "targetTime": 38.31446478010279
     },
     {
       "name": "highlight-5",
-      "targetTime": 26
+      "targetTime": 40.31446478010279
     },
     {
       "name": "highlight-6",
-      "targetTime": 28
+      "targetTime": 42.31446478010279
     },
     {
       "name": "highlight-7",
-      "targetTime": 30
+      "targetTime": 44.31446478010279
     },
     {
       "name": "hide-box",
-      "targetTime": 32
+      "targetTime": 52.937290485030346
     },
     {
       "name": "end",
-      "targetTime": 33
+      "targetTime": 55.50233863432158
     }
   ],
   "seed": 3075198455

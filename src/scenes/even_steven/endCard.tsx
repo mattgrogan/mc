@@ -20,6 +20,7 @@ const producers = [
   "Mike Jacobs",
   "CaseAdams",
   "Ross Allanson",
+  "William Thorne"
 ];
 
 export default makeScene2D(function* (view) {

@@ -11,27 +11,27 @@
     },
     {
       "name": "step3",
-      "targetTime": 5.6
+      "targetTime": 7.3409977276085
     },
     {
       "name": "step4",
-      "targetTime": 7.6
+      "targetTime": 13.213829407390671
     },
     {
       "name": "step5",
-      "targetTime": 9.6
+      "targetTime": 16.95482713499917
     },
     {
       "name": "step6",
-      "targetTime": 11.6
+      "targetTime": 22.15257806325968
     },
     {
       "name": "scale-down",
-      "targetTime": 17.6
+      "targetTime": 28.152578063259682
     },
     {
       "name": "end",
-      "targetTime": 197.79999999999973
+      "targetTime": 218.19489922209698
     }
   ],
   "seed": 753062434

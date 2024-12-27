@@ -3,8 +3,8 @@
   "shared": {
     "background": null,
     "range": [
-      29.399998999999998,
-      231.26666566666668
+      0,
+      null
     ],
     "size": {
       "x": 1920,
@@ -24,7 +24,7 @@
       "name": "@motion-canvas/ffmpeg",
       "options": {
         "fastStart": true,
-        "includeAudio": true
+        "includeAudio": false
       }
     }
   }

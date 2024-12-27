@@ -7,39 +7,39 @@
     },
     {
       "name": "show-max",
-      "targetTime": 5.300000000000001
+      "targetTime": 7.46434707475154
     },
     {
       "name": "hist",
-      "targetTime": 11
+      "targetTime": 13.16434707475154
     },
     {
       "name": "zoomin",
-      "targetTime": 15
+      "targetTime": 17.16434707475154
     },
     {
       "name": "highlight-1",
-      "targetTime": 15
+      "targetTime": 17.16434707475154
     },
     {
       "name": "highlight-2",
-      "targetTime": 20
+      "targetTime": 23.030085904652157
     },
     {
       "name": "highlight-3",
-      "targetTime": 22
+      "targetTime": 25.787607380815196
     },
     {
       "name": "highlight-4",
-      "targetTime": 24
+      "targetTime": 33.55671840625742
     },
     {
       "name": "hide-box",
-      "targetTime": 24
+      "targetTime": 35.91935151402002
     },
     {
       "name": "end",
-      "targetTime": 25
+      "targetTime": 36.91935151402002
     }
   ],
   "seed": 2497347347

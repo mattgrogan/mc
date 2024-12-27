@@ -35,31 +35,31 @@
     },
     {
       "name": "expand6",
-      "targetTime": 22.950000000000003
+      "targetTime": 24.820423397933435
     },
     {
       "name": "expand7",
-      "targetTime": 24.950000000000003
+      "targetTime": 26.820423397933435
     },
     {
       "name": "expand8",
-      "targetTime": 26.950000000000003
+      "targetTime": 28.820423397933435
     },
     {
       "name": "expand9",
-      "targetTime": 28.950000000000003
+      "targetTime": 30.820423397933435
     },
     {
       "name": "expand10",
-      "targetTime": 30.950000000000003
+      "targetTime": 32.82042339793344
     },
     {
       "name": "undraw",
-      "targetTime": 24.950000000000003
+      "targetTime": 36.137354157702894
     },
     {
       "name": "end",
-      "targetTime": 26.950000000000003
+      "targetTime": 38.137354157702894
     }
   ],
   "seed": 4254191397
