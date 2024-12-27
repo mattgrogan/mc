@@ -19,10 +19,10 @@ import { FadeOut } from "../../utils/FadeOut";
 import { Bright, Grays, PoppinsWhite, Theme } from "../../styles";
 
 // -amount-wonlost-quantiles.json
-import winlose from "../../../../dicedata/output/evensteven-100k/evensteven-100k-amount-wonlost-quantiles.json";
+import winlose from "../../../../dicedata/output/evensteven-fixed/evensteven-fixed-amount-wonlost-quantiles.json";
 
 // -shooter_hist.json
-import histogramData from "../../../../dicedata/output/evensteven-100k/evensteven-100k-shooter_winloss_histogram.json";
+import histogramData from "../../../../dicedata/output/evensteven-fixed/evensteven-fixed-shooter_winloss_histogram.json";
 
 const data = histogramData.slice(0, 31);
 

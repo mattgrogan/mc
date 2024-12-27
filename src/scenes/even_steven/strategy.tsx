@@ -27,7 +27,7 @@ import { CrapsProcessor } from "../../components/craps/CrapsProcessor";
 import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { CrapsTable } from "../../components/craps/CrapsTable";
 
-import simData from "../../../../dicedata/output/evensteven-test/evensteven-test-sessions.json";
+import simData from "../../../../dicedata/output/evensteven-fixed/evensteven-fixed-sessions.json";
 import { c } from "../../components/craps/CrapsTableCoords";
 
 Code.defaultHighlighter = new LezerHighlighter(parser);
@@ -157,18 +157,20 @@ export default makeScene2D(function* (view) {
 
   const processor = new CrapsProcessor(table, bug);
   //const session = simData[0].SESSION;
-  const session = 360;
+  const session = 32472;
   const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
   yield* code().selection(lines(2, 3), 0.6);
   yield* processor.round(firstSession[roll(1)]);
   yield* code().selection(lines(4, 5), 0.6);
   yield* processor.round(firstSession[roll(2)]);
-  yield* processor.round(firstSession[roll(3)]);
-  yield* processor.round(firstSession[roll(4)]);
+  yield* waitFor(2)
+  yield* waitUntil("problem area")
   yield* code().selection(lines(6, 7), 0.6);
-  yield* processor.round(firstSession[roll(5)]);
+  yield* processor.round(firstSession[roll(3)]);
   yield* code().selection(lines(8, 9), 0.6);
+  yield* processor.round(firstSession[roll(4)]);
+  yield* processor.round(firstSession[roll(5)]);
   yield* processor.round(firstSession[roll(6)]);
   yield* processor.round(firstSession[roll(7)]);
   yield* code().selection(lines(10, 11), 0.6);
@@ -178,18 +180,18 @@ export default makeScene2D(function* (view) {
   yield* processor.round(firstSession[roll(10)]);
   yield* processor.round(firstSession[roll(11)]);
   yield* processor.round(firstSession[roll(12)]);
-  yield* processor.round(firstSession[roll(13)]);
-  yield* processor.round(firstSession[roll(14)]);
-  yield* processor.round(firstSession[roll(15)]);
-  yield* processor.round(firstSession[roll(16)]);
-  yield* processor.round(firstSession[roll(17)]);
-  yield* processor.round(firstSession[roll(18)]);
-  yield* processor.round(firstSession[roll(19)]);
-  yield* processor.round(firstSession[roll(20)]);
-  yield* processor.round(firstSession[roll(21)]);
-  yield* processor.round(firstSession[roll(22)]);
-  yield* processor.round(firstSession[roll(23)]);
-  yield* processor.round(firstSession[roll(24)]);
+  // yield* processor.round(firstSession[roll(13)]);
+  // yield* processor.round(firstSession[roll(14)]);
+  // yield* processor.round(firstSession[roll(15)]);
+  // yield* processor.round(firstSession[roll(16)]);
+  // yield* processor.round(firstSession[roll(17)]);
+  // yield* processor.round(firstSession[roll(18)]);
+  // yield* processor.round(firstSession[roll(19)]);
+  // yield* processor.round(firstSession[roll(20)]);
+  // yield* processor.round(firstSession[roll(21)]);
+  // yield* processor.round(firstSession[roll(22)]);
+  // yield* processor.round(firstSession[roll(23)]);
+  // yield* processor.round(firstSession[roll(24)]);
   yield* code().selection(DEFAULT, 0.6);
 
   yield* waitFor(3);

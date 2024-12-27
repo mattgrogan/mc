@@ -16,8 +16,8 @@ import { Bright, Theme } from "../../styles";
 import { CircumscribeRect } from "../../utils/Circumscribe";
 import { FadeIn } from "../../utils/FadeIn";
 
-import simstats from "../../../../dicedata/output/evensteven-100k/evensteven-100k-sessions-shooters-rolls.json";
-import casinostats from "../../../../dicedata/output/evensteven-100k/evensteven-100k-casinostats.json";
+import simstats from "../../../../dicedata/output/evensteven-fixed/evensteven-fixed-sessions-shooters-rolls.json";
+import casinostats from "../../../../dicedata/output/evensteven-fixed/evensteven-fixed-casinostats.json";
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
@@ -37,7 +37,7 @@ export default makeScene2D(function* (view) {
 
   const sim = new SimulationScreen();
   sim.name = "Even Steven";
-  sim.options = " ";
+  sim.options = "Corrected Buy 4/10";
   sim.sessions = simstats[0].SESSIONS;
   sim.shooters = "10 Per Session";
   sim.tableMin = "$25";
