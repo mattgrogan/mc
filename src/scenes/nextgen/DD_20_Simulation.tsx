@@ -4,16 +4,14 @@ import {
   Icon,
   Layout,
   makeScene2D,
+  Node,
   Rect,
   Txt,
-  Node,
 } from "@motion-canvas/2d";
 import {
   createRef,
   createRefArray,
   createSignal,
-  easeInCubic,
-  easeInOutQuint,
   easeInOutSine,
   easeOutCubic,
   easeOutQuint,
@@ -22,26 +20,21 @@ import {
   range,
   sequence,
   SimpleSignal,
-  useLogger,
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
 import {
   Bright,
   Darker,
-  Darkest,
-  grayGradient,
   Grays,
   MonoWhite,
   PoppinsWhite,
   Theme,
-  whiteGradientH,
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
-import { sim } from "./DD_00_Params";
-import { TitleBox } from "../../components/styled/titleBox";
-import { blueTitleGradient } from "../../components/styled/titleBox";
+import { blueTitleGradient, TitleBox } from "../../components/styled/titleBox";
+import * as params from "./DD_00_Params";
 
 const titleGradient = new Gradient({
   type: "linear",
@@ -87,7 +80,7 @@ export default makeScene2D(function* (view) {
       RUNNING THE SIMULATION
     </TitleBox>
   );
-  plotTitle.subhead.text("SIMULATION NAME");
+  plotTitle.subhead.text(params.name);
 
   yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
   yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
@@ -195,10 +188,10 @@ export default makeScene2D(function* (view) {
   rowTitles[2].text("TABLE MINIMUM");
   rowTitles[3].text("TABLE MAXIMUM");
 
-  rowValues[0].text(sim.sessions);
-  rowValues[1].text(sim.shooters_per_session);
-  rowValues[2].text(sim.table_min);
-  rowValues[3].text(sim.table_max);
+  rowValues[0].text(params.sessions);
+  rowValues[1].text(params.shooters_per_session);
+  rowValues[2].text(params.table_min);
+  rowValues[3].text(params.table_max);
 
   yield* waitFor(1);
   //yield* FadeIn(parameterTable, 1, easeOutCubic, [0, 100]);

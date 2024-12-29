@@ -26,14 +26,8 @@ import { FadeIn } from "../../utils/FadeIn";
 import { Plot } from "../../components/plot/plot";
 import { TitleBox } from "../../components/styled/titleBox";
 
-//-sessions-shooters-rolls.json
-import simstats from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-sessions-shooters-rolls.json";
+import * as params from "./DD_00_Params";
 
-//-rolls_by_session.json
-import rollsBySession from "../../../../dicedata/output/pushit-new/pushit-new-rolls_by_session.json";
-
-//-quantiles.json
-import quantiles from "../../../../dicedata/output/pushit-new/pushit-new-quantiles.json";
 import { DataTable } from "../../components/styled/dataTable";
 import {
   getQuantile,
@@ -118,11 +112,11 @@ export default makeScene2D(function* (view) {
 
   // Find the correct data from the json file
   const id = "SESSION_ROLL_BY_SESSION";
-  const tableData = getQuantileData(id, quantiles);
+  const tableData = getQuantileData(id, params.quantiles);
 
   tableData.push({
     label: "AVG",
-    value: (simstats[0].ROLLS / simstats[0].SESSIONS).toFixed(1),
+    value: (params.simstats[0].ROLLS / params.simstats[0].SESSIONS).toFixed(1),
   });
 
   // Create the data table and pass in the references
@@ -186,8 +180,8 @@ export default makeScene2D(function* (view) {
   plot().xAxis.updateTicks(0, X_MAX, 10);
 
   // Add the Min line
-  const minValue = getQuantile(id, quantiles, 0);
-  const maxValue = getQuantile(id, quantiles, 1);
+  const minValue = getQuantile(id, params.quantiles, 0);
+  const maxValue = getQuantile(id, params.quantiles, 1);
   const minLine = plot().vLine([minValue, 2], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
@@ -221,11 +215,11 @@ export default makeScene2D(function* (view) {
   const bars: Line[] = [];
   const labels: Txt[] = [];
 
-  for (let index = 0; index < rollsBySession.length; index++) {
+  for (let index = 0; index < params.rollsBySession.length; index++) {
     const offset = 50;
     const point = new Vector2(
-      rollsBySession[index].MIDPOINT,
-      rollsBySession[index].PCT
+      params.rollsBySession[index].MIDPOINT,
+      params.rollsBySession[index].PCT
     );
     const line = plot().vLine(point, {
       stroke: Bright.BLUE,
@@ -233,12 +227,12 @@ export default makeScene2D(function* (view) {
       opacity: 1,
       end: 0,
     });
-    if (rollsBySession[index].COUNT > 0) {
+    if (params.rollsBySession[index].COUNT > 0) {
       bars.push(line);
     }
 
-    if (rollsBySession[index].PCT >= 0.1) {
-      const pct = rollsBySession[index].PCT.toFixed(1);
+    if (params.rollsBySession[index].PCT >= 0.1) {
+      const pct = params.rollsBySession[index].PCT.toFixed(1);
       const label = plot().text(point, {
         ...PoppinsWhite,
         text: pct,

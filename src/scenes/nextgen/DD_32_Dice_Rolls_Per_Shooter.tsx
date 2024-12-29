@@ -23,23 +23,21 @@ import {
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
+import * as params from "./DD_00_Params";
+
 import { Plot } from "../../components/plot/plot";
 import { TitleBox } from "../../components/styled/titleBox";
 
-//-sessions-shooters-rolls.json
-import simstats from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-sessions-shooters-rolls.json";
-
-//-rolls_by_shooter.json
-import rollsByShooter from "../../../../dicedata/output/pushit-new/pushit-new-rolls_by_shooter.json";
-
-//-quantiles.json
-import quantiles from "../../../../dicedata/output/pushit-new/pushit-new-quantiles.json";
 import { DataTable } from "../../components/styled/dataTable";
 import {
   getQuantile,
   getQuantileData,
 } from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
+
+const X_MAX = 120;
+const Y_MAX = 40;
+const QUANTILES_ID = "SHOOTER_ROLL_BY_SHOOTER";
 
 let titleGradient = new Gradient({
   from: [0, -300],
@@ -60,10 +58,6 @@ const plotAreaFill = new Gradient({
     { offset: 1, color: "#818181" },
   ],
 });
-
-const X_MAX = 120;
-const Y_MAX = 40;
-const QUANTILES_ID = "SHOOTER_ROLL_BY_SHOOTER";
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
@@ -120,11 +114,11 @@ export default makeScene2D(function* (view) {
   const dataTable = makeRefs<typeof DataTable>();
 
   // Find the correct data from the json file
-  const tableData = getQuantileData(QUANTILES_ID, quantiles);
+  const tableData = getQuantileData(QUANTILES_ID, params.quantiles);
 
   tableData.push({
     label: "AVG",
-    value: (simstats[0].ROLLS / simstats[0].SHOOTERS).toFixed(2),
+    value: (params.simstats[0].ROLLS / params.simstats[0].SHOOTERS).toFixed(2),
   });
 
   // Create the data table and pass in the references
@@ -189,8 +183,8 @@ export default makeScene2D(function* (view) {
   plot().xAxis.updateTicks(0, X_MAX, 5);
 
   // Add the Min line
-  const minValue = getQuantile(QUANTILES_ID, quantiles, 0);
-  const maxValue = getQuantile(QUANTILES_ID, quantiles, 1);
+  const minValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
+  const maxValue = getQuantile(QUANTILES_ID, params.quantiles, 1);
   const minLine = plot().vLine([minValue, 4], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
@@ -226,11 +220,11 @@ export default makeScene2D(function* (view) {
   const bars: Line[] = [];
   const labels: Txt[] = [];
 
-  for (let index = 0; index < rollsByShooter.length; index++) {
+  for (let index = 0; index < params.rollsByShooter.length; index++) {
     const offset = 50;
     const point = new Vector2(
-      rollsByShooter[index].MIDPOINT,
-      rollsByShooter[index].PCT
+      params.rollsByShooter[index].MIDPOINT,
+      params.rollsByShooter[index].PCT
     );
     const line = plot().vLine(point, {
       stroke: Bright.BLUE,
@@ -238,12 +232,12 @@ export default makeScene2D(function* (view) {
       opacity: 1,
       end: 0,
     });
-    if (rollsByShooter[index].COUNT > 0) {
+    if (params.rollsByShooter[index].COUNT > 0) {
       bars.push(line);
     }
 
-    if (rollsByShooter[index].PCT >= 0.1) {
-      const pct = rollsByShooter[index].PCT.toFixed(1);
+    if (params.rollsByShooter[index].PCT >= 0.1) {
+      const pct = params.rollsByShooter[index].PCT.toFixed(1);
       const label = plot().text(point, {
         ...PoppinsWhite,
         text: pct,

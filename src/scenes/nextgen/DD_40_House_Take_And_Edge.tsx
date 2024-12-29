@@ -1,40 +1,35 @@
 import {
   Gradient,
   Layout,
-  Line,
   makeScene2D,
   Node,
   Rect,
   Txt,
+  TxtProps,
 } from "@motion-canvas/2d";
 import {
   createRef,
   createRefArray,
   Direction,
+  easeInOutCubic,
   easeOutCubic,
-  linear,
+  easeOutExpo,
   makeRefs,
   range,
   sequence,
   slideTransition,
-  Vector2,
+  useLogger,
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
-import {
-  Bright,
-  Darker,
-  Grays,
-  PoppinsBlack,
-  PoppinsWhite,
-  Theme,
-} from "../../styles";
+import { Bright, Grays, PoppinsBlack, PoppinsWhite, Theme } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
+
 import * as params from "./DD_00_Params";
+
 import { Plot } from "../../components/plot/plot";
 import {
   commaFormmatter,
-  getQuantile,
   getQuantileData,
 } from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
@@ -50,9 +45,9 @@ const X_AXIS_MIN = 0;
 const X_AXIS_MAX = 40;
 const X_AXIS_STEP = 100;
 
-const Y_AXIS_MIN = -1000;
-const Y_AXIS_MAX = 100;
-const Y_AXIS_STEP = 100;
+const Y_AXIS_MIN = -5;
+const Y_AXIS_MAX = 0;
+const Y_AXIS_STEP = 0.5;
 
 const HAND_QUANTILES_ID = "PLYR_NET_SHBR_UPDATED_OUT_OF_HAND";
 
@@ -60,7 +55,7 @@ const HAND_QUANTILES_ID = "PLYR_NET_SHBR_UPDATED_OUT_OF_HAND";
 const X_LIMIT = 2;
 
 // Filter just the data we want on the histogram
-const data = params.worstBankroll.slice(0, 30);
+const data = params.histogramData.slice(0, 30);
 
 const AVERAGE_WONLOST = params.amountWonLostQuantiles.find(
   (stat) => stat.STAT == "MEAN_WONLOST"
@@ -118,10 +113,10 @@ export default makeScene2D(function* (view) {
       headerProps={{ ...PoppinsBlack }}
       subheadProps={{ ...PoppinsBlack }}
     >
-      BANKROLL MANAGEMENT
+      HOUSE TAKE AND EDGE
     </TitleBox>
   );
-  plotTitle.subhead.text("WORST CASES");
+  plotTitle.subhead.text("THE STRATEGY");
 
   // Add a two column area
   const subContainer = createRef<Layout>();
@@ -133,22 +128,6 @@ export default makeScene2D(function* (view) {
       direction={"row"}
       gap={50}
     ></Layout>
-  );
-
-  // ADD THE PLOT AREA
-  const plotArea = makeRefs<typeof PlotArea>();
-  const plot = createRef<Plot>();
-
-  subContainer().add(
-    <PlotArea
-      refs={plotArea}
-      props={{
-        height: "100%",
-        width: "50%",
-        fill: plotAreaFill,
-        stroke: Grays.GRAY1,
-      }}
-    ></PlotArea>
   );
 
   // Add the data rows
@@ -183,28 +162,8 @@ export default makeScene2D(function* (view) {
       <Node
         ref={rowNodes}
         opacity={0}
-      >
-        <Rect
-          width={"100%"}
-          // height={"18%"}
-          basis={0}
-          fill={Darker.BLUE}
-          justifyContent={"center"}
-          alignItems={"center"}
-          stroke={Grays.GRAY2}
-          grow={1}
-          lineWidth={3}
-        >
-          <Txt
-            {...PoppinsWhite}
-            // fill={Darker.BLUE}
-            text={"GETTING OUT OF THE HAND"}
-            fontSize={80}
-            fontWeight={600}
-          />
-        </Rect>
-      </Node>
-      {range(4).map((index) => (
+      ></Node>
+      {range(5).map((index) => (
         <Node
           ref={rowNodes}
           opacity={0}
@@ -235,15 +194,15 @@ export default makeScene2D(function* (view) {
                 textWrap
                 textAlign={"left"}
                 // text={"SESSIONS"}
-                fontSize={70}
-                fontWeight={600}
+                fontSize={90}
+                fontWeight={400}
               ></Txt>
             </Rect>
             <Rect
               width={"50%"}
               height={"100%"}
               fill={Grays.GRAY1}
-              justifyContent={"center"}
+              justifyContent={"end"}
               alignItems={"center"}
               padding={50}
             >
@@ -252,7 +211,7 @@ export default makeScene2D(function* (view) {
                 {...PoppinsWhite}
                 fill={Grays.BLACK}
                 // text={"100,000"}
-                fontSize={120}
+                fontSize={90}
                 fontWeight={600}
               ></Txt>
             </Rect>
@@ -262,10 +221,11 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
-  rowTitles[0].text("PERCENT NOT OUT OF HAND");
-  rowTitles[1].text("MOST LOST");
-  rowTitles[2].text("MEDIAN LOST");
-  rowTitles[3].text("LEAST LOST");
+  rowTitles[0].text("TOTAL BET");
+  rowTitles[1].text("TOTAL WON");
+  rowTitles[2].text("TOTAL LOST");
+  rowTitles[3].text("HOUSE TAKE");
+  rowTitles[4].text("HOUSE EDGE");
 
   // Find the correct data from the json file
   const tableData = getQuantileData(
@@ -273,13 +233,31 @@ export default makeScene2D(function* (view) {
     params.out_of_hand,
     commaFormmatter
   );
-  const pctWinners = ((LOSERS / TOTAL) * 100).toFixed(1) + "%";
-  rowValues[0].text(pctWinners);
-  rowValues[1].text(tableData[0].value);
-  rowValues[2].text(tableData[3].value);
-  rowValues[3].text(tableData[6].value);
+  rowValues[0].text(commaFormmatter(params.casinostats[0].TOTAL_BET));
+  rowValues[1].text(commaFormmatter(params.casinostats[0].TOTAL_WON));
+  rowValues[2].text(commaFormmatter(params.casinostats[0].TOTAL_LOST * -1));
+  rowValues[3].text(commaFormmatter(params.casinostats[0].HOUSE_TAKE * -1));
+  rowValues[4].text(
+    commaFormmatter(params.casinostats[0].HOUSE_EDGE * -100, 3) + "%"
+  );
   // rowValues[2].text(sim.table_min);
   // rowValues[3].text(sim.table_max);
+
+  // ADD THE PLOT AREA
+  const plotArea = makeRefs<typeof PlotArea>();
+  const plot = createRef<Plot>();
+
+  subContainer().add(
+    <PlotArea
+      refs={plotArea}
+      props={{
+        height: "100%",
+        width: "50%",
+        fill: plotAreaFill,
+        stroke: Grays.GRAY1,
+      }}
+    ></PlotArea>
+  );
 
   yield* waitFor(1);
   //yield* FadeIn(parameterTable, 1, easeOutCubic, [0, 100]);
@@ -296,7 +274,7 @@ export default makeScene2D(function* (view) {
       width={plotArea.rect.width() * 0.7}
       height={plotArea.rect.height() * 0.7}
       xAxisProps={{
-        opacity: 1,
+        opacity: 0,
         stroke: Grays.BLACK,
         lineWidth: 8,
         end: 0,
@@ -307,12 +285,22 @@ export default makeScene2D(function* (view) {
         lineWidth: 8,
         end: 0,
       }}
-      xLabelProps={{ fill: Grays.BLACK, decimalNumbers: 0, fontSize: 40 }}
-      yLabelProps={{ fill: Grays.BLACK, decimalNumbers: 0, fontSize: 40 }}
+      xLabelProps={{
+        fill: Grays.BLACK,
+        decimalNumbers: 0,
+        fontSize: 40,
+        opacity: 0,
+      }}
+      yLabelProps={{
+        fill: Grays.BLACK,
+        suffix: "%",
+        decimalNumbers: 1,
+        fontSize: 40,
+      }}
       xTitleProps={{
         ...PoppinsBlack,
         fill: Grays.BLACK,
-        text: "LOWEST BANKROLL IN THE SESSION",
+        text: "HOUSE EDGE",
         lineToLabelPadding: 50,
         opacity: 1,
         fontSize: 60,
@@ -320,13 +308,13 @@ export default makeScene2D(function* (view) {
       yTitleProps={{
         ...PoppinsBlack,
         fill: Grays.BLACK,
-        text: "WORST BANKROLL",
+        text: "HOUSE EDGE",
         lineToLabelPadding: -160,
         opacity: 0,
         rotation: -90,
         fontSize: 60,
       }}
-      xTickProps={{ stroke: Grays.BLACK }}
+      xTickProps={{ stroke: Grays.BLACK, opacity: 0 }}
       yTickProps={{ stroke: Grays.BLACK }}
     ></Plot>
   );
@@ -338,7 +326,13 @@ export default makeScene2D(function* (view) {
   yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
   yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
 
-  // yield* waitFor(1);
+  yield* waitFor(1);
+  // Show the table
+  yield* sequence(
+    0.4,
+    ...rowNodes.map((r) => FadeIn(r, 1, easeOutCubic, [0, 50]))
+  );
+  yield* waitFor(1);
 
   // Draw the Plot
   yield* FadeIn(plotArea.container, 1, easeOutCubic, [100, 0]);
@@ -349,124 +343,132 @@ export default makeScene2D(function* (view) {
   // plot().xAxis.updateTicks(X_AXIS_MIN, X_AXIS_MAX, X_AXIS_STEP);
   plot().yAxis.updateTicks(Y_AXIS_MIN, Y_AXIS_MAX, Y_AXIS_STEP);
 
-  // Add the Min line
-  const minValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
-  const maxValue = getQuantile(QUANTILES_ID, params.quantiles, 1);
-
-  const minLine = plot().hLine([X_LIMIT, minValue], {
-    stroke: Grays.GRAY3,
-    lineWidth: 6,
-    end: 0,
-    zIndex: -10, // THIS IS BEING OVERRIDEN
-  });
-  minLine.zIndex(0);
-
-  // Add the Max line
-  const maxLine = plot().hLine([X_LIMIT, maxValue], {
-    stroke: Grays.GRAY3,
-    lineWidth: 6,
-    end: 0,
-  });
-  maxLine.zIndex(0);
-
-  // Try a box
-  const lowerRangeBox = plot().box(
-    [X_LIMIT, minValue - 1],
-    [0, Math.min(Y_AXIS_MIN, minValue)],
-
-    {
-      fill: Grays.GRAY3,
-      opacity: 0,
-      zIndex: 200,
-    }
-  );
-
-  const upperRangeBox = plot().box(
-    [X_LIMIT, maxValue + 1],
-    [0, Math.max(Y_AXIS_MAX, maxValue)],
-    {
-      fill: Grays.GRAY3,
-      opacity: 0,
-      zIndex: -200,
-    }
-  );
-
   yield* waitFor(2);
 
   // ************************
-  // FACTOR THIS STUFF OUT
+  // DRAW THE EDGE ARROW
   // ************************
-  const bars: Line[] = [];
-  const labels: Txt[] = [];
+  const HOUSE_EDGE_PERCENT = params.casinostats[0].HOUSE_EDGE * 100;
+  useLogger().debug(HOUSE_EDGE_PERCENT.toFixed(3));
 
-  for (let index = 0; index < data.length; index++) {
-    const offset = 50;
-    const point = new Vector2(data[index].PCT, data[index].MIDPOINT);
-    const line = plot().hLine(point, {
-      stroke: Bright.BLUE,
-      lineWidth: 60,
-      opacity: 1,
-      end: 0,
-    });
-    if (data[index].COUNT > 0) {
-      bars.push(line);
-    }
+  // yield* waitUntil("skill66");
+  const thisStrategyLine = plot().hLine([10, HOUSE_EDGE_PERCENT], {
+    lineWidth: 60,
+    stroke: Bright.BLUE,
+    startOffset: 30,
+    endOffset: 20,
+    // lineDash: [20, 5],
+    start: 1,
+    startArrow: true,
+    arrowSize: 80,
+    opacity: 0.8,
+  });
+  thisStrategyLine.zIndex(100);
+  yield* thisStrategyLine.start(0, 1, easeOutExpo);
 
-    // if (data[index].PCT >= 0.1) {
-    let pct = data[index].PCT.toFixed(1);
-
-    // Shift the point over a bit, if it's low
-    const POINT_LIMIT = 2;
-    let adjPoint = point;
-    if (data[index].PCT < POINT_LIMIT) {
-      adjPoint = point.addX(POINT_LIMIT);
-    }
-
-    if (data[index].PCT < 0.1 && data[index].PCT > 0) {
-      pct = "<0.1";
-    }
-    const n = commaFormmatter(data[index].COUNT);
-    const label = plot().text(adjPoint, {
-      ...PoppinsWhite,
-      text: n + " (" + pct + "%)",
-      offsetX: -1.1,
-      fill: Grays.BLACK,
-      fontWeight: 500,
-      fontSize: 45,
-      opacity: 0,
-    });
-    // label.add(
-    //   <Txt
-    //     text="%"
-    //     fontSize={24}
-    //   />
-    // );
-
-    if (data[index].PCT > 0) {
-      labels.push(label);
-    }
-  }
   // ************************
-  // END FACTOR
+  // DRAW THE EDGE COMPARISONS
   // ************************
 
-  yield* sequence(0.1, ...bars.map((line) => line.end(1, 1, easeOutCubic)));
-  yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
+  const lineProps = {
+    lineWidth: 20,
+    stroke: Grays.BLACK,
+    // fill: Grays.GRAY2,
+    startOffset: 30,
+    endOffset: 20,
+    //lineDash: [20, 5],
+    start: 1,
+    startArrow: true,
+    arrowSize: 30,
+    opacity: 0.6,
+  };
 
-  // Show data ranges in plot
-  yield minLine.end(1, 1, easeOutCubic);
-  yield lowerRangeBox.opacity(0.2, 1, linear);
-  yield* maxLine.end(1, 0.6, easeOutCubic);
-  yield* upperRangeBox.opacity(0.2, 0.6, linear);
+  const edgeLabelProps: TxtProps = {
+    //...MonoWhite,
+    ...PoppinsWhite,
+    fill: Grays.BLACK,
+    fontWeight: 600,
+    fontSize: 60,
+    opacity: 0,
+    offset: [-1, 0],
+  };
 
-  // Show the table
-  yield* waitFor(1);
-  yield* sequence(
-    0.4,
-    ...rowNodes.map((r) => FadeIn(r, 1, easeOutCubic, [0, 50]))
+  const BETWEEN_SECS = 0.7;
+  yield* addPointer(plot(), 0, "TAKE/LAY ODDS (0.00%)");
+  yield* waitFor(BETWEEN_SECS);
+  yield* addPointer(plot(), -1.41, "PASS/COME (1.41%)");
+  yield* waitFor(BETWEEN_SECS);
+  yield* addPointer(plot(), -2.78, "FIELD (3:1) (2.78%)");
+  yield* waitFor(BETWEEN_SECS);
+  yield* addPointer(plot(), -1.52, "PLACE 6/8 (1.52%)");
+  yield* waitFor(BETWEEN_SECS);
+  yield* addPointer(plot(), -4.0, "PLACE 5/9 (4.00%)");
+  yield* waitFor(BETWEEN_SECS);
+
+  yield* plot().rescale(
+    X_AXIS_MIN,
+    X_AXIS_MAX,
+    X_AXIS_STEP,
+    -18,
+    Y_AXIS_MAX,
+    2,
+    2,
+    easeInOutCubic
   );
-  yield* waitFor(1);
 
-  yield* waitFor(10);
+  yield* addPointer(plot(), -5.56, "FIELD (2:1) (5.56%)");
+  yield* waitFor(BETWEEN_SECS);
+  yield* addPointer(plot(), -6.67, "PLACE 4/10 (6.67%)");
+  yield* waitFor(BETWEEN_SECS);
+  yield* addPointer(plot(), -9.09, "HARD 6/8 (9.09%)");
+  yield* waitFor(BETWEEN_SECS);
+  yield* addPointer(plot(), -11.11, "HARD 4/10 & ANY CRAPS (11.11%)");
+  yield* waitFor(BETWEEN_SECS);
+  yield* addPointer(plot(), -16.67, "ANY SEVEN (16.67%)");
+  yield* waitFor(BETWEEN_SECS);
+
+  // yield thisStrategyLabel.opacity(1, 1.2);
+
+  yield* waitFor(2);
   yield* waitUntil("end");
 });
+
+function* addPointer(plot: Plot, edge: number, label: string) {
+  const OPACITY_ON_SECS = 0.7;
+  const OPACITY_DELAY_SECS = 0.7;
+  const OPACITY_OFF_SECS = 0.7;
+
+  const lineProps = {
+    lineWidth: 20,
+    stroke: Grays.BLACK,
+    // fill: Grays.GRAY2,
+    startOffset: 30,
+    endOffset: 20,
+    //lineDash: [20, 5],
+    start: 1,
+    startArrow: true,
+    arrowSize: 30,
+    opacity: 0.6,
+  };
+
+  const edgeLabelProps: TxtProps = {
+    //...MonoWhite,
+    ...PoppinsWhite,
+    fill: Grays.BLACK,
+    fontWeight: 600,
+    fontSize: 60,
+    opacity: 0,
+    offset: [-1, 0],
+  };
+
+  const line = plot.hLine([10, edge], lineProps);
+  const text = plot.text([10, edge], {
+    ...edgeLabelProps,
+    text: label,
+  });
+  yield line.start(0, 0.6, easeInOutCubic);
+  yield text
+    .opacity(1, OPACITY_ON_SECS)
+    .wait(OPACITY_DELAY_SECS)
+    .to(0, OPACITY_OFF_SECS);
+}

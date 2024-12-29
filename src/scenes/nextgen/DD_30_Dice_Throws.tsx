@@ -4,7 +4,6 @@ import {
   createSignal,
   Direction,
   easeOutCubic,
-  linear,
   makeRefs,
   sequence,
   slideTransition,
@@ -12,34 +11,21 @@ import {
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
-import {
-  Bright,
-  Grays,
-  LightBlueGradient,
-  PoppinsBlack,
-  PoppinsWhite,
-  purpleGradient,
-  silverGradient,
-  Theme,
-} from "../../styles";
+import { Bright, Grays, PoppinsBlack, PoppinsWhite, Theme } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
 import { Plot } from "../../components/plot/plot";
 import { TitleBox } from "../../components/styled/titleBox";
 
-//-sessions-shooters-rolls.json
-import simstats from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-sessions-shooters-rolls.json";
+import * as params from "./DD_00_Params";
 
-//-rolls_by_shooter.json
-import rollsByShooter from "../../../../dicedata/output/pushit-new/pushit-new-rolls_by_shooter.json";
+//-sessions-shooters-rolls.json
+// const simStatsJsonFile =
+//   "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-sessions-shooters-rolls.json";
+
+// import simstats from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-sessions-shooters-rolls.json";
 
 //-quantiles.json
-import quantiles from "../../../../dicedata/output/pushit-new/pushit-new-quantiles.json";
-import { DataTable } from "../../components/styled/dataTable";
-import {
-  getQuantile,
-  getQuantileData,
-} from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
 
 let titleGradient = new Gradient({
@@ -89,7 +75,7 @@ export default makeScene2D(function* (view) {
   yield* waitFor(1);
 
   const totalThrowsSignal = createSignal(0);
-  const totalThrows = simstats[0].ROLLS;
+  const totalThrows = params.simstats[0].ROLLS;
 
   const plotTitle = makeRefs<typeof TitleBox>();
   container().add(

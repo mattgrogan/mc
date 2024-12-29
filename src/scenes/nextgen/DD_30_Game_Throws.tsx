@@ -1,15 +1,12 @@
 import {
-  Circle,
+  Camera,
   Gradient,
-  Icon,
   Layout,
+  Line,
   makeScene2D,
+  Node,
   Rect,
   Txt,
-  Node,
-  Line,
-  View2D,
-  Camera,
 } from "@motion-canvas/2d";
 import {
   all,
@@ -17,20 +14,12 @@ import {
   createRefArray,
   createSignal,
   delay,
-  easeInCirc,
-  easeInCubic,
   easeInOutCubic,
-  easeOutBounce,
   easeOutCubic,
-  easeOutElastic,
-  easeOutExpo,
-  easeOutQuint,
   easeOutSine,
   linear,
   range,
   sequence,
-  SimpleSignal,
-  useLogger,
   Vector2,
   waitFor,
   waitUntil,
@@ -39,33 +28,18 @@ import {
   Bright,
   Darker,
   Darkest,
-  grayGradient,
   Grays,
   LightBlueGradient,
   MonoWhite,
   PoppinsBlack,
   PoppinsWhite,
-  redGradient,
   silverGradient,
   Theme,
-  whiteGradientH,
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
-import { sim } from "./DD_00_Params";
-import { CircumscribeRect } from "../../utils/Circumscribe";
 import { Plot } from "../../components/plot/plot";
-
-//-sessions-shooters-rolls.json
-import simstats from "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-sessions-shooters-rolls.json";
-
-//-rolls_by_session.json
-import rollsBySession from "../../../../dicedata/output/pushit-new/pushit-new-rolls_by_session.json";
-//-rolls_by_shooter.json
-import rollsByShooter from "../../../../dicedata/output/pushit-new/pushit-new-rolls_by_shooter.json";
-
-//-quantiles.json
-import quantiles from "../../../../dicedata/output/pushit-new/pushit-new-quantiles.json";
+import * as params from "./DD_00_Params";
 
 // This is the center of the content area
 // OffsetX by the TOC height 14%
@@ -125,7 +99,7 @@ export default makeScene2D(function* (view) {
           ref={titleLines}
           {...PoppinsWhite}
           fill={Darker.BLUE}
-          text={sim.name}
+          text={params.name}
           fontSize={240}
           fontWeight={600}
           lineHeight={200}
@@ -201,7 +175,7 @@ export default makeScene2D(function* (view) {
               text={"SESSIONS"}
               fontSize={65}
               fontWeight={600}
-              textWrap={"wrap"}
+              textWrap
             ></Txt>
           </Rect>
         </Node>
@@ -237,7 +211,7 @@ export default makeScene2D(function* (view) {
   yield newNode.opacity(1, 0, linear);
   yield newNode.scale(4, 1, easeInOutCubic);
   yield newNode.fill(Darkest.RED, 1, linear);
-  yield newNode.childrenAs()[0].fill(Grays.WHITE, 1, linear);
+  yield newNode.childrenAs<Rect>()[0].fill(Grays.WHITE, 1, linear);
   yield* newNode.position(CONTENT_CENTER, 1, easeInOutCubic);
   yield* waitFor(1);
   yield newNode.scale(1, 1, easeInOutCubic);
@@ -319,7 +293,7 @@ export default makeScene2D(function* (view) {
                 ref={rowTitles}
                 {...PoppinsWhite}
                 fill={Grays.BLACK}
-                textWrap={"wrap"}
+                textWrap
                 textAlign={"left"}
                 // text={"SESSIONS"}
                 fontSize={90}
@@ -330,7 +304,7 @@ export default makeScene2D(function* (view) {
               width={"50%"}
               height={"100%"}
               fill={Grays.GRAY1}
-              justifyContent={"right"}
+              justifyContent={"start"}
               alignItems={"center"}
               padding={50}
             >
@@ -353,7 +327,7 @@ export default makeScene2D(function* (view) {
   rowTitles[1].text("AVERAGE PER SESSION");
   rowTitles[2].text("AVERAGE PER SHOOTER");
 
-  const totalThrowsSignal = createSignal(simstats[0].ROLLS * 0.8);
+  const totalThrowsSignal = createSignal(params.simstats[0].ROLLS * 0.8);
   const perSessionSignal = createSignal(0);
   const perShooterSignal = createSignal(0);
 
@@ -369,14 +343,14 @@ export default makeScene2D(function* (view) {
   //yield* waitFor(1);
   yield sequence(
     0.4,
-    totalThrowsSignal(simstats[0].ROLLS, 0.8, easeOutCubic),
+    totalThrowsSignal(params.simstats[0].ROLLS, 0.8, easeOutCubic),
     perSessionSignal(
-      simstats[0].ROLLS / simstats[0].SESSIONS,
+      params.simstats[0].ROLLS / params.simstats[0].SESSIONS,
       0.8,
       easeOutCubic
     ),
     perShooterSignal(
-      simstats[0].ROLLS / simstats[0].SHOOTERS,
+      params.simstats[0].ROLLS / params.simstats[0].SHOOTERS,
       0.8,
       easeOutCubic
     )
@@ -591,11 +565,11 @@ function* doSessionPlot(container: Layout) {
   const sessionThrowslines: Line[] = [];
   const sessionThrowsPcts: Txt[] = [];
 
-  for (let index = 0; index < rollsBySession.length; index++) {
+  for (let index = 0; index < params.rollsBySession.length; index++) {
     const offset = 50;
     const point = new Vector2(
-      rollsBySession[index].MIDPOINT,
-      rollsBySession[index].PCT
+      params.rollsBySession[index].MIDPOINT,
+      params.rollsBySession[index].PCT
     );
     const line = sessionThrowsPlot().vLine(point, {
       stroke: Bright.BLUE,
@@ -603,12 +577,12 @@ function* doSessionPlot(container: Layout) {
       opacity: 1,
       end: 0,
     });
-    if (rollsBySession[index].COUNT > 0) {
+    if (params.rollsBySession[index].COUNT > 0) {
       sessionThrowslines.push(line);
     }
 
-    if (rollsBySession[index].PCT > 0.5) {
-      const pct = rollsBySession[index].PCT.toFixed(1) + "%";
+    if (params.rollsBySession[index].PCT > 0.5) {
+      const pct = params.rollsBySession[index].PCT.toFixed(1) + "%";
       const label = sessionThrowsPlot().text(point, {
         text: pct,
         offsetY: 1.5,
@@ -700,25 +674,25 @@ function* doSessionPlot(container: Layout) {
   percentileHeaders[6].text("MAX");
 
   const id = "SESSION_ROLL_BY_SESSION";
-  const p00 = quantiles.find(
+  const p00 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0
   ).VALUE;
-  const p05 = quantiles.find(
+  const p05 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.05
   ).VALUE;
-  const p25 = quantiles.find(
+  const p25 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.25
   ).VALUE;
-  const p50 = quantiles.find(
+  const p50 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.5
   ).VALUE;
-  const p75 = quantiles.find(
+  const p75 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.75
   ).VALUE;
-  const p95 = quantiles.find(
+  const p95 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.95
   ).VALUE;
-  const p100 = quantiles.find(
+  const p100 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 1
   ).VALUE;
 
@@ -806,11 +780,11 @@ function* doShooterPlot(container: Layout) {
   const sessionThrowslines: Line[] = [];
   const sessionThrowsPcts: Txt[] = [];
 
-  for (let index = 0; index < rollsByShooter.length; index++) {
+  for (let index = 0; index < params.rollsByShooter.length; index++) {
     const offset = 50;
     const point = new Vector2(
-      rollsByShooter[index].MIDPOINT,
-      rollsByShooter[index].PCT
+      params.rollsByShooter[index].MIDPOINT,
+      params.rollsByShooter[index].PCT
     );
     const line = plot().vLine(point, {
       stroke: Bright.BLUE,
@@ -818,12 +792,12 @@ function* doShooterPlot(container: Layout) {
       opacity: 1,
       end: 0,
     });
-    if (rollsByShooter[index].COUNT > 0) {
+    if (params.rollsByShooter[index].COUNT > 0) {
       sessionThrowslines.push(line);
     }
 
-    if (rollsByShooter[index].PCT > 0.5) {
-      const pct = rollsByShooter[index].PCT.toFixed(1) + "%";
+    if (params.rollsByShooter[index].PCT > 0.5) {
+      const pct = params.rollsByShooter[index].PCT.toFixed(1) + "%";
       const label = plot().text(point, {
         text: pct,
         offsetY: 1.5,
@@ -915,25 +889,25 @@ function* doShooterPlot(container: Layout) {
   percentileHeaders[6].text("MAX");
 
   const id = "SHOOTER_ROLL_BY_SHOOTER";
-  const p00 = quantiles.find(
+  const p00 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0
   ).VALUE;
-  const p05 = quantiles.find(
+  const p05 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.05
   ).VALUE;
-  const p25 = quantiles.find(
+  const p25 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.25
   ).VALUE;
-  const p50 = quantiles.find(
+  const p50 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.5
   ).VALUE;
-  const p75 = quantiles.find(
+  const p75 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.75
   ).VALUE;
-  const p95 = quantiles.find(
+  const p95 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 0.95
   ).VALUE;
-  const p100 = quantiles.find(
+  const p100 = params.quantiles.find(
     (stat) => stat.ID === id && stat.QUANTILE === 1
   ).VALUE;
 

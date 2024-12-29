@@ -22,7 +22,7 @@ import {
   Theme,
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
-
+import * as params from "./DD_00_Params";
 import { Plot } from "../../components/plot/plot";
 import { TitleBox } from "../../components/styled/titleBox";
 import { DataTable } from "../../components/styled/dataTable";
@@ -33,21 +33,6 @@ import {
   plusCommaFormmatter,
 } from "../../components/styled/findQuantiles";
 
-//-sessions-shooters-rolls.json
-import simstats from "../../../../dicedata/output/pushit-new/pushit-new-sessions-shooters-rolls.json";
-
-//-rolls_by_shooter.json
-import rollsByShooter from "../../../../dicedata/output/pushit-new/pushit-new-rolls_by_shooter.json";
-
-// -shooter_hist.json
-import histogramData from "../../../../dicedata/output/pushit-new/pushit-new-session_hist.json";
-
-//-amount-wonlost-quantiles.json
-import amountWonLostQuantiles from "../../../../dicedata/output/pushit-new/pushit-new-amount-wonlost-quantiles.json";
-
-//-quantiles.json
-import quantiles from "../../../../dicedata/output/pushit-new/pushit-new-quantiles.json";
-
 const QUANTILES_ID = "PLYR_CWONLOST_BY_SESSION";
 const X_AXIS_MIN = -700;
 const X_AXIS_MAX = 2000;
@@ -56,9 +41,9 @@ const X_AXIS_STEP = 100;
 const Y_AXIS_MAX = 22;
 
 // Filter just the data we want on the histogram
-const data = histogramData.slice(4, 30);
+const data = params.sessionHist.slice(4, 30);
 
-const AVERAGE_WONLOST = amountWonLostQuantiles.find(
+const AVERAGE_WONLOST = params.amountWonLostQuantiles.find(
   (stat) => stat.STAT == "MEAN_WONLOST"
 ).BY_SESSION;
 
@@ -139,7 +124,7 @@ export default makeScene2D(function* (view) {
   // Find the correct data from the json file
   const tableData = getQuantileData(
     QUANTILES_ID,
-    quantiles,
+    params.quantiles,
     plusCommaFormmatter
   );
 
@@ -210,9 +195,9 @@ export default makeScene2D(function* (view) {
   plot().xAxis.updateTicks(X_AXIS_MIN, X_AXIS_MAX, X_AXIS_STEP);
 
   // Add the Min line
-  const minValue = getQuantile(QUANTILES_ID, quantiles, 0);
-  const maxValue = getQuantile(QUANTILES_ID, quantiles, 1);
-  const minLine = plot().vLine([minValue, 4], {
+  const minValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
+  const maxValue = getQuantile(QUANTILES_ID, params.quantiles, 1);
+  const minLine = plot().vLine([minValue, 2], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
@@ -221,14 +206,14 @@ export default makeScene2D(function* (view) {
   minLine.zIndex(0);
 
   // Add the Max line
-  const maxLine = plot().vLine([maxValue, 4], {
+  const maxLine = plot().vLine([maxValue, 2], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
   });
 
   // Try a box
-  const lowerRangeBox = plot().box([X_AXIS_MIN, 4], [minValue - 1, 0], {
+  const lowerRangeBox = plot().box([X_AXIS_MIN, 2], [minValue - 1, 0], {
     fill: Grays.GRAY3,
     opacity: 0,
     zIndex: 200,

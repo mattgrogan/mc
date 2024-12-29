@@ -10,36 +10,22 @@ import {
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
-import {
-  Bright,
-  grayGradient,
-  Grays,
-  greenGradient,
-  PoppinsBlack,
-  PoppinsWhite,
-  redGradient,
-  Theme,
-} from "../../styles";
+import { Grays, PoppinsBlack, Theme } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
-
-import { TitleBox } from "../../components/styled/titleBox";
+import * as params from "./DD_00_Params";
 import {
   loserGradient,
-  // loserIcon,
   OutcomeCard,
   outcomeCardColors,
-  // pusherIcon,
   pushGradient,
   winnerGradient,
-  // winnerIcon,
 } from "../../components/styled/outcomeCard";
+import { TitleBox } from "../../components/styled/titleBox";
 
-// -winloss-outcomes.json
-import winlose from "../../../../dicedata/output/pushit-100k/pushit-100k-winloss-outcomes.json";
-const WINNERS = winlose.find((stat) => stat.STAT == "N_UP").BY_SESSION;
-const PUSHERS = winlose.find((stat) => stat.STAT == "N_EVEN").BY_SESSION;
-const LOSERS = winlose.find((stat) => stat.STAT == "N_DOWN").BY_SESSION;
-const TOTAL = winlose.find((stat) => stat.STAT == "N").BY_SESSION;
+const WINNERS = params.winlose.find((stat) => stat.STAT == "N_UP").BY_SESSION;
+const PUSHERS = params.winlose.find((stat) => stat.STAT == "N_EVEN").BY_SESSION;
+const LOSERS = params.winlose.find((stat) => stat.STAT == "N_DOWN").BY_SESSION;
+const TOTAL = params.winlose.find((stat) => stat.STAT == "N").BY_SESSION;
 
 let titleGradient = new Gradient({
   from: [0, -100],
