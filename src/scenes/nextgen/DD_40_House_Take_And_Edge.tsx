@@ -55,7 +55,7 @@ const HAND_QUANTILES_ID = "PLYR_NET_SHBR_UPDATED_OUT_OF_HAND";
 const X_LIMIT = 2;
 
 // Filter just the data we want on the histogram
-const data = params.histogramData.slice(0, 30);
+// const data = params.histogramData.slice(0, 30);
 
 const AVERAGE_WONLOST = params.amountWonLostQuantiles.find(
   (stat) => stat.STAT == "MEAN_WONLOST"
@@ -332,7 +332,8 @@ export default makeScene2D(function* (view) {
     0.4,
     ...rowNodes.map((r) => FadeIn(r, 1, easeOutCubic, [0, 50]))
   );
-  yield* waitFor(1);
+  yield* waitFor(30);
+  yield* waitUntil("show-plot");
 
   // Draw the Plot
   yield* FadeIn(plotArea.container, 1, easeOutCubic, [100, 0]);
@@ -429,7 +430,7 @@ export default makeScene2D(function* (view) {
 
   // yield thisStrategyLabel.opacity(1, 1.2);
 
-  yield* waitFor(2);
+  yield* waitFor(10);
   yield* waitUntil("end");
 });
 

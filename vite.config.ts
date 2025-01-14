@@ -38,6 +38,8 @@ export default defineConfig({
         "./src/scenes/even_steven/even_steven_demo.ts",
         "./src/scenes/even_steven/even_steven.ts",
         "./src/scenes/three_hand_band/three_hand_band_demo.ts",
+        "./src/scenes/three_point_molly/three_point_molly_demo.ts",
+        "./src/scenes/three_point_molly/three_point_molly.ts",
       ],
     }),
     ffmpeg(),

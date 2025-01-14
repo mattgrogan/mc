@@ -1,6 +1,6 @@
 // import * as params from "./DD_00_Params";
 
-export const name = "THE STRATEGY NAME";
+export const name = "THREE POINT MOLLY WITH MAX ODDS";
 export const sessions = "100,000";
 export const shooters_per_session = "10";
 export const table_min = "$15";

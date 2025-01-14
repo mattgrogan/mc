@@ -22,40 +22,29 @@ import {
   Theme,
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
+
 import * as params from "./DD_00_Params";
+
 import { Plot } from "../../components/plot/plot";
 import { TitleBox } from "../../components/styled/titleBox";
+
 import { DataTable } from "../../components/styled/dataTable";
-import { PlotArea } from "../../components/styled/plotArea";
 import {
   getQuantile,
   getQuantileData,
-  plusCommaFormmatter,
 } from "../../components/styled/findQuantiles";
+import { PlotArea } from "../../components/styled/plotArea";
 
-const QUANTILES_ID = "PLYR_CWONLOST_BY_SESSION";
-const X_AXIS_MIN = -2500;
-const X_AXIS_MAX = 5000;
-const X_AXIS_STEP = 500;
-
-const Y_AXIS_MAX = 32;
-
-// The amount those gray limit bars go to X
-const MINMAX_LIMIT = 2;
-
-// Filter just the data we want on the histogram
-const data = params.sessionHist.slice(0, 30);
-
-const AVERAGE_WONLOST = params.amountWonLostQuantiles.find(
-  (stat) => stat.STAT == "MEAN_WONLOST"
-).BY_SESSION;
+const X_MAX = 120;
+const Y_MAX = 40;
+const QUANTILES_ID = "SHOOTER_ROLL_BY_SHOOTER";
 
 let titleGradient = new Gradient({
-  from: [0, -100],
+  from: [0, -300],
   to: [0, 100],
   stops: [
-    { offset: 0, color: "#f9fafb" },
-    { offset: 1, color: "#9ca3af" },
+    { offset: 0, color: "#2191fb" },
+    { offset: 1, color: "#1d4e89" },
   ],
 });
 
@@ -99,13 +88,13 @@ export default makeScene2D(function* (view) {
       fontSize={100}
       nodeOpacity={0}
       rectProps={{ fill: titleGradient, stroke: Grays.GRAY1 }}
-      headerProps={{ ...PoppinsBlack }}
-      subheadProps={{ ...PoppinsBlack }}
+      headerProps={{ ...PoppinsWhite }}
+      subheadProps={{ ...PoppinsWhite }}
     >
-      HOW MUCH MONEY DID THE PLAYERS WIN OR LOSE?
+      NUMBER OF DICE ROLLS
     </TitleBox>
   );
-  plotTitle.subhead.text("BY SESSION");
+  plotTitle.subhead.text("BY SHOOTER");
 
   // ADD THE PLOT AREA
   const plotArea = makeRefs<typeof PlotArea>();
@@ -125,15 +114,11 @@ export default makeScene2D(function* (view) {
   const dataTable = makeRefs<typeof DataTable>();
 
   // Find the correct data from the json file
-  const tableData = getQuantileData(
-    QUANTILES_ID,
-    params.quantiles,
-    plusCommaFormmatter
-  );
+  const tableData = getQuantileData(QUANTILES_ID, params.quantiles);
 
   tableData.push({
     label: "AVG",
-    value: AVERAGE_WONLOST.toFixed(2),
+    value: (params.simstats[0].ROLLS / params.simstats[0].SHOOTERS).toFixed(2),
   });
 
   // Create the data table and pass in the references
@@ -145,7 +130,7 @@ export default makeScene2D(function* (view) {
       valueRectProps={{ fill: silverGradient, stroke: Grays.GRAY1 }}
       headerTxtProps={{ ...PoppinsWhite }}
       valueTxtProps={{ ...PoppinsBlack }}
-      fontSize={70}
+      fontSize={80}
     ></DataTable>
   );
 
@@ -157,9 +142,9 @@ export default makeScene2D(function* (view) {
     <Plot
       ref={plot}
       position={() => plotArea.layout.position()}
-      xMin={X_AXIS_MIN}
-      xMax={X_AXIS_MAX}
-      yMax={Y_AXIS_MAX}
+      xMin={0}
+      xMax={X_MAX}
+      yMax={Y_MAX}
       width={plotArea.rect.width() * 0.9}
       height={plotArea.rect.height() * 0.7}
       xAxisProps={{
@@ -195,12 +180,12 @@ export default makeScene2D(function* (view) {
 
   // yield* waitFor(2);
   yield plot().xAxis.end(1, 0.6, easeOutCubic);
-  plot().xAxis.updateTicks(X_AXIS_MIN, X_AXIS_MAX, X_AXIS_STEP);
+  plot().xAxis.updateTicks(0, X_MAX, 5);
 
   // Add the Min line
   const minValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
   const maxValue = getQuantile(QUANTILES_ID, params.quantiles, 1);
-  const minLine = plot().vLine([minValue, MINMAX_LIMIT], {
+  const minLine = plot().vLine([minValue, 4], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
@@ -209,31 +194,23 @@ export default makeScene2D(function* (view) {
   minLine.zIndex(0);
 
   // Add the Max line
-  const maxLine = plot().vLine([maxValue, MINMAX_LIMIT], {
+  const maxLine = plot().vLine([maxValue, 4], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
   });
 
   // Try a box
-  const lowerRangeBox = plot().box(
-    [X_AXIS_MIN, MINMAX_LIMIT],
-    [minValue - 1, 0],
-    {
-      fill: Grays.GRAY3,
-      opacity: 0,
-      zIndex: 200,
-    }
-  );
-  const upperRangeBox = plot().box(
-    [maxValue + 1, MINMAX_LIMIT],
-    [Math.max(X_AXIS_MAX, maxValue), 0],
-    {
-      fill: Grays.GRAY3,
-      opacity: 0,
-      zIndex: -200,
-    }
-  );
+  const lowerRangeBox = plot().box([0, 4], [minValue, 0], {
+    fill: Grays.GRAY3,
+    opacity: 0,
+    zIndex: 200,
+  });
+  const upperRangeBox = plot().box([maxValue, 4], [X_MAX, 0], {
+    fill: Grays.GRAY3,
+    opacity: 0,
+    zIndex: -200,
+  });
 
   yield* waitFor(2);
 
@@ -243,21 +220,24 @@ export default makeScene2D(function* (view) {
   const bars: Line[] = [];
   const labels: Txt[] = [];
 
-  for (let index = 0; index < data.length; index++) {
+  for (let index = 0; index < params.rollsByShooter.length; index++) {
     const offset = 50;
-    const point = new Vector2(data[index].MIDPOINT, data[index].PCT);
+    const point = new Vector2(
+      params.rollsByShooter[index].MIDPOINT,
+      params.rollsByShooter[index].PCT
+    );
     const line = plot().vLine(point, {
       stroke: Bright.BLUE,
       lineWidth: 80,
       opacity: 1,
       end: 0,
     });
-    if (data[index].COUNT > 0) {
+    if (params.rollsByShooter[index].COUNT > 0) {
       bars.push(line);
     }
 
-    if (data[index].PCT >= 0.1) {
-      const pct = data[index].PCT.toFixed(1);
+    if (params.rollsByShooter[index].PCT >= 0.1) {
+      const pct = params.rollsByShooter[index].PCT.toFixed(1);
       const label = plot().text(point, {
         ...PoppinsWhite,
         text: pct,
@@ -275,36 +255,11 @@ export default makeScene2D(function* (view) {
       );
 
       labels.push(label);
-    } else if (data[index].PCT < 0.1 && data[index].PCT > 0) {
-      const pct = "<0.1";
-      const label = plot().text(point, {
-        ...PoppinsWhite,
-        text: pct,
-        offsetY: 1.5,
-        fill: Grays.GRAY2,
-        fontWeight: 500,
-        fontSize: 30,
-        opacity: 0,
-      });
-      label.add(
-        <Txt
-          text="%"
-          fontSize={24}
-        />
-      );
-      labels.push(label);
     }
   }
   // ************************
   // END FACTOR
   // ************************
-
-  const zeroLine = plot().vLine([0, Y_AXIS_MAX], {
-    lineWidth: 5,
-    stroke: Grays.GRAY2,
-    lineDash: [20, 5],
-    opacity: 0.5,
-  });
 
   yield* sequence(0.1, ...bars.map((line) => line.end(1, 1, easeOutCubic)));
   yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
@@ -314,7 +269,6 @@ export default makeScene2D(function* (view) {
   yield lowerRangeBox.opacity(0.2, 1, linear);
   yield* maxLine.end(1, 0.6, easeOutCubic);
   yield* upperRangeBox.opacity(0.2, 0.6, linear);
-  yield* zeroLine.end(1, 0.6, easeOutCubic);
 
   // Show the data table
   yield* sequence(0.1, ...dataTable.columns.map((pct) => pct.opacity(1, 0.6)));

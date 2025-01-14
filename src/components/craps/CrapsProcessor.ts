@@ -136,6 +136,11 @@ export class CrapsProcessor {
     }
     yield* sequence(0.2, ...lostBets);
 
+    // RETURN
+    for (const pushedBet of data.PLYR_RETURNED) {
+      yield* this.table().bets().removeBet(pushedBet.bet);
+    }
+
     // PAY
     const wonBets = [];
 
@@ -146,22 +151,22 @@ export class CrapsProcessor {
     }
     yield* sequence(0.2, ...wonBets);
 
-    // Update the scorebug fields
-    yield* all(
-      this.scoreBug().updateBankroll(data.PLYR_NET_BR_END),
-      this.scoreBug().updateBets(data.PLYR_BETSREMAINING_TOTAL),
-      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_END)
-    );
+    // PUSH
+    for (const pushedBet of data.PLYR_PUSHED) {
+      yield* this.table().bets().removeBet(pushedBet.bet);
+    }
 
     // MOVE
     for (const movedBet of data.PLYR_MOVED) {
       yield* this.table().bets().moveBet(movedBet.bet, movedBet.to);
     }
 
-    // PUSH
-    for (const pushedBet of data.PLYR_PUSHED) {
-      yield* this.table().bets().removeBet(pushedBet.bet);
-    }
+    // Update the scorebug fields
+    yield* all(
+      this.scoreBug().updateBankroll(data.PLYR_NET_BR_END),
+      this.scoreBug().updateBets(data.PLYR_BETSREMAINING_TOTAL),
+      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_END)
+    );
 
     // Hide the dice
     yield this.table().dice().removeDice();

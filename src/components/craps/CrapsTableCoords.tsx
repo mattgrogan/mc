@@ -5,7 +5,7 @@ export enum c {
   DEALER = "DEALER",
 
   PASSLINE = "PASSLINE",
-  PASSLINEODDS = "PASSLINEODDS",
+  PASSLINEODDS = "PASSLINE_ODDS",
 
   DONTPASS = "DONTPASS",
   DONTPASSODDS = "DONTPASSODDS",
@@ -96,7 +96,7 @@ export const tableCoords: { [id: string]: Vector2 } = {
   DEALER: new Vector2(0, -600),
 
   PASSLINE: new Vector2(-50, 235),
-  PASSLINEODDS: new Vector2(-50, 350),
+  PASSLINE_ODDS: new Vector2(-50, 325),
 
   DONTPASS: new Vector2(-35, 150),
   DONTPASSODDS: new Vector2(25, 150),
