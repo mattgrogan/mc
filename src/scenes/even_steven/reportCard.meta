@@ -7,43 +7,43 @@
     },
     {
       "name": "shooters",
-      "targetTime": 2.1
+      "targetTime": 3.711500631290159
     },
     {
       "name": "house-edge",
-      "targetTime": 4.6
+      "targetTime": 6.211500631290159
     },
     {
       "name": "win-rate",
-      "targetTime": 7.6
+      "targetTime": 16.35106039017061
     },
     {
       "name": "lose-rate",
-      "targetTime": 10.6
+      "targetTime": 29.18325411525739
     },
     {
       "name": "outcome-50",
-      "targetTime": 13.6
+      "targetTime": 32.18325411525739
     },
     {
       "name": "highlight-50",
-      "targetTime": 16.6
+      "targetTime": 35.18325411525739
     },
     {
       "name": "outcome-90",
-      "targetTime": 21.6
+      "targetTime": 45.93569940669821
     },
     {
       "name": "highlight-90",
-      "targetTime": 22.6
+      "targetTime": 46.93569940669821
     },
     {
       "name": "Bankroll",
-      "targetTime": 28.6
+      "targetTime": 57.28063148853117
     },
     {
       "name": "endslide",
-      "targetTime": 37.211270193800296
+      "targetTime": 91.89324443161145
     }
   ],
   "seed": 162571460

@@ -7,35 +7,35 @@
     },
     {
       "name": "step2",
-      "targetTime": 3.6
+      "targetTime": 5.932887979943197
     },
     {
       "name": "step3",
-      "targetTime": 5.6
+      "targetTime": 9.658253048442855
     },
     {
       "name": "step4",
-      "targetTime": 7.6
+      "targetTime": 13.772432780266378
     },
     {
       "name": "step5",
-      "targetTime": 9.6
+      "targetTime": 16.11264561067476
     },
     {
       "name": "step6",
-      "targetTime": 11.6
+      "targetTime": 21.49047299830085
     },
     {
       "name": "scale-down",
-      "targetTime": 14.6
+      "targetTime": 24.49047299830085
     },
     {
       "name": "problem area",
-      "targetTime": 36.500000000000014
+      "targetTime": 84.20606111365348
     },
     {
       "name": "end",
-      "targetTime": 129.29999999999987
+      "targetTime": 177.00606111365332
     }
   ],
   "seed": 753062434

@@ -3,55 +3,55 @@
   "timeEvents": [
     {
       "name": "show-min",
-      "targetTime": 3.300000000000001
+      "targetTime": 6.558087099109674
     },
     {
       "name": "show-max",
-      "targetTime": 13.678733384620164
+      "targetTime": 12.518656917512933
     },
     {
       "name": "hist",
-      "targetTime": 19.378733384620162
+      "targetTime": 18.21865691751293
     },
     {
       "name": "zoomin",
-      "targetTime": 23.378733384620162
+      "targetTime": 22.21865691751293
     },
     {
       "name": "highlight-1",
-      "targetTime": 28.131135691614286
+      "targetTime": 28.17458501243262
     },
     {
       "name": "highlight-2",
-      "targetTime": 34.31446478010279
+      "targetTime": 37.478921652660276
     },
     {
       "name": "highlight-3",
-      "targetTime": 36.31446478010279
+      "targetTime": 39.478921652660276
     },
     {
       "name": "highlight-4",
-      "targetTime": 38.31446478010279
+      "targetTime": 41.478921652660276
     },
     {
       "name": "highlight-5",
-      "targetTime": 40.31446478010279
+      "targetTime": 43.478921652660276
     },
     {
       "name": "highlight-6",
-      "targetTime": 42.31446478010279
+      "targetTime": 45.478921652660276
     },
     {
       "name": "highlight-7",
-      "targetTime": 44.31446478010279
+      "targetTime": 47.478921652660276
     },
     {
       "name": "hide-box",
-      "targetTime": 52.937290485030346
+      "targetTime": 72.17595618615297
     },
     {
       "name": "end",
-      "targetTime": 55.50233863432158
+      "targetTime": 75.31216911615466
     }
   ],
   "seed": 3075198455

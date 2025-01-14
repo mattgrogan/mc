@@ -7,15 +7,15 @@
     },
     {
       "name": "show-pushes",
-      "targetTime": 6.3
+      "targetTime": 7.410711511060116
     },
     {
       "name": "show-losers",
-      "targetTime": 7.3
+      "targetTime": 11.767528522264023
     },
     {
       "name": "end",
-      "targetTime": 13.590314364816447
+      "targetTime": 21.365294942237252
     }
   ],
   "seed": 3625317213
