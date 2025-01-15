@@ -103,7 +103,7 @@ export class CrapsBets extends Layout {
     if (indicate) {
       yield* Indicate(winChip, 1.5);
     }
-    yield* waitFor(0.2);
+    yield* waitFor(0.5);
 
     const anims = [];
     anims.push(this.moveChipTo(winChip, c.PLAYER, 0.6, easeOutCubic, 0));

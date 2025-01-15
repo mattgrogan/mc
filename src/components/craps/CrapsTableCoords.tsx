@@ -90,6 +90,7 @@ const BOX_9 = 310;
 const BOX_10 = 450;
 
 const DCODDS_OFFSET = 60;
+const COME_ODDS_OFFSET = 55;
 
 export const tableCoords: { [id: string]: Vector2 } = {
   PLAYER: new Vector2(0, 600),
@@ -103,7 +104,7 @@ export const tableCoords: { [id: string]: Vector2 } = {
 
   FIELD: new Vector2(-100, 50),
 
-  COME: new Vector2(0, -100),
+  COME: new Vector2(-50, -110),
   COME4: new Vector2(BOX_4, COME_Y),
   COME5: new Vector2(BOX_5, COME_Y),
   COME6: new Vector2(BOX_6, COME_Y),
@@ -111,12 +112,12 @@ export const tableCoords: { [id: string]: Vector2 } = {
   COME9: new Vector2(BOX_9, COME_Y),
   COME10: new Vector2(BOX_10, COME_Y),
 
-  COME4ODDS: new Vector2(BOX_4, COME_Y + 30),
-  COME5ODDS: new Vector2(BOX_5, COME_Y + 30),
-  COME6ODDS: new Vector2(BOX_6, COME_Y + 30),
-  COME8ODDS: new Vector2(BOX_8, COME_Y + 30),
-  COME9ODDS: new Vector2(BOX_9, COME_Y + 30),
-  COME10ODDS: new Vector2(BOX_10, COME_Y + 30),
+  COME4ODDS: new Vector2(BOX_4, COME_Y + COME_ODDS_OFFSET),
+  COME5ODDS: new Vector2(BOX_5, COME_Y + COME_ODDS_OFFSET),
+  COME6ODDS: new Vector2(BOX_6, COME_Y + COME_ODDS_OFFSET),
+  COME8ODDS: new Vector2(BOX_8, COME_Y + COME_ODDS_OFFSET),
+  COME9ODDS: new Vector2(BOX_9, COME_Y + COME_ODDS_OFFSET),
+  COME10ODDS: new Vector2(BOX_10, COME_Y + COME_ODDS_OFFSET),
 
   DONTCOME: new Vector2(586, -250),
   DONTCOME4: new Vector2(BOX_4, LAY_Y),
