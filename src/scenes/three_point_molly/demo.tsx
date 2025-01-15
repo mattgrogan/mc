@@ -75,6 +75,8 @@ export default makeScene2D(function* (view) {
     session = sessions[sessions.length - 1].SESSION;
   }
 
+  session = 84668;
+
   const firstSession = simData.filter(({ SESSION }) => SESSION === session);
 
   for (const roll of firstSession) {
