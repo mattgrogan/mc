@@ -3,19 +3,19 @@
   "timeEvents": [
     {
       "name": "winners",
-      "targetTime": 2.2
+      "targetTime": 8.740466929389276
     },
     {
       "name": "losers",
-      "targetTime": 8.2
+      "targetTime": 14.740466929389276
     },
     {
       "name": "pushes",
-      "targetTime": 14.2
+      "targetTime": 20.740466929389278
     },
     {
       "name": "end",
-      "targetTime": 27.2
+      "targetTime": 31.740466929389278
     }
   ],
   "seed": 2285423651

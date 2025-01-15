@@ -1,6 +1,8 @@
 import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
+import audio from "../../../audio/DD-THREE_PT_MOLLY-MAXODDS-15_00108000.flac"
+
 import DD_TOC_01_Strategy from "../titles/DD_TOC_01_Strategy?scene";
 import DD_TOC_02_Simulation from "../titles/DD_TOC_02_Simulation?scene";
 import DD_TOC_03_Dice_And_Gameflow from "../titles/DD_TOC_03_Dice_And_Gameflow?scene";
@@ -60,4 +62,5 @@ export default makeProject({
 
     // DD_TOC_08_Strategy_Score,
   ],
+  audio: audio
 });
