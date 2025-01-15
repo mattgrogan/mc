@@ -54,6 +54,8 @@ const HAND_QUANTILES_ID = "PLYR_NET_SHBR_UPDATED_OUT_OF_HAND";
 // The amount those gray limit bars go to X
 const X_LIMIT = 2;
 
+const BETWEEN_SECS = 2;
+
 // Filter just the data we want on the histogram
 // const data = params.histogramData.slice(0, 30);
 
@@ -394,7 +396,6 @@ export default makeScene2D(function* (view) {
     offset: [-1, 0],
   };
 
-  const BETWEEN_SECS = 0.7;
   yield* addPointer(plot(), 0, "TAKE/LAY ODDS (0.00%)");
   yield* waitFor(BETWEEN_SECS);
   yield* addPointer(plot(), -1.41, "PASS/COME (1.41%)");

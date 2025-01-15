@@ -139,19 +139,23 @@ export default makeScene2D(function* (view) {
   yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
   yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
   yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
+  yield* waitFor(3);
 
   // Draw the boxes
+  yield* waitUntil("winners");
   yield* FadeIn(winCard.container, 1, easeOutCubic, [0, 100]);
   yield* nWinners(WINNERS, 2, easeInOutCubic);
-  yield* waitFor(1);
+  yield* waitFor(3);
 
+  yield* waitUntil("losers");
   yield* FadeIn(loseCard.container, 1, easeOutCubic, [0, 100]);
   yield* nLosers(LOSERS, 2, easeInOutCubic);
-  yield* waitFor(1);
+  yield* waitFor(3);
 
+  yield* waitUntil("pushes");
   yield* FadeIn(pushCard.container, 1, easeOutCubic, [0, 100]);
   yield* nPushers(PUSHERS, 2, easeInOutCubic);
 
-  yield* waitFor(10);
+  yield* waitFor(8);
   yield* waitUntil("end");
 });
