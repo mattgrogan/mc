@@ -40,6 +40,8 @@ export default defineConfig({
         "./src/scenes/three_hand_band/three_hand_band_demo.ts",
         "./src/scenes/three_point_molly/three_point_molly_demo.ts",
         "./src/scenes/three_point_molly/three_point_molly.ts",
+        "./src/scenes/wgs_tweak/wgs_tweak_demo.ts",
+        "./src/scenes/fifty_for_one/fifty_for_one_demo.ts",
       ],
     }),
     ffmpeg(),
