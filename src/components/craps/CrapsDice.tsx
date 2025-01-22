@@ -230,7 +230,7 @@ export class CrapsDice extends Layout {
       ></Total>
     );
     this.add(this.total);
-    yield* FadeIn(this.total, 0.4, easeOutCubic, [0, 50], 1);
+    yield* FadeIn(this.total, 0.2, easeOutCubic, [0, 20]);
     yield* waitFor(0.5);
     yield this.total.scale(0, 1, easeInElastic);
   }
