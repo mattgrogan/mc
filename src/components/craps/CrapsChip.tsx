@@ -1,5 +1,6 @@
-import { Circle, CircleProps, Txt } from "@motion-canvas/2d";
-import { Vector2 } from "@motion-canvas/core";
+import { Circle, CircleProps, Rect, Txt } from "@motion-canvas/2d";
+import { createRef, easeOutBounce, Vector2 } from "@motion-canvas/core";
+import { MonoWhite } from "../../styles";
 
 export enum ChipColors {
   WHITE = "WHITE",
@@ -94,6 +95,7 @@ chipColorDict[ChipColors.BLUE] = blueChip;
 chipColorDict[ChipColors.BLACK] = blackChip;
 
 // const WORKING_INDICATOR_SCALE = 0.8;
+const BUY_INDICATOR_SCALE = 3;
 
 export interface ChipProps extends CircleProps {
   denom: number;
@@ -151,6 +153,7 @@ function getChipColor(denom: number): ChipColors {
 export class CrapsChip extends Circle {
   //public isWorking = createSignal(true);
   //private readonly workingIndicator = createRef<Rect>();
+  private readonly buyIndicator = createRef<Rect>();
   private declare readonly denom: number;
   private declare readonly denom_scale: number;
   private declare readonly chipColor: iChipColor;
@@ -218,27 +221,30 @@ export class CrapsChip extends Circle {
       />
     );
 
-    //   this.add(
-    //     <Rect
-    //       ref={this.workingIndicator}
-    //       fill={"black"}
-    //       width={80}
-    //       height={40}
-    //       x={0}
-    //       y={40}
-    //       radius={10}
-    //       stroke={"white"}
-    //       lineWidth={2}
-    //       opacity={0.8}
-    //       scale={0}
-    //     >
-    //       <Txt
-    //         text={() => (this.isWorking() ? "ON" : "OFF")}
-    //         {...NumberFont}
-    //         fontSize={30}
-    //       />
-    //     </Rect>
-    //   );
+    this.add(
+      <Rect
+        ref={this.buyIndicator}
+        fill={"black"}
+        width={80}
+        height={40}
+        y={-160}
+        radius={10}
+        stroke={"white"}
+        lineWidth={2}
+        opacity={0.8}
+        scale={0}
+      >
+        <Txt
+          text={"BUY"}
+          {...MonoWhite}
+          fontSize={30}
+        />
+      </Rect>
+    );
+  }
+
+  public *showBuy(dur: number = 0.6) {
+    yield* this.buyIndicator().scale(BUY_INDICATOR_SCALE, dur, easeOutBounce);
   }
 
   // public *showWorking(dur: number) {

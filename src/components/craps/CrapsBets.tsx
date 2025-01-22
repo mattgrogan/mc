@@ -44,7 +44,12 @@ export class CrapsBets extends Layout {
     );
   }
 
-  public *makeBet(denom: number, where: c, indicate: boolean = true) {
+  public *makeBet(
+    denom: number,
+    where: c,
+    indicate: boolean = true,
+    is_buy: boolean = false
+  ) {
     const chip = this.newChip(denom, c.PLAYER);
     this.chips[where] = chip;
     yield* this.moveChipTo(chip, where);
@@ -52,6 +57,10 @@ export class CrapsBets extends Layout {
     if (indicate) {
       //yield* Indicate(chip, 1.5);
       yield* Indicate(chip, 1.3, 0, 0.4);
+    }
+
+    if (is_buy) {
+      yield* chip.showBuy();
     }
   }
 

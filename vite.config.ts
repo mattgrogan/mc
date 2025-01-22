@@ -42,6 +42,7 @@ export default defineConfig({
         "./src/scenes/three_point_molly/three_point_molly.ts",
         "./src/scenes/wgs_tweak/wgs_tweak_demo.ts",
         "./src/scenes/fifty_for_one/fifty_for_one_demo.ts",
+        "./src/scenes/fifty_for_one/fifty_for_one.ts",
       ],
     }),
     ffmpeg(),

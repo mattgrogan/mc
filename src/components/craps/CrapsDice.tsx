@@ -1,7 +1,18 @@
-import { Img, ImgProps, Layout, LayoutProps, signal } from "@motion-canvas/2d";
+import {
+  Img,
+  ImgProps,
+  Layout,
+  LayoutProps,
+  signal,
+  Txt,
+  TxtProps,
+} from "@motion-canvas/2d";
 import {
   all,
+  easeInElastic,
   easeInOutCubic,
+  easeOutCubic,
+  easeOutElastic,
   easeOutExpo,
   linear,
   sequence,
@@ -19,9 +30,26 @@ import d3Png from "../../../assets/Dice/Die_White_0003.png";
 import d4Png from "../../../assets/Dice/Die_White_0004.png";
 import d5Png from "../../../assets/Dice/Die_White_0005.png";
 import d6Png from "../../../assets/Dice/Die_White_0006.png";
+import { Darkest, Grays } from "../../styles";
+import { FadeIn } from "../../utils/FadeIn";
 
 const dieProps = {
   scale: 0.1,
+  opacity: 0,
+  shadowColor: "black",
+  shadowBlur: 5,
+  shadowOffsetX: 5,
+  shadowOffsetY: 5,
+};
+
+const totalProps = {
+  fontFamily: "Battambang",
+  fontWeight: 700,
+  fontSize: 130,
+  fill: Grays.GRAY1,
+  stroke: Grays.BLACK,
+  lineWidth: 5,
+  strokeFirst: true,
   opacity: 0,
   shadowColor: "black",
   shadowBlur: 5,
@@ -68,6 +96,13 @@ const D6 = (props: ImgProps) => (
   <Img
     src={d6Png}
     {...dieProps}
+  />
+);
+
+const Total = (props: TxtProps) => (
+  <Txt
+    {...totalProps}
+    {...props}
   />
 );
 
@@ -132,6 +167,7 @@ export class CrapsDice extends Layout {
 
   private d1 = (<D1 />);
   private d2 = (<D1 />);
+  private total = (<Total />);
 
   public constructor(props?: CrapsDiceProps) {
     super({ ...props });
@@ -185,12 +221,24 @@ export class CrapsDice extends Layout {
       this.d2.position(this.restPosition().addX(100), 0.6, easeInOutCubic)
     );
 
-    this.d1.opacity(1);
+    // this.d1.opacity(1);
+
+    this.total = (
+      <Total
+        position={this.restPosition().addX(50).addY(-100)}
+        text={(d1 + d2).toFixed(0)}
+      ></Total>
+    );
+    this.add(this.total);
+    yield* FadeIn(this.total, 0.4, easeOutCubic, [0, 50], 1);
+    yield* waitFor(0.5);
+    yield this.total.scale(0, 1, easeInElastic);
   }
 
   public *removeDice(dur: number = 1, ease: TimingFunction = linear) {
     yield* all(this.d1.opacity(0, dur, ease), this.d2.opacity(0, dur, ease));
     this.d1.remove();
     this.d2.remove();
+    this.total.remove();
   }
 }

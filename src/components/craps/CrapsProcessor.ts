@@ -59,8 +59,11 @@ export class CrapsProcessor {
 
     // Place new bets
     const newBets = [];
-    for (const bet of data.PLYR_NEWBETS) {
-      newBets.push(this.table().bets().makeBet(bet.amount, bet.bet, false));
+    for (const betType of data.PLYR_NEWBETS) {
+      const isBuy = betType.bet == "BUY4" || betType.bet == "BUY10";
+      newBets.push(
+        this.table().bets().makeBet(betType.amount, betType.bet, false, isBuy)
+      );
     }
     yield* sequence(0.3, ...newBets);
 

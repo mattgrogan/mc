@@ -65,14 +65,14 @@ export function TableOfContents({
   refs.titleTxts = [];
 
   const entries = [
-    "STRATEGY",
-    "SIMULATION",
+    "DEMONSTRATION",
+    // "SIMULATION",
     "DICE AND GAME FLOW",
     "HOUSE TAKE AND EDGE",
     "WON/LOST BY SHOOTER",
     "WON/LOST BY SESSION",
     "BANKROLL SURVIVAL",
-    "STRATEGY SCORE",
+    // "STRATEGY SCORE",
   ];
 
   return (

@@ -166,5 +166,5 @@ export const tableCoords: { [id: string]: Vector2 } = {
   DICE_BOUNCE_BR: new Vector2(840, 270),
   DICE_LAND_TL: new Vector2(-250, -100),
   DICE_LAND_BR: new Vector2(700, 350),
-  DICE_REST: new Vector2(-650, -300),
+  DICE_REST: new Vector2(-650, -250),
 };

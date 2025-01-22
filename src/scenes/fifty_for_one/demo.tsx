@@ -77,7 +77,9 @@ export default makeScene2D(function* (view) {
 
   // session = 84668;
 
-  const firstSession = simData.filter(({ SESSION }) => SESSION === session);
+  const firstSession = simData.filter(
+    ({ SESSION, ROLL }) => SESSION === session && ROLL < 20
+  );
 
   for (const roll of firstSession) {
     useLogger().debug("ROLL=" + roll.ROLL);
