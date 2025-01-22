@@ -104,7 +104,7 @@ export const tableCoords: { [id: string]: Vector2 } = {
 
   FIELD: new Vector2(-100, 50),
 
-  COME: new Vector2(-50, -110),
+  COME: new Vector2(-50, -80),
   COME4: new Vector2(BOX_4, COME_Y),
   COME5: new Vector2(BOX_5, COME_Y),
   COME6: new Vector2(BOX_6, COME_Y),
