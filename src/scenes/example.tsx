@@ -1,5 +1,10 @@
 import { Circle, makeScene2D, Txt } from "@motion-canvas/2d";
-import { createRef, createSignal, useLogger } from "@motion-canvas/core";
+import {
+  createRef,
+  createSignal,
+  useLogger,
+  waitFor,
+} from "@motion-canvas/core";
 import { MonoWhite } from "../styles";
 import { ChipColors, CrapsChip } from "../components/craps/CrapsChip";
 
@@ -9,6 +14,7 @@ export default makeScene2D(function* (view) {
   const chip = new CrapsChip({ denom: 99, chipColor: ChipColors.AUTO });
   view.add(chip);
   chip.opacity(1);
+  yield* waitFor(1);
 
   // const circle = createRef<Circle>();
 

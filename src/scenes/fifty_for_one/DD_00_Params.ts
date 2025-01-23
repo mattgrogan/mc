@@ -1,10 +1,13 @@
-// import * as params from "./DD_00_Params";
-
 export const name = "FIFTY FOR ONE";
 export const sessions = "100,000";
 export const shooters_per_session = "10";
 export const table_min = "$15";
 export const table_max = "$5,000";
+
+//audio_player or null_audio_player
+//import audioPlayerImport from "../../components/audio/audio_player";
+import audioPlayerImport from "../../components/audio/null_audio_player";
+export const audioPlayer = new audioPlayerImport();
 
 //-sessions-shooters-rolls.json
 import simstatsImport from "../../../../dicedata/output/fifty_for_one-100k/fifty_for_one-100k-sessions-shooters-rolls.json";

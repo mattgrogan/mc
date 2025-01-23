@@ -1,43 +1,17 @@
+import { Layout, Line, makeScene2D, Txt } from "@motion-canvas/2d";
 import {
-  Icon,
-  Img,
-  Layout,
-  Line,
-  makeScene2D,
-  Rect,
-  Txt,
-  Video,
-} from "@motion-canvas/2d";
-import {
-  all,
   createRef,
-  delay,
-  easeInElastic,
-  easeInOutCubic,
   easeOutCubic,
-  easeOutElastic,
-  linear,
   sequence,
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
 
-import {
-  Bright,
-  Grays,
-  ITCBenguiatNormal,
-  MonoWhite,
-  PoppinsWhite,
-  Theme,
-} from "../../styles";
+import { Bright, Grays, PoppinsWhite, Theme } from "../../styles";
 
 import { FadeIn } from "../../utils/FadeIn";
+import { audioPlayer } from "./DD_00_Params";
 // import bg from "../../../assets/dark_craps_layout_bg.png";
-import { CrapsTable } from "../../components/craps/CrapsTable";
-import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
-import { c } from "../../components/craps/CrapsTableCoords";
-
-import videoSrc from "../../../../Videos/2024-12-10_SCROLL_TO_PRIORITY_QUEUE.mp4";
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
@@ -98,6 +72,7 @@ export default makeScene2D(function* (view) {
   );
 
   // Draw lines
+  audioPlayer.chime();
   const line1: Line = (
     <Line
       stroke={Bright.BLUE}
