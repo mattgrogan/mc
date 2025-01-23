@@ -75,7 +75,7 @@ export default makeScene2D(function* (view) {
     session = sessions[sessions.length - 1].SESSION;
   }
 
-  session = 99423;
+  // session = 99423;
 
   const firstSession = simData.filter(
     ({ SESSION, ROLL }) => SESSION === session //&& ROLL < 20
