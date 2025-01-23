@@ -3,22 +3,29 @@ import motionCanvas from "@motion-canvas/vite-plugin";
 import ffmpeg from "@motion-canvas/ffmpeg";
 
 export default defineConfig({
+  server: {
+    fs: {
+      // let it load external files
+      strict: false,
+    },
+  },
   plugins: [
     motionCanvas({
       project: [
+        "./src/scenes/audio_example/audio_example.ts",
         "./src/scenes/nextgen/nextgen.ts",
         // "./src/utils/utilsDemoProject.ts",
         // "./src/coordinates.ts",
         // "./src/regression440_demo.ts",
         // "./src/play_all_day_demo.ts",
         // "./src/scenes/play_all_day/play_all_day.ts",
-        // "./src/example.ts",
+        "./src/example.ts",
         // "./src/rolltext.ts",
         // "./src/regression440.ts",
         // "./src/plotting.ts",
         // "./src/scenes/tpd_no_replacement/tpd_no_replacement_demo.ts",
         // "./src/scenes/tpd_no_replacement/tpd_no_replacement.ts",
-        // "./src/scenes/boxcars/boxcars_demo.ts",
+        "./src/scenes/boxcars/boxcars_demo.ts",
         // "./src/scenes/boxcars/boxcars.ts",
         // "./src/scenes/sixeight_lowroller/sixeight_lowroller_demo.ts",
         // "./src/scenes/sixeight_lowroller/sixeight_lowroller.ts",
