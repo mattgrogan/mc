@@ -33,6 +33,7 @@ import { Plot } from "../../components/plot/plot";
 import { commaFormmatter } from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
 import { TitleBox } from "../../components/styled/titleBox";
+import { audioPlayer } from "./DD_00_Params";
 
 const X_AXIS_MIN = 0;
 const X_AXIS_MAX = 40;
@@ -74,6 +75,7 @@ const plotAreaFill = new Gradient({
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
+  audioPlayer.woosh();
   yield* slideTransition(Direction.Right);
 
   const container = createRef<Layout>();

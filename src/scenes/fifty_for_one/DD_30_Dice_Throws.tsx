@@ -30,6 +30,8 @@ import * as params from "./DD_00_Params";
 
 import { diceThrows } from "./DD_00_Params";
 
+import { audioPlayer } from "./DD_00_Params";
+
 //-sessions-shooters-rolls.json
 // const simStatsJsonFile =
 //   "../../../../dicedata/output/skill66halfpress-100k/skill66halfpress-100k-sessions-shooters-rolls.json";
@@ -66,6 +68,7 @@ const Y_MAX = 20;
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
+  audioPlayer.woosh();
   yield* slideTransition(Direction.Right);
 
   const container = createRef<Layout>();

@@ -23,6 +23,7 @@ import {
   winnerGradient,
 } from "../../components/styled/outcomeCard";
 import { TitleBox } from "../../components/styled/titleBox";
+import { audioPlayer } from "./DD_00_Params";
 
 const WINNERS = params.winlose.find((stat) => stat.STAT == "N_UP").BY_SHOOTER;
 const PUSHERS = params.winlose.find((stat) => stat.STAT == "N_EVEN").BY_SHOOTER;
@@ -52,6 +53,7 @@ const plotAreaFill = new Gradient({
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
+  audioPlayer.woosh();
   yield* slideTransition(Direction.Right);
 
   const container = createRef<Layout>();
