@@ -56,10 +56,18 @@ let titleGradient = new Gradient({
   from: [0, -100],
   to: [0, 100],
   stops: [
-    { offset: 0, color: "#f9fafb" },
-    { offset: 1, color: "#9ca3af" },
+    { offset: 0, color: "#831414" },
+    { offset: 1, color: "#6a1010" },
   ],
 });
+// let titleGradient = new Gradient({
+//   from: [0, -100],
+//   to: [0, 100],
+//   stops: [
+//     { offset: 0, color: "#f9fafb" },
+//     { offset: 1, color: "#9ca3af" },
+//   ],
+// });
 
 const plotAreaFill = new Gradient({
   type: "linear",
@@ -102,8 +110,8 @@ export default makeScene2D(function* (view) {
       fontSize={100}
       nodeOpacity={0}
       rectProps={{ fill: titleGradient, stroke: Grays.GRAY1 }}
-      headerProps={{ ...PoppinsBlack }}
-      subheadProps={{ ...PoppinsBlack }}
+      headerProps={{ ...PoppinsWhite }}
+      subheadProps={{ ...PoppinsWhite }}
     >
       HOUSE TAKE AND EDGE
     </TitleBox>
@@ -375,7 +383,7 @@ export default makeScene2D(function* (view) {
   // yield* waitUntil("skill66");
   const thisStrategyLine = plot().hLine([10, HOUSE_EDGE_PERCENT], {
     lineWidth: 60,
-    stroke: Bright.BLUE,
+    stroke: "#b71c1c",
     startOffset: 30,
     endOffset: 20,
     // lineDash: [20, 5],
@@ -392,6 +400,8 @@ export default makeScene2D(function* (view) {
   // ************************
 
   yield* addPointer(plot(), 0, "TAKE/LAY ODDS (0.00%)");
+  yield* waitFor(BETWEEN_SECS);
+  yield* addPointer(plot(), -1.36, "DON'T PASS/DON'T COME (1.36%)");
   yield* waitFor(BETWEEN_SECS);
   yield* addPointer(plot(), -1.41, "PASS/COME (1.41%)");
   yield* waitFor(BETWEEN_SECS);

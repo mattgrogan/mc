@@ -32,6 +32,7 @@ import {
 } from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
 import { TitleBox } from "../../components/styled/titleBox";
+import { audioPlayer } from "./DD_00_Params";
 
 const X_AXIS_MIN = -600;
 const X_AXIS_MAX = 2000;
@@ -73,6 +74,7 @@ const QUANTILES_ID = "PLYR_SHCWONLOST_BY_SHOOTER";
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
+  audioPlayer.woosh();
   yield* slideTransition(Direction.Right);
 
   const container = createRef<Layout>();

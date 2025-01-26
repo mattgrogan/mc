@@ -50,6 +50,8 @@ export default defineConfig({
         "./src/scenes/wgs_tweak/wgs_tweak_demo.ts",
         "./src/scenes/fifty_for_one/fifty_for_one_demo.ts",
         "./src/scenes/fifty_for_one/fifty_for_one.ts",
+        "./src/scenes/all_day_678/all_day_678_demo.ts",
+        "./src/scenes/all_day_678/all_day_678.ts",
       ],
     }),
     ffmpeg(),

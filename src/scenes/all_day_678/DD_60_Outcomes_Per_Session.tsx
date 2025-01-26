@@ -10,34 +10,28 @@ import {
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
-import { Grays, PoppinsBlack, Theme } from "../../styles";
+import {
+  Grays,
+  PoppinsBlack,
+  PoppinsWhite,
+  sessionGradient,
+  Theme,
+} from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 import * as params from "./DD_00_Params";
 import {
   loserGradient,
-  // loserIcon,
   OutcomeCard,
   outcomeCardColors,
-  // pusherIcon,
   pushGradient,
   winnerGradient,
 } from "../../components/styled/outcomeCard";
 import { TitleBox } from "../../components/styled/titleBox";
-import { audioPlayer } from "./DD_00_Params";
 
-const WINNERS = params.winlose.find((stat) => stat.STAT == "N_UP").BY_SHOOTER;
-const PUSHERS = params.winlose.find((stat) => stat.STAT == "N_EVEN").BY_SHOOTER;
-const LOSERS = params.winlose.find((stat) => stat.STAT == "N_DOWN").BY_SHOOTER;
-const TOTAL = params.winlose.find((stat) => stat.STAT == "N").BY_SHOOTER;
-
-let titleGradient = new Gradient({
-  from: [0, -100],
-  to: [0, 100],
-  stops: [
-    { offset: 0, color: "#f9fafb" },
-    { offset: 1, color: "#9ca3af" },
-  ],
-});
+const WINNERS = params.winlose.find((stat) => stat.STAT == "N_UP").BY_SESSION;
+const PUSHERS = params.winlose.find((stat) => stat.STAT == "N_EVEN").BY_SESSION;
+const LOSERS = params.winlose.find((stat) => stat.STAT == "N_DOWN").BY_SESSION;
+const TOTAL = params.winlose.find((stat) => stat.STAT == "N").BY_SESSION;
 
 const plotAreaFill = new Gradient({
   type: "linear",
@@ -53,7 +47,7 @@ const plotAreaFill = new Gradient({
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
-  audioPlayer.woosh();
+  params.audioPlayer.woosh();
   yield* slideTransition(Direction.Right);
 
   const container = createRef<Layout>();
@@ -79,14 +73,14 @@ export default makeScene2D(function* (view) {
       refs={plotTitle}
       fontSize={100}
       nodeOpacity={0}
-      rectProps={{ fill: titleGradient, stroke: Grays.GRAY1 }}
-      headerProps={{ ...PoppinsBlack }}
-      subheadProps={{ ...PoppinsBlack }}
+      rectProps={{ fill: sessionGradient, stroke: Grays.GRAY1 }}
+      headerProps={{ ...PoppinsWhite }}
+      subheadProps={{ ...PoppinsWhite }}
     >
       HOW MANY PLAYERS WON OR LOST ANY MONEY?
     </TitleBox>
   );
-  plotTitle.subhead.text("BY SHOOTER");
+  plotTitle.subhead.text("BY SESSION");
 
   const winCard = makeRefs<typeof OutcomeCard>();
   const loseCard = makeRefs<typeof OutcomeCard>();

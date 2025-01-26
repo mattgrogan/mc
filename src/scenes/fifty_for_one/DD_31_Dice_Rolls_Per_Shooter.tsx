@@ -24,6 +24,7 @@ import {
 import { FadeIn } from "../../utils/FadeIn";
 
 import * as params from "./DD_00_Params";
+import { audioPlayer } from "./DD_00_Params";
 
 import { Plot } from "../../components/plot/plot";
 import { TitleBox } from "../../components/styled/titleBox";
@@ -62,6 +63,7 @@ const plotAreaFill = new Gradient({
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
+  audioPlayer.woosh();
   yield* slideTransition(Direction.Right);
 
   const container = createRef<Layout>();

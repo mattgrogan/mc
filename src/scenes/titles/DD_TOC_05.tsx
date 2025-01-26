@@ -10,9 +10,10 @@ import {
 } from "@motion-canvas/core";
 import { Darker, Grays, PoppinsBlack, PoppinsWhite, Theme } from "../../styles";
 import { TableOfContents, highlightItem } from "./tableOfContents";
+import { audioPlayer } from "./DD_TOC_00";
 
 const WAIT_SECS = 2;
-const INDEX = 3;
+const INDEX = 4;
 
 const titleGradient = new Gradient({
   type: "linear",
@@ -30,6 +31,7 @@ const titleGradient = new Gradient({
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
+  audioPlayer.woosh();
   yield* slideTransition(Direction.Right);
 
   const container = createRef<Layout>();

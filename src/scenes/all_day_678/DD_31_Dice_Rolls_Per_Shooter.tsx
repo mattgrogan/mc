@@ -13,6 +13,9 @@ import {
 } from "@motion-canvas/core";
 import {
   Bright,
+  Darker,
+  gameFlowDark,
+  gameFlowGradient,
   Grays,
   LightBlueGradient,
   PoppinsBlack,
@@ -23,10 +26,11 @@ import {
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
+import * as params from "./DD_00_Params";
+import { audioPlayer } from "./DD_00_Params";
+
 import { Plot } from "../../components/plot/plot";
 import { TitleBox } from "../../components/styled/titleBox";
-
-import * as params from "./DD_00_Params";
 
 import { DataTable } from "../../components/styled/dataTable";
 import {
@@ -34,16 +38,10 @@ import {
   getQuantileData,
 } from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
-import { audioPlayer } from "./DD_00_Params";
 
-let titleGradient = new Gradient({
-  from: [0, -300],
-  to: [0, 100],
-  stops: [
-    { offset: 0, color: "#2191fb" },
-    { offset: 1, color: "#1d4e89" },
-  ],
-});
+const X_MAX = 120;
+const Y_MAX = 40;
+const QUANTILES_ID = "SHOOTER_ROLL_BY_SHOOTER";
 
 const plotAreaFill = new Gradient({
   type: "linear",
@@ -85,19 +83,18 @@ export default makeScene2D(function* (view) {
       refs={plotTitle}
       fontSize={100}
       nodeOpacity={0}
-      rectProps={{ fill: titleGradient, stroke: Grays.GRAY1 }}
+      rectProps={{ fill: gameFlowGradient, stroke: Grays.GRAY1 }}
       headerProps={{ ...PoppinsWhite }}
       subheadProps={{ ...PoppinsWhite }}
     >
       NUMBER OF DICE ROLLS
     </TitleBox>
   );
-  plotTitle.subhead.text("BY SESSION");
+  plotTitle.subhead.text("BY SHOOTER");
 
   // ADD THE PLOT AREA
   const plotArea = makeRefs<typeof PlotArea>();
   const plot = createRef<Plot>();
-  const X_MAX = 240;
 
   container().add(
     <PlotArea
@@ -113,12 +110,11 @@ export default makeScene2D(function* (view) {
   const dataTable = makeRefs<typeof DataTable>();
 
   // Find the correct data from the json file
-  const id = "SESSION_ROLL_BY_SESSION";
-  const tableData = getQuantileData(id, params.quantiles);
+  const tableData = getQuantileData(QUANTILES_ID, params.quantiles);
 
   tableData.splice(4, 0, {
     label: "AVERAGE",
-    value: (params.simstats[0].ROLLS / params.simstats[0].SESSIONS).toFixed(1),
+    value: (params.simstats[0].ROLLS / params.simstats[0].SHOOTERS).toFixed(2),
   });
 
   // Create the data table and pass in the references
@@ -126,7 +122,7 @@ export default makeScene2D(function* (view) {
     <DataTable
       refs={dataTable}
       data={tableData}
-      headerRectProps={{ fill: LightBlueGradient, stroke: Grays.GRAY1 }}
+      headerRectProps={{ fill: gameFlowGradient, stroke: Grays.GRAY1 }}
       valueRectProps={{ fill: silverGradient, stroke: Grays.GRAY1 }}
       headerTxtProps={{ ...PoppinsWhite, fontSize: 55 }}
       valueTxtProps={{ ...PoppinsBlack }}
@@ -135,7 +131,7 @@ export default makeScene2D(function* (view) {
   );
 
   // Highlight the average separately
-  dataTable.headerRects[4].fill(purpleGradient);
+  // dataTable.headerRects[4].fill(purpleGradient);
 
   // Plot is only added after all the layout has been completed.
   plotArea.layout.add(
@@ -144,7 +140,7 @@ export default makeScene2D(function* (view) {
       position={() => plotArea.layout.position()}
       xMin={0}
       xMax={X_MAX}
-      yMax={20}
+      yMax={Y_MAX}
       width={plotArea.rect.width() * 0.9}
       height={plotArea.rect.height() * 0.7}
       xAxisProps={{
@@ -156,6 +152,7 @@ export default makeScene2D(function* (view) {
       xLabelProps={{ fill: Grays.BLACK, decimalNumbers: 0, fontSize: 40 }}
       xTitleProps={{
         fill: Grays.BLACK,
+        text: "",
         lineToLabelPadding: 200,
         opacity: 0,
         fontSize: 100,
@@ -179,31 +176,33 @@ export default makeScene2D(function* (view) {
 
   // yield* waitFor(2);
   yield plot().xAxis.end(1, 0.6, easeOutCubic);
-  plot().xAxis.updateTicks(0, X_MAX, 10);
+  plot().xAxis.updateTicks(0, X_MAX, 5);
 
   // Add the Min line
-  const minValue = getQuantile(id, params.quantiles, 0);
-  const maxValue = getQuantile(id, params.quantiles, 1);
-  const minLine = plot().vLine([minValue, 2], {
+  const minValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
+  const maxValue = getQuantile(QUANTILES_ID, params.quantiles, 1);
+  const minLine = plot().vLine([minValue, 4], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
+    zIndex: -10, // THIS IS BEING OVERRIDEN
   });
+  minLine.zIndex(0);
 
   // Add the Max line
-  const maxLine = plot().vLine([maxValue, 2], {
+  const maxLine = plot().vLine([maxValue, 4], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
   });
 
   // Try a box
-  const lowerRangeBox = plot().box([0, 2], [minValue, 0], {
+  const lowerRangeBox = plot().box([0, 4], [minValue, 0], {
     fill: Grays.GRAY3,
     opacity: 0,
-    zIndex: -200,
+    zIndex: 200,
   });
-  const upperRangeBox = plot().box([maxValue, 2], [X_MAX, 0], {
+  const upperRangeBox = plot().box([maxValue, 4], [X_MAX, 0], {
     fill: Grays.GRAY3,
     opacity: 0,
     zIndex: -200,
@@ -217,24 +216,24 @@ export default makeScene2D(function* (view) {
   const bars: Line[] = [];
   const labels: Txt[] = [];
 
-  for (let index = 0; index < params.rollsBySession.length; index++) {
+  for (let index = 0; index < params.rollsByShooter.length; index++) {
     const offset = 50;
     const point = new Vector2(
-      params.rollsBySession[index].MIDPOINT,
-      params.rollsBySession[index].PCT
+      params.rollsByShooter[index].MIDPOINT,
+      params.rollsByShooter[index].PCT
     );
     const line = plot().vLine(point, {
-      stroke: Bright.BLUE,
+      stroke: gameFlowDark,
       lineWidth: 80,
       opacity: 1,
       end: 0,
     });
-    if (params.rollsBySession[index].COUNT > 0) {
+    if (params.rollsByShooter[index].COUNT > 0) {
       bars.push(line);
     }
 
-    if (params.rollsBySession[index].PCT >= 0.1) {
-      const pct = params.rollsBySession[index].PCT.toFixed(1);
+    if (params.rollsByShooter[index].PCT >= 0.1) {
+      const pct = params.rollsByShooter[index].PCT.toFixed(1);
       const label = plot().text(point, {
         ...PoppinsWhite,
         text: pct,
@@ -252,6 +251,27 @@ export default makeScene2D(function* (view) {
       );
 
       labels.push(label);
+    } else if (
+      params.rollsByShooter[index].PCT < 0.1 &&
+      params.rollsByShooter[index].PCT > 0
+    ) {
+      const pct = "<0.1";
+      const label = plot().text(point, {
+        ...PoppinsWhite,
+        text: pct,
+        offsetY: 1.5,
+        fill: Grays.GRAY2,
+        fontWeight: 500,
+        fontSize: 30,
+        opacity: 0,
+      });
+      label.add(
+        <Txt
+          text="%"
+          fontSize={24}
+        />
+      );
+      labels.push(label);
     }
   }
   // ************************
@@ -262,13 +282,41 @@ export default makeScene2D(function* (view) {
   yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
 
   // Show data ranges in plot
-  yield* minLine.end(1, 1, easeOutCubic);
-  yield* lowerRangeBox.opacity(0.2, 1, linear);
-  yield* maxLine.end(1, 1, easeOutCubic);
-  yield* upperRangeBox.opacity(0.2, 1, linear);
+  yield minLine.end(1, 1, easeOutCubic);
+  yield lowerRangeBox.opacity(0.2, 1, linear);
+  yield* maxLine.end(1, 0.6, easeOutCubic);
+  yield* upperRangeBox.opacity(0.2, 0.6, linear);
 
-  // Show the data table
-  yield* sequence(0.1, ...dataTable.columns.map((pct) => pct.opacity(1, 0.6)));
+  // DATA TABLE
+  // ----------
+
+  // Median
+  yield* dataTable.columns[3].opacity(1, 0.6);
+  yield* waitFor(1);
+
+  // Average
+  yield* dataTable.columns[4].opacity(1, 0.6);
+  yield* waitFor(1);
+
+  // IQR
+  yield dataTable.columns[2].opacity(1, 0.6);
+  yield* dataTable.columns[5].opacity(1, 0.6);
+  yield* waitFor(1);
+
+  // Middle 90%
+  yield dataTable.columns[1].opacity(1, 0.6);
+  yield* dataTable.columns[6].opacity(1, 0.6);
+  yield* waitFor(1);
+
+  // Min/Max
+  yield dataTable.columns[0].opacity(1, 0.6);
+  yield* dataTable.columns[7].opacity(1, 0.6);
+  yield* waitFor(1);
+
+  // yield* sequence(
+  //   0.1,
+  //   ...dataTable.columns.slice(3, 4 + 1).map((pct) => pct.opacity(1, 0.6))
+  // );
 
   yield* waitFor(10);
   yield* waitUntil("end");

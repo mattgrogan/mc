@@ -16,6 +16,8 @@ import {
   Bright,
   Darker,
   Darkest,
+  gameFlowDark,
+  gameFlowGradient,
   Grays,
   PoppinsBlack,
   PoppinsWhite,
@@ -40,15 +42,6 @@ import { audioPlayer } from "./DD_00_Params";
 
 //-quantiles.json
 import { PlotArea } from "../../components/styled/plotArea";
-
-let titleGradient = new Gradient({
-  from: [0, -300],
-  to: [0, 100],
-  stops: [
-    { offset: 0, color: "#2191fb" },
-    { offset: 1, color: "#1d4e89" },
-  ],
-});
 
 const plotAreaFill = new Gradient({
   type: "linear",
@@ -97,7 +90,7 @@ export default makeScene2D(function* (view) {
       refs={plotTitle}
       fontSize={100}
       nodeOpacity={0}
-      rectProps={{ fill: titleGradient, stroke: Grays.GRAY1 }}
+      rectProps={{ fill: gameFlowGradient, stroke: Grays.GRAY1 }}
       headerProps={{ ...PoppinsWhite }}
       subheadProps={{ ...PoppinsWhite }}
     ></TitleBox>
@@ -184,22 +177,20 @@ export default makeScene2D(function* (view) {
   const theoreticalNLabels: Txt[] = [];
   const actualLabels: Txt[] = [];
   const actualNLabels: Txt[] = [];
+  const fractions: Txt[] = [];
 
   const diceData = [
-    {
-      throw: 2,
-      pct: 1 / 36,
-    },
-    { throw: 3, pct: 2 / 36 },
-    { throw: 4, pct: 3 / 36 },
-    { throw: 5, pct: 4 / 36 },
-    { throw: 6, pct: 5 / 36 },
-    { throw: 7, pct: 6 / 36 },
-    { throw: 8, pct: 5 / 36 },
-    { throw: 9, pct: 4 / 36 },
-    { throw: 10, pct: 3 / 36 },
-    { throw: 11, pct: 2 / 36 },
-    { throw: 12, pct: 1 / 36 },
+    { throw: 2, pct: 1 / 36, lab: "1/36" },
+    { throw: 3, pct: 2 / 36, lab: "2/36" },
+    { throw: 4, pct: 3 / 36, lab: "3/36" },
+    { throw: 5, pct: 4 / 36, lab: "4/36" },
+    { throw: 6, pct: 5 / 36, lab: "5/36" },
+    { throw: 7, pct: 6 / 36, lab: "6/36" },
+    { throw: 8, pct: 5 / 36, lab: "5/36" },
+    { throw: 9, pct: 4 / 36, lab: "4/36" },
+    { throw: 10, pct: 3 / 36, lab: "3/36" },
+    { throw: 11, pct: 2 / 36, lab: "2/36" },
+    { throw: 12, pct: 1 / 36, lab: "1/36" },
   ];
 
   for (let index = 0; index < diceData.length; index++) {
@@ -221,7 +212,7 @@ export default makeScene2D(function* (view) {
       diceThrows[index].PCT
     );
     const dataLine = plot().vLine(dataPoint, {
-      stroke: Darker.BLUE,
+      stroke: gameFlowDark,
       lineWidth: 180,
       opacity: 1,
       end: 0,
@@ -246,6 +237,18 @@ export default makeScene2D(function* (view) {
       />
     );
     theoreticalLabels.push(label);
+
+    // Fraction
+    const fraction = plot().text(point, {
+      ...PoppinsWhite,
+      text: diceData[index].lab,
+      offsetY: 3.5,
+      fill: Grays.GRAY4,
+      fontWeight: 500,
+      fontSize: 40,
+      opacity: 0,
+    });
+    fractions.push(fraction);
 
     // Theoretical N
     let theoreticalN = "";
@@ -331,6 +334,7 @@ export default makeScene2D(function* (view) {
     0.1,
     ...theoreticalBars.map((line) => line.end(1, 1, easeOutCubic))
   );
+  yield* sequence(0.1, ...fractions.map((pct) => pct.opacity(1, 0.6)));
   yield* sequence(0.1, ...theoreticalLabels.map((pct) => pct.opacity(1, 0.6)));
   yield* waitFor(1);
 
@@ -347,6 +351,7 @@ export default makeScene2D(function* (view) {
 
   // Hide the percents and show the N
   yield all(...actualLabels.map((pct) => pct.opacity(0, 0.6)));
+  yield all(...fractions.map((pct) => pct.opacity(0, 0.6)));
   yield* all(...theoreticalLabels.map((pct) => pct.opacity(0, 0.6)));
   yield* sequence(0.1, ...theoreticalNLabels.map((pct) => pct.opacity(1, 0.6)));
   yield* sequence(0.1, ...actualNLabels.map((pct) => pct.opacity(1, 0.6)));

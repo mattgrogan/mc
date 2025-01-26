@@ -50,7 +50,7 @@ const TOTAL = params.winlose.find((stat) => stat.STAT == "N").BY_SHOOTER;
 
 const QUANTILES_ID = "MIN_BR_END";
 const X_AXIS_MIN = 0;
-const X_AXIS_MAX = 40;
+const X_AXIS_MAX = 60;
 const X_AXIS_STEP = 100;
 
 const Y_AXIS_MIN = -2000;

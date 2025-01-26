@@ -32,6 +32,7 @@ import {
   getQuantileData,
   plusCommaFormmatter,
 } from "../../components/styled/findQuantiles";
+import { audioPlayer } from "./DD_00_Params";
 
 const QUANTILES_ID = "PLYR_CWONLOST_BY_SESSION";
 const X_AXIS_MIN = -2000;
@@ -73,6 +74,7 @@ const plotAreaFill = new Gradient({
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
+  audioPlayer.woosh();
   yield* slideTransition(Direction.Right);
 
   const container = createRef<Layout>();

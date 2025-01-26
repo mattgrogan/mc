@@ -13,6 +13,9 @@ import {
 } from "@motion-canvas/core";
 import {
   Bright,
+  Darker,
+  gameFlowDark,
+  gameFlowGradient,
   Grays,
   LightBlueGradient,
   PoppinsBlack,
@@ -35,15 +38,6 @@ import {
 } from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
 import { audioPlayer } from "./DD_00_Params";
-
-let titleGradient = new Gradient({
-  from: [0, -300],
-  to: [0, 100],
-  stops: [
-    { offset: 0, color: "#2191fb" },
-    { offset: 1, color: "#1d4e89" },
-  ],
-});
 
 const plotAreaFill = new Gradient({
   type: "linear",
@@ -85,7 +79,7 @@ export default makeScene2D(function* (view) {
       refs={plotTitle}
       fontSize={100}
       nodeOpacity={0}
-      rectProps={{ fill: titleGradient, stroke: Grays.GRAY1 }}
+      rectProps={{ fill: gameFlowGradient, stroke: Grays.GRAY1 }}
       headerProps={{ ...PoppinsWhite }}
       subheadProps={{ ...PoppinsWhite }}
     >
@@ -126,7 +120,7 @@ export default makeScene2D(function* (view) {
     <DataTable
       refs={dataTable}
       data={tableData}
-      headerRectProps={{ fill: LightBlueGradient, stroke: Grays.GRAY1 }}
+      headerRectProps={{ fill: gameFlowGradient, stroke: Grays.GRAY1 }}
       valueRectProps={{ fill: silverGradient, stroke: Grays.GRAY1 }}
       headerTxtProps={{ ...PoppinsWhite, fontSize: 55 }}
       valueTxtProps={{ ...PoppinsBlack }}
@@ -135,7 +129,7 @@ export default makeScene2D(function* (view) {
   );
 
   // Highlight the average separately
-  dataTable.headerRects[4].fill(purpleGradient);
+  // dataTable.headerRects[4].fill(purpleGradient);
 
   // Plot is only added after all the layout has been completed.
   plotArea.layout.add(
@@ -224,7 +218,7 @@ export default makeScene2D(function* (view) {
       params.rollsBySession[index].PCT
     );
     const line = plot().vLine(point, {
-      stroke: Bright.BLUE,
+      stroke: gameFlowDark,
       lineWidth: 80,
       opacity: 1,
       end: 0,
@@ -252,6 +246,27 @@ export default makeScene2D(function* (view) {
       );
 
       labels.push(label);
+    } else if (
+      params.rollsBySession[index].PCT < 0.1 &&
+      params.rollsBySession[index].PCT > 0
+    ) {
+      const pct = "<0.1";
+      const label = plot().text(point, {
+        ...PoppinsWhite,
+        text: pct,
+        offsetY: 1.5,
+        fill: Grays.GRAY2,
+        fontWeight: 500,
+        fontSize: 30,
+        opacity: 0,
+      });
+      label.add(
+        <Txt
+          text="%"
+          fontSize={24}
+        />
+      );
+      labels.push(label);
     }
   }
   // ************************
@@ -267,8 +282,31 @@ export default makeScene2D(function* (view) {
   yield* maxLine.end(1, 1, easeOutCubic);
   yield* upperRangeBox.opacity(0.2, 1, linear);
 
-  // Show the data table
-  yield* sequence(0.1, ...dataTable.columns.map((pct) => pct.opacity(1, 0.6)));
+  // DATA TABLE
+  // ----------
+
+  // Median
+  yield* dataTable.columns[3].opacity(1, 0.6);
+  yield* waitFor(1);
+
+  // Average
+  yield* dataTable.columns[4].opacity(1, 0.6);
+  yield* waitFor(1);
+
+  // IQR
+  yield dataTable.columns[2].opacity(1, 0.6);
+  yield* dataTable.columns[5].opacity(1, 0.6);
+  yield* waitFor(1);
+
+  // Middle 90%
+  yield dataTable.columns[1].opacity(1, 0.6);
+  yield* dataTable.columns[6].opacity(1, 0.6);
+  yield* waitFor(1);
+
+  // Min/Max
+  yield dataTable.columns[0].opacity(1, 0.6);
+  yield* dataTable.columns[7].opacity(1, 0.6);
+  yield* waitFor(1);
 
   yield* waitFor(10);
   yield* waitUntil("end");
