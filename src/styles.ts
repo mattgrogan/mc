@@ -174,3 +174,36 @@ export const dollarFormatter = new Intl.NumberFormat("en-US", {
   //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
   //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
+
+export const gameFlowLight = "#303f9f";
+export const gameFlowDark = "#1a237e";
+export const gameFlowGradient = new Gradient({
+  from: [0, -300],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: gameFlowLight },
+    { offset: 1, color: gameFlowDark },
+  ],
+});
+
+export const sessionLight = "#00796b";
+export const sessionDark = "#004d40";
+export const sessionGradient = new Gradient({
+  from: [0, -300],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: sessionLight },
+    { offset: 1, color: sessionDark },
+  ],
+});
+
+export const shooterLight = "#0097a7";
+export const shooterDark = "#006064";
+export const shooterGradient = new Gradient({
+  from: [0, -300],
+  to: [0, 100],
+  stops: [
+    { offset: 0, color: shooterLight },
+    { offset: 1, color: shooterDark },
+  ],
+});

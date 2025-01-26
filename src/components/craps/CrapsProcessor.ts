@@ -22,6 +22,16 @@ import { c } from "./CrapsTableCoords";
 // const win = sound(chime_018).gain(-15);
 // const sevenOut = sound(error_01).gain(-15);
 
+// Only show the working indicator on these bet types
+const WORKING_INDICATOR_BETS = [
+  "BUY4",
+  "PLACE5",
+  "PLACE6",
+  "PLACE8",
+  "PLACE9",
+  "PLACE10",
+];
+
 export class CrapsProcessor {
   private declare table: Reference<CrapsTable>;
   private declare scoreBug: Reference<CrapsScoreBug>;
@@ -47,7 +57,7 @@ export class CrapsProcessor {
       this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START)
     );
 
-    //yield* this.scoreBug().updateLabel("PLACE BETS");
+    yield* this.scoreBug().updateLabel("PLACE BETS");
     yield this.scoreBug().updateLabel("");
 
     // Take any bets down
@@ -67,6 +77,19 @@ export class CrapsProcessor {
     }
     yield* sequence(0.3, ...newBets);
 
+    // Update working indicator if it does not match the puck
+    for (const bet of data.PLYR_BETS) {
+      // Only for place bets - need to keep WORKING_INDICATOR_BETS updated
+      if (WORKING_INDICATOR_BETS.includes(bet.bet)) {
+        if (data.POINT_STATUS != bet.working) {
+          yield* this.table()
+            .bets()
+            .chip(bet.bet)
+            .setWorking(bet.working == "On");
+        }
+      }
+    }
+
     // Update scorebug after bets down and placed
     yield* all(
       this.scoreBug().updateBankroll(data.PLYR_NET_BR_UPDATED),
@@ -80,7 +103,7 @@ export class CrapsProcessor {
     yield* this.scoreBug().updateLabel("DICE ARE OUT");
     // diceRoll.play();
     yield* this.table().dice().throw(data.D1, data.D2);
-    yield* this.scoreBug().updateLabel("THROW IS " + data.THROW);
+    // yield* this.scoreBug().updateLabel("THROW IS " + data.THROW);
 
     yield* waitFor(0.6);
 
