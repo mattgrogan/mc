@@ -48,7 +48,7 @@ export default makeScene2D(function* (view) {
         fill={Bright.WHITE}
         fontWeight={600}
         fontSize={180}
-        text={"6 7 8 All Day"}
+        text={"6 7 8"}
         alignSelf={"center"}
       />
     </Layout>

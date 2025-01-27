@@ -27,6 +27,7 @@ import {
   winnerGradient,
 } from "../../components/styled/outcomeCard";
 import { TitleBox } from "../../components/styled/titleBox";
+import { audioPlayer } from "./DD_00_Params";
 
 const WINNERS = params.winlose.find((stat) => stat.STAT == "N_UP").BY_SESSION;
 const PUSHERS = params.winlose.find((stat) => stat.STAT == "N_EVEN").BY_SESSION;
@@ -140,16 +141,19 @@ export default makeScene2D(function* (view) {
   // Draw the boxes
   yield* waitUntil("winners");
   yield* FadeIn(winCard.container, 1, easeOutCubic, [0, 100]);
+  audioPlayer.scroll_2s()
   yield* nWinners(WINNERS, 2, easeInOutCubic);
   yield* waitFor(3);
-
+  
   yield* waitUntil("losers");
   yield* FadeIn(loseCard.container, 1, easeOutCubic, [0, 100]);
+  audioPlayer.scroll_2s()
   yield* nLosers(LOSERS, 2, easeInOutCubic);
   yield* waitFor(3);
-
+  
   yield* waitUntil("pushes");
   yield* FadeIn(pushCard.container, 1, easeOutCubic, [0, 100]);
+  audioPlayer.scroll_2s()
   yield* nPushers(PUSHERS, 2, easeInOutCubic);
 
   yield* waitFor(8);

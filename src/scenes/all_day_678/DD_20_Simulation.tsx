@@ -315,6 +315,7 @@ export default makeScene2D(function* (view) {
   yield* waitFor(1);
   //yield* waitUntil("start-sim");
 
+  params.audioPlayer.typing(0.5)
   yield* lines[0]("> python runDiceDataEngine.py -i 100000", 0.3, linear);
   yield* waitFor(0.5);
   lineTxts[1].fill(Bright.YELLOW);

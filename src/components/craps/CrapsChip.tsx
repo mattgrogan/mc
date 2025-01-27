@@ -2,6 +2,7 @@ import { Circle, CircleProps, Rect, Txt } from "@motion-canvas/2d";
 import {
   createRef,
   createSignal,
+  easeInCubic,
   easeInElastic,
   easeOutBounce,
   useLogger,
@@ -303,6 +304,6 @@ export class CrapsChip extends Circle {
     );
   }
   public *hideWorking(dur: number) {
-    yield* this.workingIndicator().scale(0, dur, easeInElastic);
+    yield* this.workingIndicator().scale(0, dur, easeInCubic);
   }
 }

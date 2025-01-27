@@ -1,6 +1,8 @@
 import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
+import audio from "../../../audio/DD - All Day 678_00108000.flac"
+
 import DD_TOC_01 from "../titles/DD_TOC_01?scene";
 import DD_TOC_02 from "../titles/DD_TOC_02?scene";
 import DD_TOC_03 from "../titles/DD_TOC_03?scene";
@@ -33,7 +35,7 @@ export default makeProject({
   scenes: [
     intro,
     DD_20_Simulation,
-    DD_TOC_01,
+    // DD_TOC_01,
     DD_TOC_02,
 
     DD_30_Dice_Throws,

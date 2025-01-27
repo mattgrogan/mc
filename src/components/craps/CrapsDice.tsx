@@ -9,6 +9,9 @@ import {
 } from "@motion-canvas/2d";
 import {
   all,
+  easeInBack,
+  easeInBounce,
+  easeInCubic,
   easeInElastic,
   easeInOutCubic,
   easeOutCubic,
@@ -232,7 +235,7 @@ export class CrapsDice extends Layout {
     this.add(this.total);
     yield* FadeIn(this.total, 0.2, easeOutCubic, [0, 20]);
     yield* waitFor(0.5);
-    yield this.total.scale(0, 1, easeInElastic);
+    yield this.total.scale(0, 0.4, easeInBack);
   }
 
   public *removeDice(dur: number = 1, ease: TimingFunction = linear) {

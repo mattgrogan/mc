@@ -2,8 +2,28 @@
   "version": 0,
   "timeEvents": [
     {
+      "name": "median",
+      "targetTime": 12.399999999999986
+    },
+    {
+      "name": "avg",
+      "targetTime": 16.650389125231047
+    },
+    {
+      "name": "iqr",
+      "targetTime": 19.68579640209469
+    },
+    {
+      "name": "ninety",
+      "targetTime": 25.091465951522913
+    },
+    {
+      "name": "minmax",
+      "targetTime": 33.50044918792737
+    },
+    {
       "name": "end",
-      "targetTime": 24.29999999999998
+      "targetTime": 45.100449187927374
     }
   ],
   "seed": 2420683708

@@ -334,7 +334,7 @@ export default makeScene2D(function* (view) {
   const arrow = new Icon({
     icon: "mdi:arrow-left-bold",
     scale: 20,
-    color: Bright.YELLOW,
+    color: "#e53935",
     offsetX: -1,
     layout: false,
     opacity: 0,

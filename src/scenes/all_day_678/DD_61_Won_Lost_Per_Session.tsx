@@ -317,8 +317,33 @@ export default makeScene2D(function* (view) {
   yield* upperRangeBox.opacity(0.2, 0.6, linear);
   yield* zeroLine.end(1, 0.6, easeOutCubic);
 
-  // Show the data table
-  yield* sequence(0.1, ...dataTable.columns.map((pct) => pct.opacity(1, 0.6)));
+  // Median
+  yield* waitUntil("median")
+  yield* dataTable.columns[3].opacity(1, 0.6);
+  yield* waitFor(1);
+  
+  // Average
+  yield* waitUntil("avg")
+  yield* dataTable.columns[4].opacity(1, 0.6);
+  yield* waitFor(1);
+  
+  // IQR
+  yield* waitUntil("iqr")
+  yield dataTable.columns[2].opacity(1, 0.6);
+  yield* dataTable.columns[5].opacity(1, 0.6);
+  yield* waitFor(1);
+  
+  // Middle 90%
+  yield* waitUntil("ninety")
+  yield dataTable.columns[1].opacity(1, 0.6);
+  yield* dataTable.columns[6].opacity(1, 0.6);
+  yield* waitFor(1);
+  
+  // Min/Max
+  yield* waitUntil("minmax")
+  yield dataTable.columns[0].opacity(1, 0.6);
+  yield* dataTable.columns[7].opacity(1, 0.6);
+  yield* waitFor(1);
 
   yield* waitFor(10);
   yield* waitUntil("end");

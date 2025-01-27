@@ -1,4 +1,4 @@
-export const name = "6 7 8 All Day";
+export const name = "6 7 8 - $30";
 export const sessions = "100,000";
 export const shooters_per_session = "10";
 export const table_min = "$25";

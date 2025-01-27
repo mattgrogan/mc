@@ -13,9 +13,9 @@ import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
 //-sessions.json
-import simData from "../../../../dicedata/output/all_day_678-test/all_day_678-test-sessions.json";
+import simData from "../../../../dicedata/output/all_day_678-100k/all_day_678-100k-sessions.json";
 //-all-sessions.json
-import sessions from "../../../../dicedata/output/all_day_678-test/all_day_678-test-all_sessions.json";
+import sessions from "../../../../dicedata/output/all_day_678-100k/all_day_678-100k-all_sessions.json";
 
 import { Theme } from "../../styles";
 import { c } from "../../components/craps/CrapsTableCoords";

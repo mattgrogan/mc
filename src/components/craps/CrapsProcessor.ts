@@ -58,7 +58,6 @@ export class CrapsProcessor {
     );
 
     yield* this.scoreBug().updateLabel("PLACE BETS");
-    yield this.scoreBug().updateLabel("");
 
     // Take any bets down
     const downBets = [];
@@ -86,6 +85,15 @@ export class CrapsProcessor {
             .bets()
             .chip(bet.bet)
             .setWorking(bet.working == "On");
+            yield* this.table()
+            .bets()
+            .chip(bet.bet)
+            .showWorking(0.6);    
+        } else {
+          yield* this.table()
+            .bets()
+            .chip(bet.bet)
+            .hideWorking(0.6);          
         }
       }
     }
