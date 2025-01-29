@@ -46,6 +46,7 @@ export function* CircumscribeRect(
     stroke: color,
     end: 0,
     position: node.position,
+    zIndex: 11000
   });
   const width = node.cacheBBox().width;
   const height = node.cacheBBox().height;
@@ -57,7 +58,8 @@ export function* CircumscribeRect(
     return;
   }
   parent.add(rect);
-  rect.moveAbove(node);
+  //rect.moveAbove(node);
+  rect.moveToTop()
   yield* rect.end(1, 1);
   yield* waitFor(holdSecs);
   yield* rect.start(1, 1);
