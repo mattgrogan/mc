@@ -33,11 +33,11 @@ import {
 import { PlotArea } from "../../components/styled/plotArea";
 import { TitleBox } from "../../components/styled/titleBox";
 
-const X_AXIS_MIN = -600;
+const X_AXIS_MIN = -400;
 const X_AXIS_MAX = 2000;
 const X_AXIS_STEP = 100;
 
-const Y_AXIS_MAX = 40;
+const Y_AXIS_MAX = 60;
 
 // Filter just the data we want on the histogram
 const data = params.shooterHist.slice(0, 30);

@@ -318,9 +318,9 @@ export default makeScene2D(function* (view) {
     ...rowNodes.map((r) => FadeIn(r, 1, easeOutCubic, [0, 50]))
   );
 
-  yield* waitFor(1);
+  // yield* waitFor(1);
   yield* waitUntil("show-arrow");
-
+  
   const arrow = new Icon({
     icon: "mdi:arrow-left-bold",
     scale: 20,
@@ -329,22 +329,26 @@ export default makeScene2D(function* (view) {
     layout: false,
     opacity: 0,
   });
-
+  
   arrow.position(rowRects[0].right);
   col2().add(arrow);
   // Total Bet
   yield* FadeIn(arrow, 1, easeOutBounce, [100, 0]);
   yield* waitFor(2);
   // Total Won
+  yield* waitUntil("total-won");
   yield* arrow.position(rowRects[1].right, 1, easeInOutCubic);
   yield* waitFor(2);
   // Total Lost
+  yield* waitUntil("total-lost");
   yield* arrow.position(rowRects[2].right, 1, easeInOutCubic);
   yield* waitFor(3);
   // House Take
+  yield* waitUntil("house-take");
   yield* arrow.position(rowRects[3].right, 1, easeInOutCubic);
   yield* waitFor(2);
   // House Edge
+  yield* waitUntil("house-edge");
   yield* arrow.position(rowRects[4].right, 1, easeInOutCubic);
 
   yield* waitFor(2);
@@ -426,7 +430,7 @@ export default makeScene2D(function* (view) {
 
   // yield thisStrategyLabel.opacity(1, 1.2);
 
-  yield* waitFor(10);
+  yield* waitFor(2);
   yield* waitUntil("end");
 });
 

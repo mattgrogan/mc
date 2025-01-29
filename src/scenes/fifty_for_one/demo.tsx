@@ -25,7 +25,7 @@ enum s {
   WORST = 2,
 }
 
-const whichSession = s.BEST;
+const whichSession = s.WORST;
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
@@ -75,7 +75,7 @@ export default makeScene2D(function* (view) {
     session = sessions[sessions.length - 1].SESSION;
   }
 
-  session = 99423;
+  // session = 28703;
 
   const firstSession = simData.filter(
     ({ SESSION, ROLL }) => SESSION === session //&& ROLL < 20

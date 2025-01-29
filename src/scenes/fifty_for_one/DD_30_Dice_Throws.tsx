@@ -339,7 +339,7 @@ export default makeScene2D(function* (view) {
   );
   yield* sequence(0.1, ...actualLabels.map((pct) => pct.opacity(1, 0.6)));
 
-  yield* waitFor(8);
+  yield* waitFor(1);
   yield* waitUntil("show-n");
 
   // Hide the percents and show the N
@@ -348,6 +348,6 @@ export default makeScene2D(function* (view) {
   yield* sequence(0.1, ...theoreticalNLabels.map((pct) => pct.opacity(1, 0.6)));
   yield* sequence(0.1, ...actualNLabels.map((pct) => pct.opacity(1, 0.6)));
 
-  yield* waitFor(8);
+  yield* waitFor(1);
   yield* waitUntil("end");
 });
