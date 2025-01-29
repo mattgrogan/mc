@@ -152,15 +152,24 @@ export class PlotAxis extends Line {
     return vectorWhere.y;
   }
 
-  public getTickRange(start: number, stop: number, step: number): Set<number> {
+  public getTickRange(
+    start: number,
+    stop: number,
+    step: number,
+    every: number = 2
+  ): Set<number> {
     /**
      * Generate an array of the places where we want the ticks
      */
     const tickRange = new Set<number>();
     let x = start;
+    let i = 0;
     do {
-      tickRange.add(x);
+      if (i % every == 0) {
+        tickRange.add(x);
+      }
       x += step;
+      i++;
     } while (x <= stop);
     return tickRange;
   }
@@ -240,7 +249,13 @@ export class PlotAxis extends Line {
     return label;
   }
 
-  public updateTicks(min: number, max: number, step: number, buffer = 0.5) {
+  public updateTicks(
+    min: number,
+    max: number,
+    step: number,
+    every: number = 1,
+    buffer = 0.5
+  ) {
     /**
      * Remove unneeded ticks and draw new ticks.
      * buffer will allow ticks to be drawn even if they're outside the current range.
@@ -248,7 +263,7 @@ export class PlotAxis extends Line {
      */
 
     // These are the ticks we want to end up with.
-    const desiredTickSet = this.getTickRange(min, max, step);
+    const desiredTickSet = this.getTickRange(min, max, step, every);
 
     // Find the min and max to filter
     let filterMin = this.plot().xMin();

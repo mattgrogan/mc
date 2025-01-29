@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "bracket",
+      "targetTime": 9.2
+    },
+    {
+      "name": "scenarios",
+      "targetTime": 10.2
+    },
+    {
+      "name": "term",
+      "targetTime": 18.2
+    },
+    {
+      "name": "end",
+      "targetTime": 26.05000000000001
+    }
+  ],
+  "seed": 2228103303
+}

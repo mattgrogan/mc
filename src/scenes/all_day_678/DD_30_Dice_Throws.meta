@@ -1,0 +1,18 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-actual",
+      "targetTime": 9.799999999999994
+    },
+    {
+      "name": "show-n",
+      "targetTime": 21.399999999999984
+    },
+    {
+      "name": "end",
+      "targetTime": 33.20000000000002
+    }
+  ],
+  "seed": 4167014339
+}

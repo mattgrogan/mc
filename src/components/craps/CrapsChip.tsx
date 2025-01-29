@@ -1,5 +1,13 @@
 import { Circle, CircleProps, Rect, Txt } from "@motion-canvas/2d";
-import { createRef, easeOutBounce, Vector2 } from "@motion-canvas/core";
+import {
+  createRef,
+  createSignal,
+  easeInCubic,
+  easeInElastic,
+  easeOutBounce,
+  useLogger,
+  Vector2,
+} from "@motion-canvas/core";
 import { MonoWhite } from "../../styles";
 
 export enum ChipColors {
@@ -94,7 +102,7 @@ chipColorDict[ChipColors.GREEN] = greenChip;
 chipColorDict[ChipColors.BLUE] = blueChip;
 chipColorDict[ChipColors.BLACK] = blackChip;
 
-// const WORKING_INDICATOR_SCALE = 0.8;
+const WORKING_INDICATOR_SCALE = 3;
 const BUY_INDICATOR_SCALE = 3;
 
 export interface ChipProps extends CircleProps {
@@ -151,9 +159,9 @@ function getChipColor(denom: number): ChipColors {
 }
 
 export class CrapsChip extends Circle {
-  //public isWorking = createSignal(true);
-  //private readonly workingIndicator = createRef<Rect>();
+  public readonly isWorking = createSignal(false);
   private readonly buyIndicator = createRef<Rect>();
+  private readonly workingIndicator = createRef<Rect>();
   private declare readonly denom: number;
   private declare readonly denom_scale: number;
   private declare readonly chipColor: iChipColor;
@@ -241,20 +249,61 @@ export class CrapsChip extends Circle {
         />
       </Rect>
     );
+
+    this.add(
+      <Rect
+        ref={this.workingIndicator}
+        fill={"black"}
+        width={80}
+        height={40}
+        y={150}
+        x={0}
+        radius={10}
+        stroke={"white"}
+        lineWidth={2}
+        opacity={0.8}
+        scale={0}
+      >
+        <Txt
+          text={() => (this.isWorking() ? "ON" : "OFF")}
+          {...MonoWhite}
+          fontWeight={600}
+          fontSize={30}
+        />
+      </Rect>
+    );
   }
 
   public *showBuy(dur: number = 0.6) {
     yield* this.buyIndicator().scale(BUY_INDICATOR_SCALE, dur, easeOutBounce);
   }
 
-  // public *showWorking(dur: number) {
-  //   yield* this.workingIndicator().scale(
-  //     WORKING_INDICATOR_SCALE,
-  //     dur,
-  //     easeOutBounce
-  //   );
-  // }
-  // public *hideWorking(dur: number) {
-  //   yield* this.workingIndicator().scale(0, dur, easeInElastic);
-  // }
+  public *setWorking(isWorking: boolean) {
+    // Is this bet working? If it's changed, animate the indicator.
+
+    // If it matches, do nothing
+    if (this.isWorking() == isWorking) {
+      return;
+    }
+
+    // otherwise, set and show or hide.
+    this.isWorking(isWorking);
+
+    if (this.isWorking()) {
+      yield* this.showWorking(0.6);
+    } else {
+      yield* this.hideWorking(0.6);
+    }
+  }
+
+  public *showWorking(dur: number) {
+    yield* this.workingIndicator().scale(
+      WORKING_INDICATOR_SCALE,
+      dur,
+      easeOutBounce
+    );
+  }
+  public *hideWorking(dur: number) {
+    yield* this.workingIndicator().scale(0, dur, easeInCubic);
+  }
 }

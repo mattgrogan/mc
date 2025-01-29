@@ -30,6 +30,10 @@ export class CrapsBets extends Layout {
     return chip;
   }
 
+  public chip(where: c): CrapsChip {
+    return this.chips[where];
+  }
+
   public *moveChipTo(
     chip: Layout,
     where: c,
