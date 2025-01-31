@@ -3,8 +3,8 @@
   "shared": {
     "background": null,
     "range": [
-      0,
-      null
+      316.8666656666667,
+      337.06666566666667
     ],
     "size": {
       "x": 3840,
@@ -23,7 +23,7 @@
     "exporter": {
       "name": "@motion-canvas/ffmpeg",
       "options": {
-        "fastStart": true,
+        "fastStart": false,
         "includeAudio": true,
         "audioSampleRate": 48000
       }

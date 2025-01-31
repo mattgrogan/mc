@@ -8,9 +8,9 @@
     "build": "tsc && vite build"
   },
   "dependencies": {
-    "@motion-canvas/2d": "file://../motion-canvas-studio/packages/2d",
-    "@motion-canvas/core": "file:../motion-canvas-studio/packages/core",
-    "@motion-canvas/ffmpeg": "file:..//motion-canvas-studio/packages/ffmpeg"
+    "@motion-canvas/2d": "^3.17.0",
+    "@motion-canvas/core": "^3.17.0",
+    "@motion-canvas/ffmpeg": "^3.17.0"
   },
   "devDependencies": {
     "@motion-canvas/ui": "^3.17.0",

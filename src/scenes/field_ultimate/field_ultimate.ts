@@ -20,6 +20,8 @@ import DD_40_House_Triple_Triple from "./DD_40_House_Triple_Triple?scene";
 import DD_60_Outcomes_Triple_Triple from "./DD_60_Outcomes_Triple_Triple?scene";
 import DD_61_Won_Lost_Triple_Triple from "./DD_61_Won_Lost_Triple_Triple?scene";
 
+import summary_question from "./summary_question?scene";
+
 import endCard from "./endCard?scene";
 
 export default makeProject({
@@ -38,6 +40,7 @@ export default makeProject({
   DD_60_Outcomes_Triple_Triple,
   DD_61_Won_Lost_Triple_Triple,
   summary,
+  summary_question,
   endCard
   ],
 });

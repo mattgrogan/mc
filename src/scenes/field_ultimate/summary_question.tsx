@@ -58,20 +58,20 @@ export default makeScene2D(function* (view) {
 
   yield* waitFor(1);
 
-  const plotTitle = makeRefs<typeof TitleBox>();
-  container().add(
-    <TitleBox
-      refs={plotTitle}
-      fontSize={100}
-      nodeOpacity={0}
-      rectProps={{ fill: greenGradient, stroke: Grays.GRAY1 }}
-      headerProps={{ ...PoppinsWhite }}
-      subheadProps={{ ...PoppinsWhite }}
-    >
-      COMPARING THE THREE SCENARIOS
-    </TitleBox>
-  );
-  plotTitle.subhead.text("");
+  // const plotTitle = makeRefs<typeof TitleBox>();
+  // container().add(
+  //   <TitleBox
+  //     refs={plotTitle}
+  //     fontSize={100}
+  //     nodeOpacity={0}
+  //     rectProps={{ fill: greenGradient, stroke: Grays.GRAY1 }}
+  //     headerProps={{ ...PoppinsWhite }}
+  //     subheadProps={{ ...PoppinsWhite }}
+  //   >
+  //     COMPARING THE THREE SCENARIOS
+  //   </TitleBox>
+  // );
+  // plotTitle.subhead.text("");
 
   //////////////////////
   // DOUBLE DOUBLE
@@ -195,9 +195,17 @@ export default makeScene2D(function* (view) {
   tripleTripleTableData[0].label = "MOST LOST";
   tripleTripleTableData[6].label = "MOST WON";
 
+  tripleTripleTableData[0].value = "?"
+  tripleTripleTableData[1].value = "?"
+  tripleTripleTableData[2].value = "?"
+  tripleTripleTableData[3].value = "?"
+  tripleTripleTableData[4].value = "?"
+  tripleTripleTableData[5].value = "?"
+  tripleTripleTableData[6].value = "?"
+
   tripleTripleTableData.splice(4, 0, {
     label: "AVERAGE",
-    value: TRIPLE_TRIPLE_AVG_WONLOST.toFixed(2),
+    value: "?",
   });
 
   // Create the data table and pass in the references
@@ -239,20 +247,20 @@ export default makeScene2D(function* (view) {
   // START DRAWING THE COMPONENTS HERE
 
   // Draw the title
-  yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
-  yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
-  yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
 
 
 
 
     // Show the data tables
     yield* FadeIn(doubleDoubleTitle, 1, easeOutCubic, [0, 50])
-    yield* sequence(0.1, ...doubleDoubleDataTable.columns.map((pct) => pct.opacity(0.5, 0.6)));
+    yield* sequence(0.1, ...doubleDoubleDataTable.columns.map((pct) => pct.opacity(1, 0.6)));
     yield* FadeIn(doubleTripleTitle, 1, easeOutCubic, [0, 50])
-    yield* sequence(0.1, ...doubleTripleDataTable.columns.map((pct) => pct.opacity(0.5, 0.6)));
+    yield* sequence(0.1, ...doubleTripleDataTable.columns.map((pct) => pct.opacity(1, 0.6)));
     yield* FadeIn(tripleTripleTitle, 1, easeOutCubic, [0, 50])
-    yield* sequence(0.1, ...tripleTripleDataTable.columns.map((pct) => pct.opacity(0.5, 0.6)));
+    yield* sequence(0.1, ...tripleTripleDataTable.columns.map((pct) => pct.opacity(1, 0.6)));
 
     // // Highlight median
     // yield CircumscribeRect(doubleDoubleDataTable.valueRects[3], Darker.ORANGE, 0.93, 20, 5)
@@ -268,7 +276,6 @@ export default makeScene2D(function* (view) {
 
   // Median
   // yield* waitUntil("median")
-  yield* waitFor(1);
   yield* doubleDoubleDataTable.columns[3].opacity(1, 0.6);
   yield* doubleTripleDataTable.columns[3].opacity(1, 0.6);
   yield* tripleTripleDataTable.columns[3].opacity(1, 0.6);
@@ -286,6 +293,7 @@ export default makeScene2D(function* (view) {
   yield* waitFor(1);
   
 //   // IQR
+  // yield* waitUntil("iqr")
 yield doubleDoubleDataTable.columns[4].opacity(0.5, 0.6);
 yield doubleTripleDataTable.columns[4].opacity(0.5, 0.6);
 yield tripleTripleDataTable.columns[4].opacity(0.5, 0.6);
@@ -340,5 +348,5 @@ yield* waitFor(1);
 );
 
     yield* waitFor(2)
-    yield* waitUntil("end")
+    // yield* waitUntil("end")
 })

@@ -72,7 +72,7 @@ export default makeScene2D(function* (view) {
     yield* sequence(0.1, ...dataTable.columns.map((pct) => pct.opacity(1, 0.6)));
 
     yield* waitFor(1)
-    yield* waitUntil("show-winners")
+    // yield* waitUntil("show-winners")
     // Show the winners
     const winValueRects = [
         dataTable.valueRects[0],
@@ -86,7 +86,7 @@ export default makeScene2D(function* (view) {
     yield* sequence(0.1, ...winValueRects.map((pct) => pct.opacity(1, 0.6)));
 
     yield* waitFor(1)
-    yield* waitUntil("show-losers")
+    // yield* waitUntil("show-losers")
 
     // Show the losers
     const loseValueRects = [
@@ -99,7 +99,7 @@ export default makeScene2D(function* (view) {
 
     // Show dice
     yield* waitFor(1)
-    yield* waitUntil("show-dice")
+    // yield* waitUntil("show-dice")
 
     // Move table down a bit
     yield* dataTable.container.position(dataTable.container.position().addY(500), 1, easeInOutCubic)
@@ -341,12 +341,12 @@ export default makeScene2D(function* (view) {
 
     // Animate the boxes
     yield* waitFor(1)
-    yield* waitUntil("draw-lose-boxes")
+    // yield* waitUntil("draw-lose-boxes")
     yield* loseBox().end(1, 2, easeInOutCubic)
     yield* loseBox().fill("#7c0d2860", 1)
 
     yield* waitFor(1)
-    yield* waitUntil("draw-win-boxes")
+    // yield* waitUntil("draw-win-boxes")
 
     yield* sequence(0.3, winBox1().end(1, 2, easeInOutCubic) , winBox2().end(1, 2, easeInOutCubic))
     
@@ -362,5 +362,5 @@ export default makeScene2D(function* (view) {
 
 
     yield* waitFor(2)
-    yield* waitUntil("end")
+    // yield* waitUntil("end")
 })
