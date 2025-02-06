@@ -53,7 +53,9 @@ export default defineConfig({
         // "./src/scenes/all_day_678/all_day_678_demo.ts",
         // "./src/scenes/all_day_678/all_day_678.ts",
         "./src/scenes/field_ultimate/field_ultimate.ts",
-        "./src/scenes/field_ultimate/field_ultimate_demo.ts"
+        "./src/scenes/field_ultimate/field_ultimate_demo.ts",
+        "./src/scenes/dd_135_across/dd_135_across_demo.ts",
+        "./src/scenes/dd_135_across/dd_135_across.ts"
       ],
     }),
     ffmpeg(),

@@ -12,6 +12,7 @@ import {
 import { CrapsScoreBug } from "./CrapsScoreBug";
 import { CrapsTable } from "./CrapsTable";
 import { c } from "./CrapsTableCoords";
+import { CrapsWinConditions } from "./CrapsWinConditions";
 
 // import diceRollSfx from "../../../assets/sfx/dice_roll.mp3";
 // import chime_012 from "../../../assets/sfx/chime_012.mp3";
@@ -29,18 +30,22 @@ const WORKING_INDICATOR_BETS = [
   "PLACE6",
   "PLACE8",
   "PLACE9",
-  "PLACE10",
+  "BUY10",
 ];
 
 export class CrapsProcessor {
   private declare table: Reference<CrapsTable>;
   private declare scoreBug: Reference<CrapsScoreBug>;
+  private declare winConds: Reference<CrapsWinConditions>
+
   public constructor(
     table: Reference<CrapsTable>,
-    scoreBug: Reference<CrapsScoreBug>
+    scoreBug: Reference<CrapsScoreBug>,
+    winConds: Reference<CrapsWinConditions>
   ) {
     this.table = table;
     this.scoreBug = scoreBug;
+    this.winConds = winConds
   }
 
   public *round(data: any) {
@@ -54,7 +59,7 @@ export class CrapsProcessor {
     yield* all(
       this.scoreBug().updateRoll(data.SHOOTER_ROLL == 1),
       this.scoreBug().updateBankroll(data.PLYR_NET_BR_START),
-      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START)
+      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START),
     );
 
     yield* this.scoreBug().updateLabel("PLACE BETS");
@@ -85,12 +90,12 @@ export class CrapsProcessor {
             .bets()
             .chip(bet.bet)
             .setWorking(bet.working == "On");
-            yield* this.table()
+            yield this.table()
             .bets()
             .chip(bet.bet)
             .showWorking(0.6);    
         } else {
-          yield* this.table()
+          yield this.table()
             .bets()
             .chip(bet.bet)
             .hideWorking(0.6);          
@@ -102,8 +107,10 @@ export class CrapsProcessor {
     yield* all(
       this.scoreBug().updateBankroll(data.PLYR_NET_BR_UPDATED),
       this.scoreBug().updateBets(data.PLYR_BETS_TOTAL),
-      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_UPDATED)
+      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_UPDATED),
+      this.winConds().update(data.PLYR_WIN_CONDITIONS)
     );
+
 
     yield* waitFor(0.6);
 
@@ -111,6 +118,7 @@ export class CrapsProcessor {
     yield* this.scoreBug().updateLabel("DICE ARE OUT");
     // diceRoll.play();
     yield* this.table().dice().throw(data.D1, data.D2);
+    yield this.winConds().highlight(data.D1, data.D2)
     // yield* this.scoreBug().updateLabel("THROW IS " + data.THROW);
 
     yield* waitFor(0.6);
@@ -180,7 +188,13 @@ export class CrapsProcessor {
 
     for (const bet of data.PLYR_WON) {
       logger.debug({ message: "Won Bet", object: bet });
-      wonBets.push(this.table().bets().winBet(bet.won, bet.bet, true));
+      const continues = bet.continues.toString() === "true"
+      if (continues) {
+        logger.debug("Continues = true")
+      } else {
+        logger.warn("BET DOES NOT CONTINUE")
+      }
+      wonBets.push(this.table().bets().winBet(bet.won, bet.bet, !continues));
       // win.play(0.4);
     }
     yield* sequence(0.2, ...wonBets);
