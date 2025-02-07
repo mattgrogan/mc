@@ -3,15 +3,15 @@
   "timeEvents": [
     {
       "name": "show-arrow",
-      "targetTime": 7.200000000000002
+      "targetTime": 8.200000000000003
     },
     {
       "name": "show-plot",
-      "targetTime": 23.800000000000004
+      "targetTime": 26.045590845310585
     },
     {
       "name": "end",
-      "targetTime": 42.800000000000004
+      "targetTime": 54.045590845310585
     }
   ],
   "seed": 2992636365

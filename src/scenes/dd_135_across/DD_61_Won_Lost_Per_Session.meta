@@ -3,31 +3,31 @@
   "timeEvents": [
     {
       "name": "median",
-      "targetTime": 11.599999999999989
+      "targetTime": 14.199999999999978
     },
     {
       "name": "avg",
-      "targetTime": 13.199999999999989
+      "targetTime": 16.674098838814416
     },
     {
       "name": "iqr",
-      "targetTime": 14.799999999999988
+      "targetTime": 21.333444774664954
     },
     {
       "name": "ninety",
-      "targetTime": 16.399999999999988
+      "targetTime": 26.84503707835957
     },
     {
       "name": "minmax",
-      "targetTime": 17.99999999999999
+      "targetTime": 33.449252930572236
     },
     {
       "name": "ad",
-      "targetTime": 29.59999999999999
+      "targetTime": 45.04925293057224
     },
     {
       "name": "end",
-      "targetTime": 22.69999999999999
+      "targetTime": 78.32340920990615
     }
   ],
   "seed": 1605050856
