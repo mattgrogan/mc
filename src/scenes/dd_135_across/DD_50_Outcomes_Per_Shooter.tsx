@@ -158,6 +158,6 @@ export default makeScene2D(function* (view) {
   audioPlayer.scroll_2s()
   yield* nPushers(PUSHERS, 2, easeInOutCubic);
 
-  yield* waitFor(8);
+  // yield* waitFor(8);
   yield* waitUntil("end");
 });
