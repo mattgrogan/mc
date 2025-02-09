@@ -26,17 +26,19 @@ import { CrapsWinConditions } from "./CrapsWinConditions";
 // Only show the working indicator on these bet types
 const WORKING_INDICATOR_BETS = [
   "BUY4",
+  "PLACE4",
   "PLACE5",
   "PLACE6",
   "PLACE8",
   "PLACE9",
+  "PLACE10",
   "BUY10",
 ];
 
 export class CrapsProcessor {
   private declare table: Reference<CrapsTable>;
   private declare scoreBug: Reference<CrapsScoreBug>;
-  private declare winConds: Reference<CrapsWinConditions>
+  private declare winConds: Reference<CrapsWinConditions>;
 
   public constructor(
     table: Reference<CrapsTable>,
@@ -45,7 +47,7 @@ export class CrapsProcessor {
   ) {
     this.table = table;
     this.scoreBug = scoreBug;
-    this.winConds = winConds
+    this.winConds = winConds;
   }
 
   public *round(data: any) {
@@ -59,7 +61,7 @@ export class CrapsProcessor {
     yield* all(
       this.scoreBug().updateRoll(data.SHOOTER_ROLL == 1),
       this.scoreBug().updateBankroll(data.PLYR_NET_BR_START),
-      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START),
+      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START)
     );
 
     yield* this.scoreBug().updateLabel("PLACE BETS");
@@ -90,15 +92,9 @@ export class CrapsProcessor {
             .bets()
             .chip(bet.bet)
             .setWorking(bet.working == "On");
-            yield this.table()
-            .bets()
-            .chip(bet.bet)
-            .showWorking(0.6);    
+          yield this.table().bets().chip(bet.bet).showWorking(0.6);
         } else {
-          yield this.table()
-            .bets()
-            .chip(bet.bet)
-            .hideWorking(0.6);          
+          yield this.table().bets().chip(bet.bet).hideWorking(0.6);
         }
       }
     }
@@ -111,14 +107,13 @@ export class CrapsProcessor {
       this.winConds().update(data.PLYR_WIN_CONDITIONS)
     );
 
-
     yield* waitFor(0.6);
 
     // Throw the dice
     yield* this.scoreBug().updateLabel("DICE ARE OUT");
     // diceRoll.play();
     yield* this.table().dice().throw(data.D1, data.D2);
-    yield this.winConds().highlight(data.D1, data.D2)
+    yield this.winConds().highlight(data.D1, data.D2);
     // yield* this.scoreBug().updateLabel("THROW IS " + data.THROW);
 
     yield* waitFor(0.6);
@@ -188,11 +183,11 @@ export class CrapsProcessor {
 
     for (const bet of data.PLYR_WON) {
       logger.debug({ message: "Won Bet", object: bet });
-      const continues = bet.continues.toString() === "true"
+      const continues = bet.continues.toString() === "true";
       if (continues) {
-        logger.debug("Continues = true")
+        logger.debug("Continues = true");
       } else {
-        logger.warn("BET DOES NOT CONTINUE")
+        logger.warn("BET DOES NOT CONTINUE");
       }
       wonBets.push(this.table().bets().winBet(bet.won, bet.bet, !continues));
       // win.play(0.4);

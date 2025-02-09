@@ -82,7 +82,7 @@ export enum c {
 
 const COME_Y = -220;
 const PLACE_Y = -180;
-const LAY_Y = -360;
+const LAY_Y = -400;
 const PUCK_Y = -320;
 
 const BOX_4 = -240;
