@@ -68,7 +68,7 @@ export class CrapsWinConditions extends Rect {
           </Rect>
         </Rect>
 
-        <Rect ref={makeRef(this, "hardColumnRect")} width={0} height={"100%"} layout direction={"column"} alignItems={"center"} justifyContent={"center"} zIndex={0}>
+        <Rect ref={makeRef(this, "hardColumnRect")} width={0} height={mainTableprops.height} layout direction={"column"} alignItems={"center"} justifyContent={"center"} zIndex={0}>
           {
             Object.keys(this.valueScores).map((key) => (
               <Rect ref={makeRef(this.valueScores[key], "hardContainerRect")} grow={1} width={"100%"} justifyContent={"center"} alignItems={"center"}>
@@ -87,7 +87,9 @@ export class CrapsWinConditions extends Rect {
     return Grays.GRAY2
   }
 
-  private label(value: number): string {
+  private label(value: number | string): string {
+    if (typeof value == "string") return value;
+    
     if (value > 0) return "+" + value.toFixed(0)
     if (value < 0) return value.toFixed(0)
     return "-"
@@ -113,6 +115,7 @@ export class CrapsWinConditions extends Rect {
         this.addHardScoreRect(score);
         generators.push(...this.hardScoreAddGenerators(score, winloss))
       }
+
     }
 
     yield* sequence(0.05, ...generators)
