@@ -52,10 +52,14 @@ export default defineConfig({
         // "./src/scenes/fifty_for_one/fifty_for_one.ts",
         // "./src/scenes/all_day_678/all_day_678_demo.ts",
         // "./src/scenes/all_day_678/all_day_678.ts",
-        "./src/scenes/field_ultimate/field_ultimate.ts",
-        "./src/scenes/field_ultimate/field_ultimate_demo.ts",
-        "./src/scenes/dd_135_across/dd_135_across_demo.ts",
-        "./src/scenes/dd_135_across/dd_135_across.ts"
+        // "./src/scenes/field_ultimate/field_ultimate.ts",
+        // "./src/scenes/field_ultimate/field_ultimate_demo.ts",
+        // "./src/scenes/dd_135_across/dd_135_across_demo.ts",
+        // "./src/scenes/dd_135_across/dd_135_across.ts"
+        "./src/scenes/lay_the_point_100/lay_the_point_100_demo.ts",
+        "./src/scenes/lay_the_point_100/lay_the_point_100.ts",
+        "./src/scenes/lay_the_point_proper/lay_the_point_proper.ts",
+        "./src/scenes/lay_the_point_proper/lay_the_point_proper_demo.ts",
       ],
     }),
     ffmpeg(),
