@@ -52,7 +52,8 @@ const titleGradient = new Gradient({
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
-  yield* fadeTransition();
+  // yield* fadeTransition();
+  yield * waitFor(1)
 
   const container = createRef<Layout>();
   view.add(

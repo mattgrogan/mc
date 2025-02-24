@@ -32,8 +32,8 @@ import DD_70_Bankroll_Survival from "./DD_70_Bankroll_Survival?scene";
 
 export default makeProject({
   scenes: [
-    intro,
-    DD_20_Simulation,
+    // intro,
+    // DD_20_Simulation,
     // DD_TOC_01_Strategy,
     // DD_TOC_02_Simulation,
 
@@ -54,8 +54,8 @@ export default makeProject({
 
     // DD_TOC_06_Won_Lost_By_Session,
     // DD_TOC_07_Bankroll_Survival,
-    DD_70_Bankroll_Survival,
-    endCard,
+    // DD_70_Bankroll_Survival,
+    // endCard,
 
     // DD_TOC_08_Strategy_Score,
   ],

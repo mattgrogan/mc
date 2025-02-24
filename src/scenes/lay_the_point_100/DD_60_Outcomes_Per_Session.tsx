@@ -49,7 +49,8 @@ export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
   params.audioPlayer.woosh();
-  yield* slideTransition(Direction.Right);
+  // yield* slideTransition(Direction.Right);
+  yield* waitFor(1)
 
   const container = createRef<Layout>();
   view.add(
