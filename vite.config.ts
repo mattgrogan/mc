@@ -62,6 +62,8 @@ export default defineConfig({
         // "./src/scenes/lay_the_point_proper/lay_the_point_proper_demo.ts",
         "./src/scenes/lay_the_point_jimmy_vid/lay_the_point_jimmy.ts",
         "./src/scenes/hybrid_reverse_arnold_ladder/hybrid_reverse_arnold_ladder_demo.ts",
+        "./src/scenes/hybrid_lay_the_point/hybrid_lay_the_point.ts",
+        "./src/scenes/hybrid_lay_the_point/hybrid_lay_the_point_demo.ts",
       ],
     }),
     ffmpeg(),

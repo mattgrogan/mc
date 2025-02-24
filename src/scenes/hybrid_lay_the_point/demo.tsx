@@ -13,9 +13,9 @@ import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
 //-sessions.json
-import simData from "../../../../dicedata/output/lay_the_point-proper_100k/lay_the_point-proper_100k-sessions.json";
+import simData from "../../../../dicedata/output/lay_point_jimmy-100k_vid/lay_point_jimmy-100k_vid-sessions.json";
 //-all-sessions.json
-import sessions from "../../../../dicedata/output/lay_the_point-proper_100k/lay_the_point-proper_100k-all_sessions.json";
+import sessions from "../../../../dicedata/output/lay_point_jimmy-100k_vid/lay_point_jimmy-100k_vid-all_sessions.json";
 
 import { Grays, Theme } from "../../styles";
 import { c } from "../../components/craps/CrapsTableCoords";
@@ -84,7 +84,7 @@ export default makeScene2D(function* (view) {
     session = sessions[sessions.length - 1].SESSION;
   }
 
-  session = 316;
+  // session = 316;
 
   const firstSession = simData.filter(
     ({ SESSION, ROLL }) => SESSION === session //&& ROLL < 20

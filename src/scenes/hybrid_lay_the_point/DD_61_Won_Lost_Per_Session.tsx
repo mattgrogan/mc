@@ -1,7 +1,16 @@
-import { Gradient, Layout, Line, makeScene2D, Txt } from "@motion-canvas/2d";
+import {
+  Gradient,
+  Layout,
+  Line,
+  makeScene2D,
+  Txt,
+  Video,
+} from "@motion-canvas/2d";
 import {
   createRef,
+  delay,
   Direction,
+  easeInOutExpo,
   easeOutCubic,
   linear,
   makeRefs,
@@ -14,43 +23,49 @@ import {
 import {
   Bright,
   Grays,
-  LightBlueGradient,
+  MonoWhite,
   PoppinsBlack,
   PoppinsWhite,
-  purpleGradient,
-  shooterDark,
-  shooterGradient,
+  sessionDark,
+  sessionGradient,
   silverGradient,
   Theme,
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 import * as params from "./DD_00_Params";
 import { Plot } from "../../components/plot/plot";
+import { TitleBox } from "../../components/styled/titleBox";
 import { DataTable } from "../../components/styled/dataTable";
+import { PlotArea } from "../../components/styled/plotArea";
 import {
   getQuantile,
   getQuantileData,
   plusCommaFormmatter,
 } from "../../components/styled/findQuantiles";
-import { PlotArea } from "../../components/styled/plotArea";
-import { TitleBox } from "../../components/styled/titleBox";
 import { audioPlayer } from "./DD_00_Params";
+import video from "../../../../Videos/dd_135_across/dd_135_across_demo_v1_speed_ramp.mp4";
+import { FadeOut } from "../../utils/FadeOut";
 
-const X_AXIS_MIN = -2000;
-const X_AXIS_MAX = 800;
-const X_AXIS_STEP = 100;
+const QUANTILES_ID = "PLYR_CWONLOST_BY_SESSION";
+const X_AXIS_MIN = -1400;
+const X_AXIS_MAX = 2000;
+const X_AXIS_STEP = 200;
 
-const Y_AXIS_MAX = 60;
+const Y_AXIS_MAX = 70;
+const BAR_WIDTH = 60;
+
+// The amount those gray limit bars go to X
+const MINMAX_LIMIT = 6;
 
 // Tick marks every
-const X_TICKS_EVERY = 2;
+const X_TICKS_EVERY = 1;
 
 // Filter just the data we want on the histogram
-const data = params.shooterHist.slice(40, 200);
+const data = params.sessionHist.slice(0, 35);
 
 const AVERAGE_WONLOST = params.amountWonLostQuantiles.find(
   (stat) => stat.STAT == "MEAN_WONLOST"
-).BY_SHOOTER;
+).BY_SESSION;
 
 const plotAreaFill = new Gradient({
   type: "linear",
@@ -63,17 +78,12 @@ const plotAreaFill = new Gradient({
   ],
 });
 
-const X_MAX = 120;
-const Y_MAX = 40;
-const QUANTILES_ID = "PLYR_SHCWONLOST_BY_SHOOTER";
-
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
   audioPlayer.woosh();
   // yield* slideTransition(Direction.Right);
   yield* waitFor(1)
-
   const container = createRef<Layout>();
   view.add(
     <Layout
@@ -97,14 +107,14 @@ export default makeScene2D(function* (view) {
       refs={plotTitle}
       fontSize={100}
       nodeOpacity={0}
-      rectProps={{ fill: shooterGradient, stroke: Grays.GRAY1 }}
+      rectProps={{ fill: sessionGradient, stroke: Grays.GRAY1 }}
       headerProps={{ ...PoppinsWhite }}
       subheadProps={{ ...PoppinsWhite }}
     >
       HOW MUCH MONEY DID THE PLAYERS WIN OR LOSE?
     </TitleBox>
   );
-  plotTitle.subhead.text("BY SHOOTER");
+  plotTitle.subhead.text("BY SESSION");
 
   // ADD THE PLOT AREA
   const plotArea = makeRefs<typeof PlotArea>();
@@ -142,7 +152,7 @@ export default makeScene2D(function* (view) {
     <DataTable
       refs={dataTable}
       data={tableData}
-      headerRectProps={{ fill: shooterGradient, stroke: Grays.GRAY1 }}
+      headerRectProps={{ fill: sessionGradient, stroke: Grays.GRAY1 }}
       valueRectProps={{ fill: silverGradient, stroke: Grays.GRAY1 }}
       headerTxtProps={{ ...PoppinsWhite, fontSize: 55 }}
       valueTxtProps={{ ...PoppinsBlack }}
@@ -201,7 +211,7 @@ export default makeScene2D(function* (view) {
   // Add the Min line
   const minValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
   const maxValue = getQuantile(QUANTILES_ID, params.quantiles, 1);
-  const minLine = plot().vLine([minValue, 4], {
+  const minLine = plot().vLine([minValue, MINMAX_LIMIT], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
@@ -210,20 +220,24 @@ export default makeScene2D(function* (view) {
   minLine.zIndex(0);
 
   // Add the Max line
-  const maxLine = plot().vLine([maxValue, 4], {
+  const maxLine = plot().vLine([maxValue, MINMAX_LIMIT], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
   });
 
   // Try a box
-  const lowerRangeBox = plot().box([X_AXIS_MIN, 4], [minValue - 1, 0], {
-    fill: Grays.GRAY3,
-    opacity: 0,
-    zIndex: 200,
-  });
+  const lowerRangeBox = plot().box(
+    [X_AXIS_MIN, MINMAX_LIMIT],
+    [minValue - 1, 0],
+    {
+      fill: Grays.GRAY3,
+      opacity: 0,
+      zIndex: 200,
+    }
+  );
   const upperRangeBox = plot().box(
-    [maxValue + 1, 4],
+    [maxValue + 1, MINMAX_LIMIT],
     [Math.max(X_AXIS_MAX, maxValue), 0],
     {
       fill: Grays.GRAY3,
@@ -244,8 +258,8 @@ export default makeScene2D(function* (view) {
     const offset = 50;
     const point = new Vector2(data[index].MIDPOINT, data[index].PCT);
     const line = plot().vLine(point, {
-      stroke: shooterDark,
-      lineWidth: 80,
+      stroke: sessionDark,
+      lineWidth: BAR_WIDTH,
       opacity: 1,
       end: 0,
     });
@@ -292,6 +306,9 @@ export default makeScene2D(function* (view) {
       labels.push(label);
     }
   }
+  // ************************
+  // END FACTOR
+  // ************************
 
   const zeroLine = plot().vLine([0, Y_AXIS_MAX], {
     lineWidth: 5,
@@ -300,58 +317,128 @@ export default makeScene2D(function* (view) {
     opacity: 0.5,
   });
 
-  // ************************
-  // END FACTOR
-  // ************************
-
   yield* sequence(0.1, ...bars.map((line) => line.end(1, 1, easeOutCubic)));
   yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
 
   // Show data ranges in plot
-  if (minValue > X_AXIS_MIN) {
-
-    yield minLine.end(1, 1, easeOutCubic);
-    yield lowerRangeBox.opacity(0.2, 1, linear);
-  }
-  if (maxValue < X_AXIS_MAX) {
-
-    yield* maxLine.end(1, 0.6, easeOutCubic);
-    yield* upperRangeBox.opacity(0.2, 0.6, linear);
-  }
-    
+  yield minLine.end(1, 1, easeOutCubic);
+  yield lowerRangeBox.opacity(0.2, 1, linear);
+  yield* maxLine.end(1, 0.6, easeOutCubic);
+  yield* upperRangeBox.opacity(0.2, 0.6, linear);
   yield* zeroLine.end(1, 0.6, easeOutCubic);
 
-  // DATA TABLE
-  // ----------
-
   // Median
-  yield* waitUntil("median")
+  yield* waitUntil("median");
   yield* dataTable.columns[3].opacity(1, 0.6);
   yield* waitFor(1);
-  
+
   // Average
-  yield* waitUntil("avg")
+  yield* waitUntil("avg");
   yield* dataTable.columns[4].opacity(1, 0.6);
   yield* waitFor(1);
-  
+
   // IQR
-  yield* waitUntil("iqr")
+  yield* waitUntil("iqr");
   yield dataTable.columns[2].opacity(1, 0.6);
   yield* dataTable.columns[5].opacity(1, 0.6);
   yield* waitFor(1);
-  
+
   // Middle 90%
-  yield* waitUntil("ninety")
+  yield* waitUntil("ninety");
   yield dataTable.columns[1].opacity(1, 0.6);
   yield* dataTable.columns[6].opacity(1, 0.6);
   yield* waitFor(1);
-  
+
   // Min/Max
-  yield* waitUntil("minmax")
+  yield* waitUntil("minmax");
   yield dataTable.columns[0].opacity(1, 0.6);
   yield* dataTable.columns[7].opacity(1, 0.6);
   yield* waitFor(1);
 
   yield* waitFor(10);
+
+  ///////////////////////////
+
+  // yield* waitUntil("ad")
+  // yield plotTitle.container.opacity(0, 1, linear)
+  // yield plotArea.container.opacity(0, 1, linear)
+  // yield dataTable.columns[1].opacity(0, 1, linear)
+  // yield dataTable.columns[2].opacity(0, 1, linear)
+  // yield dataTable.columns[3].opacity(0, 1, linear)
+  // yield dataTable.columns[4].opacity(0, 1, linear)
+  // yield dataTable.columns[5].opacity(0, 1, linear)
+  // yield* dataTable.columns[6].opacity(0, 1, linear)
+
+  // const arrowColor = Bright.WHITE
+  // const minArrow = createRef<Line>()
+  // const maxArrow = createRef<Line>()
+  // view.add(<Line ref={minArrow} start={1} lineWidth={60} arrowSize={100} startArrow points={[[-860, 0], [-1260, 0], [-1260, 450]]} stroke={arrowColor}></Line>)
+  // view.add(<Line ref={maxArrow} start={1} lineWidth={60} arrowSize={100} startArrow points={[[860, 0], [1260, 0], [1260, 450]]} stroke={arrowColor}></Line>)
+
+  // yield minArrow().start(0, 1, easeInOutExpo)
+  // yield maxArrow().start(0, 1, easeInOutExpo)
+
+  // const videoRef=createRef<Video>()
+  // view.add(<Video ref={videoRef} src={video} lineWidth={0} stroke={Grays.GRAY3} scale={1.2} opacity={0}></Video>)
+  // videoRef().play()
+  // yield * videoRef().opacity(1, 1, linear)
+
+  // const line1 = createRef<Txt>()
+  // const line2 = createRef<Txt>()
+  // // const line3 = createRef<Txt>()
+  // view.add(<Txt ref={line1} {...PoppinsWhite} fontSize={160} y={-740} text={"WATCH FULL SESSION REPLAYS"} opacity={0}></Txt>)
+  // view.add(<Txt ref={line2} {...MonoWhite} fill={Bright.BLUE} fontSize={120} y={800} text={"dicedata.info/#extras"} opacity={0}></Txt>)
+  // yield* FadeIn(line1, 0.6, easeOutCubic, [0, 100])
+  // yield* waitFor(0.5)
+  // yield* FadeOut(line1, 0.6, easeOutCubic, [0, -100])
+
+  // line1().text("OF THE BEST AND WORST SESSIONS")
+  // yield* FadeIn(line1, 0.6, easeOutCubic, [0, 100])
+  // yield* waitFor(0.5)
+  // yield* FadeOut(line1, 0.6, easeOutCubic, [0, -100])
+
+  // line1().text("EVERY DICE THROW")
+  // yield* FadeIn(line1, 0.6, easeOutCubic, [0, 100])
+  // yield dataTable.container.opacity(0, 1)
+  // yield minArrow().opacity(0, 1)
+  // yield maxArrow().opacity(0, 1)
+  // yield videoRef().scale(1.6, 10, linear)
+  // yield delay(1, line2().opacity(1, 0.6, linear))
+  // yield* waitFor(0.5)
+  // yield* FadeOut(line1, 0.6, easeOutCubic, [0, -100])
+
+  // line1().text("SEE ALL BETS MADE")
+  // yield* FadeIn(line1, 0.6, easeOutCubic, [0, 100])
+  // yield* waitFor(0.5)
+  // yield* FadeOut(line1, 0.6, easeOutCubic, [0, -100])
+
+  // line1().text("SEE ALL WINS PAID")
+  // yield* FadeIn(line1, 0.6, easeOutCubic, [0, 100])
+  // yield* waitFor(0.5)
+  // yield* FadeOut(line1, 0.6, easeOutCubic, [0, -100])
+
+  // line1().text("ON YOUTUBE OR PATREON")
+  // yield* FadeIn(line1, 0.6, easeOutCubic, [0, 100])
+  // yield* waitFor(0.5)
+  // yield* FadeOut(line1, 0.6, easeOutCubic, [0, -100])
+
+  // line1().text("JOIN TODAY")
+  // // line1().fontSize(120)
+  // yield* FadeIn(line1, 0.6, easeOutCubic, [0, 100])
+  // yield* waitFor(0.5)
+  // yield* FadeOut(line1, 0.6, easeOutCubic, [0, -100])
+
+  // line1().text("HTTPS://DICEDATA.INFO/#EXTRAS")
+  // yield* FadeIn(line1, 0.6, easeOutCubic, [0, 100])
+  // yield* waitFor(1.5)
+  // yield* FadeOut(line1, 0.6, easeOutCubic, [0, -100])
+
+  // view.add(<Txt ref={line2} {...PoppinsWhite} fontSize={120} y={-700}></Txt>)
+  // view.add(<Txt ref={line3} {...PoppinsWhite} fontSize={120} y={-560}></Txt>)
+  // yield* line1().text("WATCH FULL SESSION REPLAYS", 2, linear)
+  // yield* line2().text("can access FULL sessions replays of", 2, linear)
+  // yield* line3().text("the BEST and WORST simulated sessions!", 2, linear)
+
+  yield* waitFor(2);
   yield* waitUntil("end");
 });

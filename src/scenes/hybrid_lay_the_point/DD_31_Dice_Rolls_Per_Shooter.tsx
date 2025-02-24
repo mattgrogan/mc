@@ -12,20 +12,25 @@ import {
   waitUntil,
 } from "@motion-canvas/core";
 import {
+  Bright,
+  Darker,
   gameFlowDark,
   gameFlowGradient,
   Grays,
+  LightBlueGradient,
   PoppinsBlack,
   PoppinsWhite,
+  purpleGradient,
   silverGradient,
   Theme,
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
+import * as params from "./DD_00_Params";
+import { audioPlayer } from "./DD_00_Params";
+
 import { Plot } from "../../components/plot/plot";
 import { TitleBox } from "../../components/styled/titleBox";
-
-import * as params from "./DD_00_Params";
 
 import { DataTable } from "../../components/styled/dataTable";
 import {
@@ -33,21 +38,10 @@ import {
   getQuantileData,
 } from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
-import { audioPlayer } from "./DD_00_Params";
 
-const QUANTILES_ID = "SESSION_ROLL_BY_SESSION";
-const X_AXIS_MIN = 0;
-const X_AXIS_MAX = 4000;
-const X_AXIS_STEP = 500;
-
-const Y_AXIS_MAX = 3;
-const BAR_WIDTH = 7;
-
-// The amount those gray limit bars go to X
-const MINMAX_LIMIT = 0.5;
-
-// Tick marks every
-const X_TICKS_EVERY = 2;
+const X_MAX = 120;
+const Y_MAX = 40;
+const QUANTILES_ID = "SHOOTER_ROLL_BY_SHOOTER";
 
 const plotAreaFill = new Gradient({
   type: "linear",
@@ -64,8 +58,9 @@ export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
   audioPlayer.woosh();
-  yield* slideTransition(Direction.Right);
-
+  // yield* slideTransition(Direction.Right);
+  yield* waitFor(1)
+  
   const container = createRef<Layout>();
   view.add(
     <Layout
@@ -96,7 +91,7 @@ export default makeScene2D(function* (view) {
       NUMBER OF DICE ROLLS
     </TitleBox>
   );
-  plotTitle.subhead.text("BY SESSION");
+  plotTitle.subhead.text("BY SHOOTER");
 
   // ADD THE PLOT AREA
   const plotArea = makeRefs<typeof PlotArea>();
@@ -120,7 +115,7 @@ export default makeScene2D(function* (view) {
 
   tableData.splice(4, 0, {
     label: "AVERAGE",
-    value: (params.simstats[0].ROLLS / params.simstats[0].SESSIONS).toFixed(1),
+    value: (params.simstats[0].ROLLS / params.simstats[0].SHOOTERS).toFixed(2),
   });
 
   // Create the data table and pass in the references
@@ -144,9 +139,9 @@ export default makeScene2D(function* (view) {
     <Plot
       ref={plot}
       position={() => plotArea.layout.position()}
-      xMin={X_AXIS_MIN}
-      xMax={X_AXIS_MAX}
-      yMax={Y_AXIS_MAX}
+      xMin={0}
+      xMax={X_MAX}
+      yMax={Y_MAX}
       width={plotArea.rect.width() * 0.9}
       height={plotArea.rect.height() * 0.7}
       xAxisProps={{
@@ -158,6 +153,7 @@ export default makeScene2D(function* (view) {
       xLabelProps={{ fill: Grays.BLACK, decimalNumbers: 0, fontSize: 40 }}
       xTitleProps={{
         fill: Grays.BLACK,
+        text: "",
         lineToLabelPadding: 200,
         opacity: 0,
         fontSize: 100,
@@ -181,31 +177,33 @@ export default makeScene2D(function* (view) {
 
   // yield* waitFor(2);
   yield plot().xAxis.end(1, 0.6, easeOutCubic);
-  plot().xAxis.updateTicks(X_AXIS_MIN, X_AXIS_MAX, X_AXIS_STEP);
+  plot().xAxis.updateTicks(0, X_MAX, 5);
 
   // Add the Min line
   const minValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
   const maxValue = getQuantile(QUANTILES_ID, params.quantiles, 1);
-  const minLine = plot().vLine([minValue, MINMAX_LIMIT], {
+  const minLine = plot().vLine([minValue, 4], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
+    zIndex: -10, // THIS IS BEING OVERRIDEN
   });
+  minLine.zIndex(0);
 
   // Add the Max line
-  const maxLine = plot().vLine([maxValue, MINMAX_LIMIT], {
+  const maxLine = plot().vLine([maxValue, 4], {
     stroke: Grays.GRAY3,
     lineWidth: 6,
     end: 0,
   });
 
   // Try a box
-  const lowerRangeBox = plot().box([X_AXIS_MIN, MINMAX_LIMIT], [minValue, 0], {
+  const lowerRangeBox = plot().box([0, 4], [minValue, 0], {
     fill: Grays.GRAY3,
     opacity: 0,
-    zIndex: -200,
+    zIndex: 200,
   });
-  const upperRangeBox = plot().box([maxValue, MINMAX_LIMIT], [X_AXIS_MAX, 0], {
+  const upperRangeBox = plot().box([maxValue, 4], [X_MAX, 0], {
     fill: Grays.GRAY3,
     opacity: 0,
     zIndex: -200,
@@ -219,24 +217,24 @@ export default makeScene2D(function* (view) {
   const bars: Line[] = [];
   const labels: Txt[] = [];
 
-  for (let index = 0; index < params.rollsBySession.length; index++) {
+  for (let index = 0; index < params.rollsByShooter.length; index++) {
     const offset = 50;
     const point = new Vector2(
-      params.rollsBySession[index].MIDPOINT,
-      params.rollsBySession[index].PCT
+      params.rollsByShooter[index].MIDPOINT,
+      params.rollsByShooter[index].PCT
     );
     const line = plot().vLine(point, {
       stroke: gameFlowDark,
-      lineWidth: BAR_WIDTH,
+      lineWidth: 80,
       opacity: 1,
       end: 0,
     });
-    if (params.rollsBySession[index].COUNT > 0) {
+    if (params.rollsByShooter[index].COUNT > 0) {
       bars.push(line);
     }
 
-    if (params.rollsBySession[index].PCT >= 0.1) {
-      const pct = params.rollsBySession[index].PCT.toFixed(1);
+    if (params.rollsByShooter[index].PCT >= 0.1) {
+      const pct = params.rollsByShooter[index].PCT.toFixed(1);
       const label = plot().text(point, {
         ...PoppinsWhite,
         text: pct,
@@ -255,8 +253,8 @@ export default makeScene2D(function* (view) {
 
       labels.push(label);
     } else if (
-      params.rollsBySession[index].PCT < 0.1 &&
-      params.rollsBySession[index].PCT > 0
+      params.rollsByShooter[index].PCT < 0.1 &&
+      params.rollsByShooter[index].PCT > 0
     ) {
       const pct = "<0.1";
       const label = plot().text(point, {
@@ -282,44 +280,49 @@ export default makeScene2D(function* (view) {
   // ************************
 
   yield* sequence(0.1, ...bars.map((line) => line.end(1, 1, easeOutCubic)));
-  // yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
+  yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
 
   // Show data ranges in plot
-  yield* minLine.end(1, 1, easeOutCubic);
-  yield* lowerRangeBox.opacity(0.2, 1, linear);
-  yield* maxLine.end(1, 1, easeOutCubic);
-  yield* upperRangeBox.opacity(0.2, 1, linear);
+  yield minLine.end(1, 1, easeOutCubic);
+  yield lowerRangeBox.opacity(0.2, 1, linear);
+  yield* maxLine.end(1, 0.6, easeOutCubic);
+  yield* upperRangeBox.opacity(0.2, 0.6, linear);
 
   // DATA TABLE
   // ----------
 
   // Median
-  yield* waitUntil("median");
+  yield* waitUntil("median")
   yield* dataTable.columns[3].opacity(1, 0.6);
   yield* waitFor(1);
-
+  
   // Average
-  yield* waitUntil("avg");
+  yield* waitUntil("avg")
   yield* dataTable.columns[4].opacity(1, 0.6);
   yield* waitFor(1);
-
+  
   // IQR
-  yield* waitUntil("iqr");
+  yield* waitUntil("iqr")
   yield dataTable.columns[2].opacity(1, 0.6);
   yield* dataTable.columns[5].opacity(1, 0.6);
   yield* waitFor(1);
-
+  
   // Middle 90%
-  yield* waitUntil("ninety");
+  yield* waitUntil("ninety")
   yield dataTable.columns[1].opacity(1, 0.6);
   yield* dataTable.columns[6].opacity(1, 0.6);
   yield* waitFor(1);
-
+  
   // Min/Max
-  yield* waitUntil("minmax");
+  yield* waitUntil("minmax")
   yield dataTable.columns[0].opacity(1, 0.6);
   yield* dataTable.columns[7].opacity(1, 0.6);
   yield* waitFor(1);
+
+  // yield* sequence(
+  //   0.1,
+  //   ...dataTable.columns.slice(3, 4 + 1).map((pct) => pct.opacity(1, 0.6))
+  // );
 
   yield* waitFor(10);
   yield* waitUntil("end");
