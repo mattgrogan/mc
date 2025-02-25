@@ -64,6 +64,7 @@ export default defineConfig({
         "./src/scenes/hybrid_reverse_arnold_ladder/hybrid_reverse_arnold_ladder_demo.ts",
         "./src/scenes/hybrid_lay_the_point/hybrid_lay_the_point.ts",
         "./src/scenes/hybrid_lay_the_point/hybrid_lay_the_point_demo.ts",
+        "./src/scenes/hybrid_model_brian/hybrid_model_brian_demo.ts",
       ],
     }),
     ffmpeg(),
