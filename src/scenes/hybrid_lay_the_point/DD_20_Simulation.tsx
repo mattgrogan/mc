@@ -38,6 +38,8 @@ import { FadeIn } from "../../utils/FadeIn";
 import { blueTitleGradient, TitleBox } from "../../components/styled/titleBox";
 import * as params from "./DD_00_Params";
 
+const TABLE_VALUE_FONT_SIZE = 100;
+
 const titleGradient = new Gradient({
   type: "linear",
 
@@ -177,7 +179,7 @@ export default makeScene2D(function* (view) {
                 {...PoppinsWhite}
                 fill={Grays.BLACK}
                 // text={"100,000"}
-                fontSize={150}
+                fontSize={TABLE_VALUE_FONT_SIZE}
                 fontWeight={600}
               ></Txt>
             </Rect>
@@ -188,23 +190,23 @@ export default makeScene2D(function* (view) {
   );
 
   rowTitles[0].text("SESSIONS");
-  rowTitles[1].text("SHOOTERS PER SESSION");
-  rowTitles[2].text("TABLE MINIMUM");
-  rowTitles[3].text("TABLE MAXIMUM");
+  rowTitles[1].text("BANKROLL");
+  rowTitles[2].text("WIN GOAL");
+  rowTitles[3].text("TABLE MINIMUM");
 
   rowValues[0].text(params.sessions);
-  rowValues[1].text(params.shooters_per_session);
-  rowValues[2].text(params.table_min);
-  rowValues[3].text(params.table_max);
+  rowValues[1].text("$1,200");
+  rowValues[2].text("$360 (30%)");
+  rowValues[3].text(params.table_min);
 
   yield* waitFor(1);
   //yield* FadeIn(parameterTable, 1, easeOutCubic, [0, 100]);
 
   //yield* waitFor(1);
-  yield delay(2, sequence(
-    1,
-    ...rowNodes.map((r) => FadeIn(r, 1, easeOutCubic, [0, 50]))
-  ));
+  yield delay(
+    2,
+    sequence(1, ...rowNodes.map((r) => FadeIn(r, 1, easeOutCubic, [0, 50])))
+  );
   // yield* waitFor(1);
 
   const term = createRef<Rect>();
@@ -316,7 +318,7 @@ export default makeScene2D(function* (view) {
   // yield* waitFor(1);
   //yield* waitUntil("start-sim");
 
-  params.audioPlayer.typing(0.5)
+  params.audioPlayer.typing(0.5);
   yield* lines[0]("> python runDiceDataEngine.py -i 100000", 0.3, linear);
   yield* waitFor(0.5);
   lineTxts[1].fill(Bright.YELLOW);

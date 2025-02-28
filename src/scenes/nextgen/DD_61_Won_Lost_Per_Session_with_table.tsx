@@ -5,13 +5,18 @@ import {
   Line,
   makeScene2D,
   Txt,
+  Node,
+  Rect,
+  RectProps,
+  TxtProps,
 } from "@motion-canvas/2d";
 import {
   createRef,
-  Direction,
+  createSignal,
   easeInOutCubic,
   easeOutCubic,
   linear,
+  makeRef,
   makeRefs,
   sequence,
   Vector2,
@@ -19,29 +24,28 @@ import {
   waitUntil,
 } from "@motion-canvas/core";
 import {
+  Bright,
   Darker,
   Grays,
   PoppinsBlack,
   PoppinsWhite,
   sessionDark,
   sessionGradient,
+  sessionLight,
+  silverGradient,
   Theme,
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 import * as params from "./DD_00_Params";
-import { Plot } from "../../components/plot/plot";
+import { Plot, PlotSpace } from "../../components/plot/plot";
 import { TitleBox } from "../../components/styled/titleBox";
+import { DataTable } from "../../components/styled/dataTable";
 import { PlotArea } from "../../components/styled/plotArea";
 import {
-  commaFormmatter,
   getQuantile,
+  getQuantileData,
   plusCommaFormmatter,
 } from "../../components/styled/findQuantiles";
-import {
-  createLabelAndPointer,
-  eraseLabelAndPointer,
-} from "../../components/styled/labelAndPointer";
-import { createValueLabel } from "../../components/plot/PlotValueLabel";
 // import { audioPlayer } from "./DD_00_Params";
 
 const QUANTILES_ID = "PLYR_CWONLOST_BY_SESSION";
@@ -51,6 +55,12 @@ const data = params.sessionHist.slice(0, 35);
 // TITLE
 const TITLE = "HOW MUCH MONEY DID THE PLAYERS WIN OR LOSE?";
 const SUBTITLE = "BY SESSION";
+
+// QUANTILES TABLE
+const TABLE_HEADER_RECT_PROPS = { fill: sessionGradient, stroke: Grays.GRAY1 };
+const TABLE_HEADER_TXT_PROPS = { ...PoppinsWhite, fontSize: 70 };
+const TABLE_VALUE_RECT_PROPS = { fill: silverGradient, stroke: Grays.GRAY1 };
+const TABLE_VALUE_TXT_PROPS = { ...PoppinsBlack, fontSize: 80 };
 
 // PLOT OPTIONS
 const X_AXIS_MIN = -1400;
@@ -65,9 +75,6 @@ const BAR_WIDTH = 60;
 // The amount those gray limit bars go to X
 const MINMAX_HIGH = 2;
 const MINMAX_LOW = -2;
-
-// THE COUNT
-const COUNT = params.sessions;
 
 const AVERAGE_WONLOST = params.amountWonLostQuantiles.find(
   (stat) => stat.STAT == "MEAN_WONLOST"
@@ -84,20 +91,11 @@ const plotAreaFill = new Gradient({
   ],
 });
 
-const DEFAULTS_LABEL_AND_POINTER = {
-  offsetX: 0,
-  offsetY: 200,
-  sourceElbowOffset: new Vector2([0, -20]),
-  targetElbowOffset: new Vector2([0, 50]),
-  sourceElbowOffset2: 0,
-  direction: Direction.Top,
-};
-
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
   yield* waitFor(1);
 
-  // CONTAINER
+  // CREATE THE CONTAINER
   const camera = createRef<Camera>();
   const container = createRef<Layout>();
   view.add(
@@ -116,7 +114,7 @@ export default makeScene2D(function* (view) {
     </Camera>
   );
 
-  // TITLE BOX
+  // CREATE THE TITLE BOX
   const plotTitle = makeRefs<typeof TitleBox>();
   container().add(
     <TitleBox
@@ -132,7 +130,7 @@ export default makeScene2D(function* (view) {
   );
   plotTitle.subhead.text(SUBTITLE);
 
-  // PLOT AREA
+  // CREATE THE PLOT AREA
   const plotArea = makeRefs<typeof PlotArea>();
   container().add(
     <PlotArea
@@ -142,6 +140,39 @@ export default makeScene2D(function* (view) {
         stroke: Grays.GRAY1,
       }}
     ></PlotArea>
+  );
+
+  ////////////////////////////////////////
+  // TODO: MOVE INTO FUNCTION
+  // Find the correct data from the json file
+  const tableData = getQuantileData(
+    QUANTILES_ID,
+    params.quantiles,
+    plusCommaFormmatter
+  );
+  tableData[0].label = "MOST LOST";
+  tableData[6].label = "MOST WON";
+
+  tableData.splice(4, 0, {
+    label: "AVERAGE",
+    value: AVERAGE_WONLOST.toFixed(2),
+  });
+
+  const medianFormattedText = tableData[3].value;
+  // END TODO
+  ///////////////////////////////////////
+
+  // CREATE THE DATA TABLE
+  const dataTable = makeRefs<typeof DataTable>();
+  container().add(
+    <DataTable
+      refs={dataTable}
+      data={tableData}
+      headerRectProps={TABLE_HEADER_RECT_PROPS}
+      headerTxtProps={TABLE_HEADER_TXT_PROPS}
+      valueRectProps={TABLE_VALUE_RECT_PROPS}
+      valueTxtProps={TABLE_VALUE_TXT_PROPS}
+    ></DataTable>
   );
 
   // https://github.com/motion-canvas/motion-canvas/issues/1057
@@ -202,8 +233,22 @@ export default makeScene2D(function* (view) {
   // Add the Min line
   const minValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
   const maxValue = getQuantile(QUANTILES_ID, params.quantiles, 1);
+  // const minLine = plot().vLine([minValue, MINMAX_HIGH], {
+  //   stroke: Grays.GRAY3,
+  //   lineWidth: 6,
+  //   end: 0,
+  //   zIndex: -10, // THIS IS BEING OVERRIDEN
+  // });
+  // minLine.zIndex(0);
 
-  // Draw shadow over the x axis outside of the data range
+  // Add the Max line
+  // const maxLine = plot().vLine([maxValue, MINMAX_HIGH], {
+  //   stroke: Grays.GRAY3,
+  //   lineWidth: 6,
+  //   end: 0,
+  // });
+
+  // Try a box
   const lowerRangeBox = plot().box(
     [X_AXIS_MIN, MINMAX_HIGH],
     [minValue - 1, MINMAX_LOW],
@@ -287,10 +332,6 @@ export default makeScene2D(function* (view) {
   // END FACTOR
   // ************************
 
-  // ************************
-  // CREATE OBJECTS
-  // ************************
-
   const zeroLine = plot().vLine([0, Y_AXIS_MAX], {
     lineWidth: 5,
     stroke: Grays.GRAY2,
@@ -298,213 +339,65 @@ export default makeScene2D(function* (view) {
     opacity: 0.5,
   });
 
-  // COUNT
-  const countRefs = makeRefs<typeof createValueLabel>();
-  const count = createValueLabel({
-    refs: countRefs,
-    plot: plot,
-    target: [X_AXIS_MAX, Y_AXIS_MAX],
-    mainRectProps: {
-      radius: 0,
-      shadowOffset: [0, 0],
-      shadowBlur: 0,
-      lineWidth: 2,
-      stroke: Grays.BLACK,
-      opacity: 0,
-    },
-    labelRectProps: { fill: Grays.GRAY4 },
-    labelTxtProps: { text: "COUNT", ...PoppinsWhite, padding: 20 },
-    valueRectProps: { fill: Grays.WHITE },
-    valueTxtProps: {
-      text: COUNT,
-      ...PoppinsBlack,
-      padding: 20,
-    },
-  });
-
-  // MEDIAN
-  const medianValue = getQuantile(QUANTILES_ID, params.quantiles, 0.5);
-  const median = createLabelAndPointer({
-    ...DEFAULTS_LABEL_AND_POINTER,
-    plot: plot,
-    target: [medianValue, 0],
-    label: "MEDIAN",
-    value: plusCommaFormmatter(medianValue),
-    offsetX: 50,
-  });
-
-  // AVERAGE
-  const avg = createLabelAndPointer({
-    ...DEFAULTS_LABEL_AND_POINTER,
-    plot: plot,
-    target: [AVERAGE_WONLOST, 0],
-    label: "AVERAGE",
-    value: AVERAGE_WONLOST.toFixed(2),
-    offsetX: -30,
-  });
-
-  // MOST LOST
-  const mostLostValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
-  const mostLost = createLabelAndPointer({
-    ...DEFAULTS_LABEL_AND_POINTER,
-    plot: plot,
-    target: [mostLostValue, 0],
-    label: "MOST LOST",
-    value: plusCommaFormmatter(mostLostValue),
-    offsetX: -30,
-  });
-
-  // MOST WON
-  const mostWonValue = getQuantile(QUANTILES_ID, params.quantiles, 1);
-  const mostWon = createLabelAndPointer({
-    ...DEFAULTS_LABEL_AND_POINTER,
-    plot: plot,
-    target: [mostWonValue, 0],
-    label: "MOST WON",
-    value: plusCommaFormmatter(mostWonValue),
-    offsetX: -75,
-  });
-
-  // 25th PERCENTILE
-  const p25Value = getQuantile(QUANTILES_ID, params.quantiles, 0.25);
-  const p25 = createLabelAndPointer({
-    ...DEFAULTS_LABEL_AND_POINTER,
-    plot: plot,
-    target: [p25Value, Y_AXIS_MAX * 0.9],
-    label: "25TH PERCENTILE",
-    value: plusCommaFormmatter(p25Value),
-    offsetX: -80,
-    offsetY: -120,
-    sourceElbowOffset: 0,
-    targetElbowOffset: 0,
-    direction: Direction.Bottom,
-  });
-
-  // 75th PERCENTILE
-  const p75Value = getQuantile(QUANTILES_ID, params.quantiles, 0.75);
-  const p75 = createLabelAndPointer({
-    ...DEFAULTS_LABEL_AND_POINTER,
-    plot: plot,
-    target: [p75Value, Y_AXIS_MAX * 0.85],
-    label: "75TH PERCENTILE",
-    value: plusCommaFormmatter(p75Value),
-    offsetX: 0,
-    offsetY: -200,
-    sourceElbowOffset: [0, 0],
-    sourceElbowOffset2: [0, 0],
-    targetElbowOffset: [0, 0],
-    direction: Direction.Bottom,
-  });
-
-  // 5th PERCENTILE
-  const p05Value = getQuantile(QUANTILES_ID, params.quantiles, 0.05);
-  const p05 = createLabelAndPointer({
-    ...DEFAULTS_LABEL_AND_POINTER,
-    plot: plot,
-    target: [p05Value, Y_AXIS_MAX * 0.9],
-    label: "5TH PERCENTILE",
-    value: plusCommaFormmatter(p05Value),
-    offsetX: -80,
-    offsetY: -120,
-    sourceElbowOffset: 0,
-    targetElbowOffset: 0,
-    direction: Direction.Bottom,
-  });
-
-  // 95th PERCENTILE
-  const p95Value = getQuantile(QUANTILES_ID, params.quantiles, 0.95);
-  const p95 = createLabelAndPointer({
-    ...DEFAULTS_LABEL_AND_POINTER,
-    plot: plot,
-    target: [p95Value, Y_AXIS_MAX * 0.9],
-    label: "95TH PERCENTILE",
-    value: plusCommaFormmatter(p95Value),
-    offsetX: 80,
-    offsetY: -120,
-    sourceElbowOffset: 0,
-    targetElbowOffset: 0,
-    direction: Direction.Bottom,
-  });
-
-  // IQR Box and Outline
-  const iqrBox = plot().box(
-    [p25Value, Y_AXIS_MAX * 0.9],
-    [p75Value, Y_AXIS_MAX * 0.85],
-    {
-      stroke: Grays.GRAY2,
-      lineWidth: 20,
-      lineDash: [20, 5],
-      radius: 10,
-      // fill: Darker.GREEN,
-      opacity: 0,
-      end: 0,
-    }
-  );
-  iqrBox.zIndex(-1000);
-  const iqrBoxFill = plot().box(
-    [p25Value, Y_AXIS_MAX * 0.9],
-    [p75Value, Y_AXIS_MAX * 0.85],
-    {
-      radius: 10,
-      fill: Darker.GREEN,
-      opacity: 0,
-    }
-  );
-  iqrBoxFill.zIndex(-1001);
-  plot().add(iqrBoxFill);
-
-  // ************************
-  // ANIMATION
-  // ************************
-
   yield* sequence(0.1, ...bars.map((line) => line.end(1, 1, easeOutCubic)));
   yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
 
   // Show data ranges in plot
   if (minValue > X_AXIS_MIN) {
+    // yield minLine.end(1, 1, easeOutCubic);
     yield lowerRangeBox.opacity(0.2, 1, linear);
   }
   if (maxValue < X_AXIS_MAX) {
+    // yield* maxLine.end(1, 0.6, easeOutCubic);
     yield* upperRangeBox.opacity(0.2, 0.6, linear);
   }
   yield* zeroLine.end(1, 0.6, easeOutCubic);
 
-  // COUNT
-  yield* FadeIn(countRefs.layout, 0.6, easeOutCubic, [0, 50]);
-  // yield* median.arrow.end(1, 1, easeInOutCubic);
+  // Median
+  yield* waitUntil("median");
+  yield* dataTable.columns[3].opacity(1, 0.6);
+  yield* waitFor(1);
 
-  // MEDIAN
-  yield* FadeIn(median.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* median.arrow.end(1, 1, easeInOutCubic);
-
-  // AVERAGE
-  yield* FadeIn(avg.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* avg.arrow.end(1, 1, easeInOutCubic);
-
-  // MOST LOST
-  yield* FadeIn(mostLost.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* mostLost.arrow.end(1, 1, easeInOutCubic);
-
-  // MOST WON
-  yield* FadeIn(mostWon.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* mostWon.arrow.end(1, 1, easeInOutCubic);
+  // Average
+  yield* waitUntil("avg");
+  yield* dataTable.columns[4].opacity(1, 0.6);
+  yield* waitFor(1);
 
   // IQR
-  yield* iqrBox.end(1, 2, easeInOutCubic);
-  yield* iqrBoxFill.opacity(0.3, 1);
-  // yield* box.fill(Darker.GREEN, 1);
+  yield* waitUntil("iqr");
+  yield dataTable.columns[2].opacity(1, 0.6);
+  yield* dataTable.columns[5].opacity(1, 0.6);
+  yield* waitFor(1);
 
-  // 25th PERCENTILE
-  yield* FadeIn(p25.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* p25.arrow.end(1, 1, easeInOutCubic);
+  // Middle 90%
+  yield* waitUntil("ninety");
+  yield dataTable.columns[1].opacity(1, 0.6);
+  yield* dataTable.columns[6].opacity(1, 0.6);
+  yield* waitFor(1);
 
-  // 75th PERCENTILE
-  yield* FadeIn(p75.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* p75.arrow.end(1, 1, easeInOutCubic);
+  // Min/Max
+  yield* waitUntil("minmax");
+  yield dataTable.columns[0].opacity(1, 0.6);
+  yield* dataTable.columns[7].opacity(1, 0.6);
+  yield* waitFor(1);
 
-  //////////////////////////
-  // Additional Animations
-  //////////////////////////
+  // Draw a box
+  const box = plot().box([-1162, Y_AXIS_MAX * 0.9], [396, -2], {
+    stroke: Grays.GRAY3,
+    lineWidth: 5,
+    fill: Darker.GREEN,
+    opacity: 0.5,
+  });
+  box.zIndex(-1000);
+  // yield* box.lowerRight([400, Y_AXIS_MAX - 10], 1);
+
+  // const pointerPosition = Vector2.createSignal([-500, 0]);
+  // const pointer1 = plot().line(pointerPosition(), pointerPosition().addY(-15), {
+  //   stroke: Bright.YELLOW,
+  //   startArrow: true,
+  //   startOffset: 70,
+  //   lineWidth: 10,
+  // });
 
   yield* plot().rescale(-1400, -600, 50, 0, Y_AXIS_MAX, 1, 2);
   yield* waitFor(2);
@@ -521,38 +414,137 @@ export default makeScene2D(function* (view) {
   );
   yield* waitFor(2);
   camera().save();
-  yield camera().position([-1200, 800], 2, easeInOutCubic);
+  yield camera().position([-1500, 1000], 2, easeInOutCubic);
   yield* camera().zoom(1.5, 2, easeInOutCubic);
   yield* waitFor(2);
   yield* camera().restore(2, easeInOutCubic);
 
   yield* waitFor(2);
 
-  // Show the middle 90%
-  yield eraseLabelAndPointer(p25);
-  yield eraseLabelAndPointer(p75);
-  yield iqrBox.shiftPositionTo(
-    [p05Value, Y_AXIS_MAX * 0.9],
-    [p95Value, -2],
-    2,
-    easeInOutCubic
+  // AVERAGE
+  const averageLabel = makeRefs<typeof HeaderValueBox>();
+  plot().add(
+    <HeaderValueBox
+      refs={averageLabel}
+      headerRectProps={{
+        fill: sessionGradient,
+        stroke: Grays.GRAY1,
+        padding: 30,
+      }}
+      headerTxtProps={{ text: "AVERAGE", ...PoppinsWhite, fontSize: 70 }}
+      valueRectProps={TABLE_VALUE_RECT_PROPS}
+      valueTxtProps={{
+        ...PoppinsBlack,
+        fontSize: 80,
+        text: "-463.15",
+        padding: 30,
+      }}
+    ></HeaderValueBox>
   );
-  yield* iqrBoxFill.shiftPositionTo(
-    [p05Value, Y_AXIS_MAX * 0.9],
-    [p95Value, -2],
-    2,
-    easeInOutCubic
+  averageLabel.layout.position(
+    plot().c2p([-500, 0], PlotSpace.LOCAL).addY(180)
   );
+  averageLabel.layout.scale(0.5);
 
-  // 5th PERCENTILE
-  yield* FadeIn(p05.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* p05.arrow.end(1, 1, easeInOutCubic);
+  plot().cToPLine([-463.15, 0], averageLabel.layout.top(), 50, -20, 0, {
+    lineWidth: 8,
+    lineDash: [10, 1],
+    stroke: sessionDark,
+    radius: 10,
+    startArrow: true,
+    startOffset: 20,
+    arrowSize: 15,
+  });
 
-  // 95th PERCENTILE
-  yield* FadeIn(p95.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* p95.arrow.end(1, 1, easeInOutCubic);
+  // MEDIAN
+  const medianLabel = makeRefs<typeof HeaderValueBox>();
+  plot().add(
+    <HeaderValueBox
+      refs={medianLabel}
+      headerRectProps={{
+        fill: sessionGradient,
+        stroke: Grays.GRAY1,
+        padding: 30,
+      }}
+      headerTxtProps={{ text: "MEDIAN", ...PoppinsWhite, fontSize: 70 }}
+      valueRectProps={TABLE_VALUE_RECT_PROPS}
+      valueTxtProps={{
+        ...PoppinsBlack,
+        fontSize: 80,
+        text: "-1,125",
+        padding: 30,
+      }}
+    ></HeaderValueBox>
+  );
+  medianLabel.layout.position(
+    plot().c2p([-1125, 0], PlotSpace.LOCAL).addY(180)
+  );
+  medianLabel.layout.scale(0.5);
+
+  plot().cToPLine([-1125, 0], medianLabel.layout.top(), 50, -20, 0, {
+    lineWidth: 8,
+    lineDash: [10, 1],
+    stroke: sessionDark,
+    radius: 10,
+    startArrow: true,
+    startOffset: 20,
+    arrowSize: 15,
+  });
 
   yield* waitFor(10);
 
+  yield* waitFor(2);
   yield* waitUntil("end");
 });
+
+function HeaderValueBox({
+  refs,
+  headerRectProps = {},
+  headerTxtProps = {},
+  valueRectProps = {},
+  valueTxtProps = {},
+}: {
+  refs: { container: Node; layout: Layout };
+  headerRectProps?: RectProps;
+  headerTxtProps?: TxtProps;
+  valueRectProps?: RectProps;
+  valueTxtProps?: TxtProps;
+}) {
+  return (
+    <Node ref={makeRef(refs, "container")}>
+      <Rect
+        ref={makeRef(refs, "layout")}
+        layout
+        direction={"column"}
+        radius={20}
+        clip
+        shadowOffset={[2, 2]}
+        shadowColor={"black"}
+        shadowBlur={10}
+      >
+        <Rect
+          height={"50%"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          {...headerRectProps}
+        >
+          <Txt
+            fontWeight={600}
+            {...headerTxtProps}
+          ></Txt>
+        </Rect>
+        <Rect
+          height={"50%"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          {...valueRectProps}
+        >
+          <Txt
+            fontWeight={600}
+            {...valueTxtProps}
+          ></Txt>
+        </Rect>
+      </Rect>
+    </Node>
+  );
+}

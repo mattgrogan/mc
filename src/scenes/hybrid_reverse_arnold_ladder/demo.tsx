@@ -26,7 +26,7 @@ enum s {
   WORST = 2,
 }
 
-const whichSession = s.WORST;
+const whichSession = s.BEST;
 
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);

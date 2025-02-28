@@ -1,72 +1,59 @@
 import {
+  Camera,
   Gradient,
+  Icon,
   Layout,
   makeScene2D,
   Node,
   Rect,
   Txt,
-  TxtProps,
 } from "@motion-canvas/2d";
 import {
   createRef,
   createRefArray,
   Direction,
   easeInOutCubic,
+  easeOutBounce,
   easeOutCubic,
-  easeOutExpo,
   makeRefs,
   range,
   sequence,
-  slideTransition,
-  useLogger,
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
-import { Bright, Grays, PoppinsBlack, PoppinsWhite, Theme } from "../../styles";
+import {
+  grayGradient,
+  Grays,
+  PoppinsBlack,
+  PoppinsWhite,
+  Theme,
+} from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 
 import * as params from "./DD_00_Params";
 
 import { Plot } from "../../components/plot/plot";
-import {
-  commaFormmatter,
-  getQuantileData,
-} from "../../components/styled/findQuantiles";
+import { commaFormmatter } from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
 import { TitleBox } from "../../components/styled/titleBox";
+import { createLabelAndPointer } from "../../components/styled/labelAndPointer";
 
-const WINNERS = params.winlose.find((stat) => stat.STAT == "N_UP").BY_SHOOTER;
-const PUSHERS = params.winlose.find((stat) => stat.STAT == "N_EVEN").BY_SHOOTER;
-const LOSERS = params.winlose.find((stat) => stat.STAT == "N_DOWN").BY_SHOOTER;
-const TOTAL = params.winlose.find((stat) => stat.STAT == "N").BY_SHOOTER;
-
-const QUANTILES_ID = "MIN_BR_END";
 const X_AXIS_MIN = 0;
 const X_AXIS_MAX = 40;
 const X_AXIS_STEP = 100;
 
-const Y_AXIS_MIN = -5;
-const Y_AXIS_MAX = 0;
+const Y_AXIS_MIN = 0;
+const Y_AXIS_MAX = 5;
 const Y_AXIS_STEP = 0.5;
 
-const HAND_QUANTILES_ID = "PLYR_NET_SHBR_UPDATED_OUT_OF_HAND";
-
-// The amount those gray limit bars go to X
-const X_LIMIT = 2;
-
-// Filter just the data we want on the histogram
-// const data = params.histogramData.slice(0, 30);
-
-const AVERAGE_WONLOST = params.amountWonLostQuantiles.find(
-  (stat) => stat.STAT == "MEAN_WONLOST"
-).BY_SESSION;
+const BETWEEN_SECS = 0.7;
 
 let titleGradient = new Gradient({
   from: [0, -100],
   to: [0, 100],
   stops: [
-    { offset: 0, color: "#f9fafb" },
-    { offset: 1, color: "#9ca3af" },
+    { offset: 0, color: "#831414" },
+    { offset: 1, color: "#6a1010" },
   ],
 });
 
@@ -84,21 +71,25 @@ const plotAreaFill = new Gradient({
 export default makeScene2D(function* (view) {
   view.fill(Theme.BG);
 
-  yield* slideTransition(Direction.Right);
+  yield* waitFor(1);
 
+  // CONTAINER
+  const camera = createRef<Camera>();
   const container = createRef<Layout>();
   view.add(
-    <Layout
-      ref={container}
-      direction={"column"}
-      justifyContent={"center"}
-      alignItems={"center"}
-      width={"80%"}
-      height={"90%"}
-      gap={50}
-      padding={100}
-      layout
-    ></Layout>
+    <Camera ref={camera}>
+      <Layout
+        ref={container}
+        direction={"column"}
+        justifyContent={"center"}
+        alignItems={"center"}
+        width={"100%"}
+        height={"100%"}
+        gap={50}
+        padding={100}
+        layout
+      ></Layout>
+    </Camera>
   );
 
   yield* waitFor(1);
@@ -110,13 +101,13 @@ export default makeScene2D(function* (view) {
       fontSize={100}
       nodeOpacity={0}
       rectProps={{ fill: titleGradient, stroke: Grays.GRAY1 }}
-      headerProps={{ ...PoppinsBlack }}
-      subheadProps={{ ...PoppinsBlack }}
+      headerProps={{ ...PoppinsWhite }}
+      subheadProps={{ ...PoppinsWhite }}
     >
       HOUSE TAKE AND EDGE
     </TitleBox>
   );
-  plotTitle.subhead.text("THE STRATEGY");
+  plotTitle.subhead.text(params.name);
 
   // Add a two column area
   const subContainer = createRef<Layout>();
@@ -136,9 +127,12 @@ export default makeScene2D(function* (view) {
     <Layout
       ref={col2}
       height={"100%"}
-      width={"50%"}
+      width={"40%"}
     ></Layout>
   );
+
+  // https://github.com/motion-canvas/motion-canvas/issues/1057
+  camera().scene().position(view.size().div(2));
 
   const parameterTable = createRef<Layout>();
   const rowNodes = createRefArray<Node>();
@@ -227,12 +221,6 @@ export default makeScene2D(function* (view) {
   rowTitles[3].text("HOUSE TAKE");
   rowTitles[4].text("HOUSE EDGE");
 
-  // Find the correct data from the json file
-  const tableData = getQuantileData(
-    HAND_QUANTILES_ID,
-    params.out_of_hand,
-    commaFormmatter
-  );
   rowValues[0].text(commaFormmatter(params.casinostats[0].TOTAL_BET));
   rowValues[1].text(commaFormmatter(params.casinostats[0].TOTAL_WON));
   rowValues[2].text(commaFormmatter(params.casinostats[0].TOTAL_LOST * -1));
@@ -240,9 +228,6 @@ export default makeScene2D(function* (view) {
   rowValues[4].text(
     commaFormmatter(params.casinostats[0].HOUSE_EDGE * -100, 3) + "%"
   );
-  // rowValues[2].text(sim.table_min);
-  // rowValues[3].text(sim.table_max);
-
   // ADD THE PLOT AREA
   const plotArea = makeRefs<typeof PlotArea>();
   const plot = createRef<Plot>();
@@ -260,7 +245,6 @@ export default makeScene2D(function* (view) {
   );
 
   yield* waitFor(1);
-  //yield* FadeIn(parameterTable, 1, easeOutCubic, [0, 100]);
 
   // Plot is only added after all the layout has been completed.
   plotArea.layout.add(
@@ -295,24 +279,25 @@ export default makeScene2D(function* (view) {
         fill: Grays.BLACK,
         suffix: "%",
         decimalNumbers: 1,
-        fontSize: 40,
+        fontSize: 50,
       }}
       xTitleProps={{
         ...PoppinsBlack,
         fill: Grays.BLACK,
         text: "HOUSE EDGE",
         lineToLabelPadding: 50,
-        opacity: 1,
+        opacity: 0,
         fontSize: 60,
       }}
       yTitleProps={{
         ...PoppinsBlack,
         fill: Grays.BLACK,
         text: "HOUSE EDGE",
-        lineToLabelPadding: -160,
-        opacity: 0,
+        lineToLabelPadding: -230,
+        opacity: 1,
         rotation: -90,
-        fontSize: 60,
+        fontSize: 80,
+        fontWeight: 600,
       }}
       xTickProps={{ stroke: Grays.BLACK, opacity: 0 }}
       yTickProps={{ stroke: Grays.BLACK }}
@@ -332,7 +317,40 @@ export default makeScene2D(function* (view) {
     0.4,
     ...rowNodes.map((r) => FadeIn(r, 1, easeOutCubic, [0, 50]))
   );
-  yield* waitFor(30);
+
+  yield* waitFor(1);
+  yield* waitUntil("show-arrow");
+
+  const arrow = new Icon({
+    icon: "mdi:arrow-left-bold",
+    scale: 20,
+    color: "#e53935",
+    offsetX: -1,
+    layout: false,
+    opacity: 0,
+  });
+
+  arrow.position(rowRects[0].right);
+  col2().add(arrow);
+  // Total Bet
+  yield* FadeIn(arrow, 1, easeOutBounce, [100, 0]);
+  yield* waitFor(2);
+  // Total Won
+  yield* arrow.position(rowRects[1].right, 1, easeInOutCubic);
+  yield* waitFor(2);
+  // Total Lost
+  yield* arrow.position(rowRects[2].right, 1, easeInOutCubic);
+  yield* waitFor(3);
+  // House Take
+  yield* arrow.position(rowRects[3].right, 1, easeInOutCubic);
+  yield* waitFor(2);
+  // House Edge
+  yield* arrow.position(rowRects[4].right, 1, easeInOutCubic);
+
+  yield* waitFor(2);
+  yield* arrow.opacity(0, 0.6);
+  arrow.remove();
+  ////////////////////////////////////////////////////////////
   yield* waitUntil("show-plot");
 
   // Draw the Plot
@@ -346,130 +364,353 @@ export default makeScene2D(function* (view) {
 
   yield* waitFor(2);
 
-  // ************************
-  // DRAW THE EDGE ARROW
-  // ************************
-  const HOUSE_EDGE_PERCENT = params.casinostats[0].HOUSE_EDGE * 100;
-  useLogger().debug(HOUSE_EDGE_PERCENT.toFixed(3));
+  // Zoom camera
+  camera().save();
+  yield parameterTable().opacity(0, 0.6);
+  yield camera().centerOn([700, 200], 4, easeInOutCubic);
+  yield camera().zoom(1.35, 4, easeInOutCubic);
+  yield* waitFor(1);
 
-  // yield* waitUntil("skill66");
-  const thisStrategyLine = plot().hLine([10, HOUSE_EDGE_PERCENT], {
-    lineWidth: 60,
-    stroke: Bright.BLUE,
-    startOffset: 30,
-    endOffset: 20,
-    // lineDash: [20, 5],
-    start: 1,
-    startArrow: true,
-    arrowSize: 80,
-    opacity: 0.8,
+  // ************************
+  // THIS STRATEGY
+  // ************************
+  const HOUSE_EDGE_PERCENT = params.casinostats[0].HOUSE_EDGE * -100;
+  const strat = createLabelAndPointer({
+    plot: plot,
+    target: [0, HOUSE_EDGE_PERCENT],
+    label: params.name,
+    value: HOUSE_EDGE_PERCENT.toFixed(3) + "%",
+    offsetX: 1400,
+    offsetY: 0,
+    sourceElbowOffset: 0,
+    targetElbowOffset: 0,
+    mainRectProps: { scale: 0.7 },
+    labelRectProps: { fill: titleGradient },
+    lineProps: {
+      lineWidth: 20,
+      stroke: "#6a1010",
+      arrowSize: 40,
+      lineDash: [0],
+      opacity: 0.8,
+      endOffset: 30,
+    },
+
+    direction: Direction.Left,
   });
-  thisStrategyLine.zIndex(100);
-  yield* thisStrategyLine.start(0, 1, easeOutExpo);
+  yield FadeIn(strat.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield* strat.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
+  // ************************
+  // ODDS
+  // ************************
+  const odds = createLabelAndPointer({
+    plot: plot,
+    target: [0, 0],
+    label: "TAKE/LAY ODDS",
+    value: "0%",
+    offsetX: 700,
+    offsetY: 100,
+    sourceElbowOffset: [-500, 0],
+    sourceElbowOffset2: [0, -50],
+    targetElbowOffset: [30, 0],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(odds.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* odds.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
+  // ************************
+  // Pass/Come
+  // ************************
+  const pass = createLabelAndPointer({
+    plot: plot,
+    target: [0, 1.41],
+    label: "PASS/COME",
+    value: "1.41%",
+    offsetX: 260,
+    offsetY: 100,
+    sourceElbowOffset: [-30, 0],
+    sourceElbowOffset2: [0, -20],
+    targetElbowOffset: [30, 30],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(pass.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* pass.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
+  // ************************
+  // Field 3x
+  // ************************
+  const field = createLabelAndPointer({
+    plot: plot,
+    target: [0, 2.78],
+    label: "Field (3:1)",
+    value: "2.78%",
+    offsetX: 900,
+    offsetY: 120,
+    sourceElbowOffset: [-100, 0],
+    sourceElbowOffset2: [0, -10],
+    targetElbowOffset: [50, 50],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(field.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* field.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
+  // ************************
+  // Place 6/8
+  // ************************
+  const place68 = createLabelAndPointer({
+    plot: plot,
+    target: [0, 1.52],
+    label: "Place 6/8",
+    value: "1.52%",
+    offsetX: 480,
+    offsetY: 50,
+    sourceElbowOffset: [-20, 0],
+    sourceElbowOffset2: [0, -10],
+    targetElbowOffset: [10, -10],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(place68.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* place68.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
+  // ************************
+  // Place 5/9
+  // ************************
+  const place59 = createLabelAndPointer({
+    plot: plot,
+    target: [0, 4.0],
+    label: "Place 5/9",
+    value: "4.00%",
+    offsetX: 700,
+    offsetY: 0,
+    sourceElbowOffset: [0, 0],
+    sourceElbowOffset2: [0, 0],
+    targetElbowOffset: [0, 0],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(place59.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* place59.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
 
   // ************************
-  // DRAW THE EDGE COMPARISONS
+  // RESCALE
   // ************************
-
-  const lineProps = {
-    lineWidth: 20,
-    stroke: Grays.BLACK,
-    // fill: Grays.GRAY2,
-    startOffset: 30,
-    endOffset: 20,
-    //lineDash: [20, 5],
-    start: 1,
-    startArrow: true,
-    arrowSize: 30,
-    opacity: 0.6,
-  };
-
-  const edgeLabelProps: TxtProps = {
-    //...MonoWhite,
-    ...PoppinsWhite,
-    fill: Grays.BLACK,
-    fontWeight: 600,
-    fontSize: 60,
-    opacity: 0,
-    offset: [-1, 0],
-  };
-
-  const BETWEEN_SECS = 0.7;
-  yield* addPointer(plot(), 0, "TAKE/LAY ODDS (0.00%)");
-  yield* waitFor(BETWEEN_SECS);
-  yield* addPointer(plot(), -1.41, "PASS/COME (1.41%)");
-  yield* waitFor(BETWEEN_SECS);
-  yield* addPointer(plot(), -2.78, "FIELD (3:1) (2.78%)");
-  yield* waitFor(BETWEEN_SECS);
-  yield* addPointer(plot(), -1.52, "PLACE 6/8 (1.52%)");
-  yield* waitFor(BETWEEN_SECS);
-  yield* addPointer(plot(), -4.0, "PLACE 5/9 (4.00%)");
-  yield* waitFor(BETWEEN_SECS);
-
   yield* plot().rescale(
     X_AXIS_MIN,
     X_AXIS_MAX,
     X_AXIS_STEP,
-    -18,
-    Y_AXIS_MAX,
+    0,
+    18,
     2,
     2,
     easeInOutCubic
   );
-
-  yield* addPointer(plot(), -5.56, "FIELD (2:1) (5.56%)");
-  yield* waitFor(BETWEEN_SECS);
-  yield* addPointer(plot(), -6.67, "PLACE 4/10 (6.67%)");
-  yield* waitFor(BETWEEN_SECS);
-  yield* addPointer(plot(), -9.09, "HARD 6/8 (9.09%)");
-  yield* waitFor(BETWEEN_SECS);
-  yield* addPointer(plot(), -11.11, "HARD 4/10 & ANY CRAPS (11.11%)");
-  yield* waitFor(BETWEEN_SECS);
-  yield* addPointer(plot(), -16.67, "ANY SEVEN (16.67%)");
   yield* waitFor(BETWEEN_SECS);
 
-  // yield thisStrategyLabel.opacity(1, 1.2);
+  // ************************
+  // Field 2x
+  // ************************
+  const field2 = createLabelAndPointer({
+    plot: plot,
+    target: [0, 5.56],
+    label: "Field (2:1)",
+    value: "5.56%",
+    offsetX: 900,
+    offsetY: 0,
+    sourceElbowOffset: [0, 0],
+    sourceElbowOffset2: [0, 0],
+    targetElbowOffset: [0, 0],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(field2.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* field2.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
+  // ************************
+  // Place 4/10
+  // ************************
+  const place410 = createLabelAndPointer({
+    plot: plot,
+    target: [0, 6.67],
+    label: "Place 4/10",
+    value: "6.67%",
+    offsetX: 400,
+    offsetY: -50,
+    sourceElbowOffset: [-50, 0],
+    sourceElbowOffset2: [0, 30],
+    targetElbowOffset: [10, 0],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(place410.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* place410.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
+  // ************************
+  // Hard 4/10
+  // ************************
+  const hard410 = createLabelAndPointer({
+    plot: plot,
+    target: [0, 11.11],
+    label: "Hard 4/10",
+    value: "11.11%",
+    offsetX: 800,
+    offsetY: 0,
+    sourceElbowOffset: [0, 0],
+    sourceElbowOffset2: [0, 0],
+    targetElbowOffset: [0, 0],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(hard410.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* hard410.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
+  // ************************
+  // Any Craps
+  // ************************
+  const anycraps = createLabelAndPointer({
+    plot: plot,
+    target: [0, 11.11],
+    label: "Any Craps",
+    value: "11.11%",
+    offsetX: 400,
+    offsetY: 0,
+    sourceElbowOffset: [0, 0],
+    sourceElbowOffset2: [0, 0],
+    targetElbowOffset: [0, 0],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(anycraps.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* anycraps.arrow.end(1, 0.6, easeInOutCubic);
+  yield* waitFor(BETWEEN_SECS);
+
+  // ************************
+  // Any Seven
+  // ************************
+  const anyseven = createLabelAndPointer({
+    plot: plot,
+    target: [0, 16.67],
+    label: "Any Seven",
+    value: "16.67%",
+    offsetX: 400,
+    offsetY: 0,
+    sourceElbowOffset: [0, 0],
+    sourceElbowOffset2: [0, 0],
+    targetElbowOffset: [0, 0],
+    mainRectProps: { scale: 0.4 },
+    labelRectProps: { fill: grayGradient },
+    lineProps: {
+      lineWidth: 10,
+      stroke: Grays.BLACK,
+      arrowSize: 20,
+      lineDash: [0],
+      opacity: 0.6,
+      endOffset: 10,
+    },
+
+    direction: Direction.Left,
+  });
+  yield FadeIn(anyseven.valueLabel, 0.6, easeOutCubic, [50, 0]);
+  yield* anyseven.arrow.end(1, 0.6, easeInOutCubic);
+
+  yield* waitFor(1);
+  yield parameterTable().opacity(1, 1.5);
+  yield* camera().restore(2, easeInOutCubic);
 
   yield* waitFor(10);
   yield* waitUntil("end");
 });
-
-function* addPointer(plot: Plot, edge: number, label: string) {
-  const OPACITY_ON_SECS = 0.7;
-  const OPACITY_DELAY_SECS = 0.7;
-  const OPACITY_OFF_SECS = 0.7;
-
-  const lineProps = {
-    lineWidth: 20,
-    stroke: Grays.BLACK,
-    // fill: Grays.GRAY2,
-    startOffset: 30,
-    endOffset: 20,
-    //lineDash: [20, 5],
-    start: 1,
-    startArrow: true,
-    arrowSize: 30,
-    opacity: 0.6,
-  };
-
-  const edgeLabelProps: TxtProps = {
-    //...MonoWhite,
-    ...PoppinsWhite,
-    fill: Grays.BLACK,
-    fontWeight: 600,
-    fontSize: 60,
-    opacity: 0,
-    offset: [-1, 0],
-  };
-
-  const line = plot.hLine([10, edge], lineProps);
-  const text = plot.text([10, edge], {
-    ...edgeLabelProps,
-    text: label,
-  });
-  yield line.start(0, 0.6, easeInOutCubic);
-  yield text
-    .opacity(1, OPACITY_ON_SECS)
-    .wait(OPACITY_DELAY_SECS)
-    .to(0, OPACITY_OFF_SECS);
-}

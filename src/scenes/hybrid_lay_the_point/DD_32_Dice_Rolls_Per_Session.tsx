@@ -49,6 +49,9 @@ const MINMAX_LIMIT = 0.5;
 // Tick marks every
 const X_TICKS_EVERY = 2;
 
+// Delay between drawing each bar
+const BAR_SEQUENCE_DELAY = 0.05;
+
 const plotAreaFill = new Gradient({
   type: "linear",
 
@@ -65,7 +68,7 @@ export default makeScene2D(function* (view) {
 
   audioPlayer.woosh();
   // yield* slideTransition(Direction.Right);
-  yield* waitFor(1)
+  yield* waitFor(1);
   const container = createRef<Layout>();
   view.add(
     <Layout
@@ -281,7 +284,10 @@ export default makeScene2D(function* (view) {
   // END FACTOR
   // ************************
 
-  yield* sequence(0.1, ...bars.map((line) => line.end(1, 1, easeOutCubic)));
+  yield* sequence(
+    BAR_SEQUENCE_DELAY,
+    ...bars.map((line) => line.end(1, 1, easeOutCubic))
+  );
   // yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
 
   // Show data ranges in plot

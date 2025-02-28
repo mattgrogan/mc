@@ -7,8 +7,8 @@
       null
     ],
     "size": {
-      "x": 3840,
-      "y": 2160
+      "x": 1920,
+      "y": 1080
     },
     "audioOffset": 0
   },
@@ -17,15 +17,14 @@
     "resolutionScale": 1
   },
   "rendering": {
-    "fps": 60,
-    "resolutionScale": 1,
+    "fps": 30,
+    "resolutionScale": 0.5,
     "colorSpace": "srgb",
     "exporter": {
       "name": "@motion-canvas/ffmpeg",
       "options": {
         "fastStart": true,
-        "includeAudio": true,
-        "audioSampleRate": 48000
+        "includeAudio": true
       }
     }
   }

@@ -33,7 +33,7 @@ export default makeScene2D(function* (view) {
   const container = createRef<Layout>();
   const table = createRef<CrapsTable>();
   const bug = createRef<CrapsScoreBug>();
-  const winConds = createRef<CrapsWinConditions>()
+  const winConds = createRef<CrapsWinConditions>();
   view.add(
     <Layout ref={container}>
       <CrapsTable
@@ -48,8 +48,14 @@ export default makeScene2D(function* (view) {
         opacity={0}
         scale={0.6}
       />
-      <CrapsWinConditions ref={winConds} opacity={0} width={180} height={900} x={830} lineWidth={3} stroke={Grays.GRAY1}
-
+      <CrapsWinConditions
+        ref={winConds}
+        opacity={0}
+        width={180}
+        height={900}
+        x={830}
+        lineWidth={3}
+        stroke={Grays.GRAY1}
       />
     </Layout>
   );
@@ -84,7 +90,7 @@ export default makeScene2D(function* (view) {
     session = sessions[sessions.length - 1].SESSION;
   }
 
-  // session = 316;
+  session = 34134;
 
   const firstSession = simData.filter(
     ({ SESSION, ROLL }) => SESSION === session //&& ROLL < 20

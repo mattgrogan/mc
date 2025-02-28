@@ -1,14 +1,14 @@
 import { makeProject } from "@motion-canvas/core";
 import "../../global.css";
 
-import DD_TOC_01_Strategy from "../titles/DD_TOC_01_Strategy?scene";
-import DD_TOC_02_Simulation from "../titles/DD_TOC_02_Simulation?scene";
-import DD_TOC_03_Dice_And_Gameflow from "../titles/DD_TOC_03_Dice_And_Gameflow?scene";
-import DD_TOC_04_House_Take_And_Edge from "../titles/DD_TOC_04_House_Take_And_Edge?scene";
-import DD_TOC_05_Won_Lost_By_Shooter from "../titles/DD_TOC_05_Won_Lost_By_Shooter?scene";
-import DD_TOC_06_Won_Lost_By_Session from "../titles/DD_TOC_06_Won_Lost_By_Session?scene";
-import DD_TOC_07_Bankroll_Survival from "../titles/DD_TOC_07_Bankroll_Survival?scene";
-import DD_TOC_08_Strategy_Score from "../titles/DD_TOC_08_Strategy_Score?scene";
+// import DD_TOC_01_Strategy from "../titles/DD_TOC_01_Strategy?scene";
+// import DD_TOC_02_Simulation from "../titles/DD_TOC_02_Simulation?scene";
+// import DD_TOC_03_Dice_And_Gameflow from "../titles/DD_TOC_03_Dice_And_Gameflow?scene";
+// import DD_TOC_04_House_Take_And_Edge from "../titles/DD_TOC_04_House_Take_And_Edge?scene";
+// import DD_TOC_05_Won_Lost_By_Shooter from "../titles/DD_TOC_05_Won_Lost_By_Shooter?scene";
+// import DD_TOC_06_Won_Lost_By_Session from "../titles/DD_TOC_06_Won_Lost_By_Session?scene";
+// import DD_TOC_07_Bankroll_Survival from "../titles/DD_TOC_07_Bankroll_Survival?scene";
+// import DD_TOC_08_Strategy_Score from "../titles/DD_TOC_08_Strategy_Score?scene";
 
 import DD_20_Simulation from "./DD_20_Simulation?scene";
 
@@ -28,30 +28,30 @@ import DD_70_Bankroll_Survival from "./DD_70_Bankroll_Survival?scene";
 
 export default makeProject({
   scenes: [
-    DD_TOC_01_Strategy,
-    DD_TOC_02_Simulation,
+    // DD_TOC_01_Strategy,
+    // DD_TOC_02_Simulation,
 
-    DD_20_Simulation,
+    // DD_20_Simulation,
 
-    DD_TOC_03_Dice_And_Gameflow,
-    DD_30_Dice_Throws,
-    DD_31_Dice_Rolls_Per_Session,
-    DD_32_Dice_Rolls_Per_Shooter,
+    // // DD_TOC_03_Dice_And_Gameflow,
+    // DD_30_Dice_Throws,
+    // DD_31_Dice_Rolls_Per_Session,
+    // DD_32_Dice_Rolls_Per_Shooter,
 
-    DD_TOC_04_House_Take_And_Edge,
+    // // DD_TOC_04_House_Take_And_Edge,
     DD_40_House_Take_And_Edge,
 
-    DD_TOC_05_Won_Lost_By_Shooter,
-    DD_50_Outcomes_Per_Shooter,
-    DD_51_Won_Lost_Per_Shooter,
+    // // DD_TOC_05_Won_Lost_By_Shooter,
+    // DD_50_Outcomes_Per_Shooter,
+    // DD_51_Won_Lost_Per_Shooter,
 
-    DD_TOC_06_Won_Lost_By_Session,
-    DD_60_Outcomes_Per_Session,
+    // // DD_TOC_06_Won_Lost_By_Session,
+    // DD_60_Outcomes_Per_Session,
     DD_61_Won_Lost_Per_Session,
 
-    DD_TOC_07_Bankroll_Survival,
-    DD_70_Bankroll_Survival,
+    // DD_TOC_07_Bankroll_Survival,
+    // DD_70_Bankroll_Survival,
 
-    DD_TOC_08_Strategy_Score,
+    // DD_TOC_08_Strategy_Score,
   ],
 });
