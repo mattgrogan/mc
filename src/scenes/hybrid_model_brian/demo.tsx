@@ -13,9 +13,9 @@ import { CrapsScoreBug } from "../../components/craps/CrapsScoreBug";
 import { FadeIn } from "../../utils/FadeIn";
 
 //-sessions.json
-import simData from "../../../../dicedata/output/hybrid_model_brian-test/hybrid_model_brian-test-sessions.json";
+import simData from "../../../../dicedata/output/hybrid_model_brian-press-100k/hybrid_model_brian-press-100k-sessions.json";
 //-all-sessions.json
-import sessions from "../../../../dicedata/output/hybrid_model_brian-test/hybrid_model_brian-test-all_sessions.json";
+import sessions from "../../../../dicedata/output/hybrid_model_brian-press-100k/hybrid_model_brian-press-100k-all_sessions.json";
 
 import { Grays, Theme } from "../../styles";
 import { c } from "../../components/craps/CrapsTableCoords";
