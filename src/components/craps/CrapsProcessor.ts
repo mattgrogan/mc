@@ -182,13 +182,7 @@ export class CrapsProcessor {
     const wonBets = [];
 
     for (const bet of data.PLYR_WON) {
-      logger.debug({ message: "Won Bet", object: bet });
       const continues = bet.continues.toString() === "true";
-      if (continues) {
-        logger.debug("Continues = true");
-      } else {
-        logger.warn("BET DOES NOT CONTINUE");
-      }
       wonBets.push(this.table().bets().winBet(bet.won, bet.bet, !continues));
       // win.play(0.4);
     }

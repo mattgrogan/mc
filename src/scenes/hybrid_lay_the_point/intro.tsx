@@ -48,7 +48,7 @@ export default makeScene2D(function* (view) {
         fill={Bright.WHITE}
         fontWeight={600}
         fontSize={180}
-        text={"Lay the Point Ladder ($40/$30/$24)"}
+        text={"Hybrid Lay the Point"}
         alignSelf={"center"}
       />
     </Layout>
