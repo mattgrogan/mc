@@ -4,7 +4,7 @@
     "background": null,
     "range": [
       0,
-      null
+      1121.2666656666665
     ],
     "size": {
       "x": 1920,
@@ -14,10 +14,10 @@
   },
   "preview": {
     "fps": 30,
-    "resolutionScale": 0.25
+    "resolutionScale": 1
   },
   "rendering": {
-    "fps": 30,
+    "fps": 10,
     "resolutionScale": 0.5,
     "colorSpace": "srgb",
     "exporter": {
