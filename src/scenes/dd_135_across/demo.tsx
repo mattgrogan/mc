@@ -53,7 +53,7 @@ export default makeScene2D(function* (view) {
         ref={winConds}
         opacity={0} 
         x={650}
-        mainTableprops={{ lineWidth: 3, stroke: Grays.GRAY1, width:200, height: 900 }}
+        tableProps={{ lineWidth: 3, stroke: Grays.GRAY1, width:200, height: 900 }}
       />
     </Layout>
   );
