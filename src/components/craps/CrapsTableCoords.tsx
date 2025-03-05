@@ -8,7 +8,7 @@ export enum c {
   PASSLINEODDS = "PASSLINE_ODDS",
 
   DONTPASS = "DONTPASS",
-  DONTPASSODDS = "DONTPASSODDS",
+  DONTPASSODDS = "DONTPASS_ODDS",
 
   FIELD = "FIELD",
 
@@ -103,7 +103,7 @@ export const tableCoords: { [id: string]: Vector2 } = {
   PASSLINE_ODDS: new Vector2(-50, 325),
 
   DONTPASS: new Vector2(-35, 150),
-  DONTPASSODDS: new Vector2(25, 150),
+  DONTPASS_ODDS: new Vector2(25, 150),
 
   FIELD: new Vector2(-100, 50),
 

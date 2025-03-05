@@ -31,13 +31,22 @@ interface iChipColor {
 }
 
 const redChip: iChipColor = {
-  background: "#4e0000",
-  outerCircle: "#740000",
-  innerCircle: "#740000",
-  marks: "#853C3C",
+  background: "#99000d",
+  outerCircle: "#ef3b2c",
+  innerCircle: "#cb181d",
+  marks: "#cb181d",
   text: "#fff",
   textOutline: "#222222",
 };
+
+// const redChip: iChipColor = {
+//   background: "#4e0000",
+//   outerCircle: "#740000",
+//   innerCircle: "#740000",
+//   marks: "#853C3C",
+//   text: "#fff",
+//   textOutline: "#222222",
+// };
 
 const whiteChip: iChipColor = {
   background: "#fefefe",

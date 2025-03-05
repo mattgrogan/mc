@@ -120,8 +120,6 @@ export class CrapsWinConditions extends Rect {
             category = d1 == d2 ? "10H" : "10E"
         }
 
-        useLogger().debug(category)
-
         const index = this.data.findIndex(
           (t) => t.throw === category
         );

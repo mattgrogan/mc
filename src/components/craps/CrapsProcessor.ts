@@ -1,14 +1,7 @@
 // This object processes a craps simulation file
 // and generates the animations.
 
-import {
-  all,
-  delay,
-  Reference,
-  sequence,
-  useLogger,
-  waitFor,
-} from "@motion-canvas/core";
+import { all, delay, Reference, sequence, waitFor } from "@motion-canvas/core";
 import { CrapsScoreBug } from "./CrapsScoreBug";
 import { CrapsTable } from "./CrapsTable";
 import { c } from "./CrapsTableCoords";
@@ -51,8 +44,6 @@ export class CrapsProcessor {
   }
 
   public *round(data: any) {
-    const logger = useLogger();
-
     if (data.SHOOTER_ROLL == 1) {
       // popup.play();
       yield this.scoreBug().newShooter();

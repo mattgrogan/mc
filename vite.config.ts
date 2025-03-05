@@ -65,6 +65,8 @@ export default defineConfig({
         "./src/scenes/hybrid_lay_the_point/hybrid_lay_the_point.ts",
         "./src/scenes/hybrid_lay_the_point/hybrid_lay_the_point_demo.ts",
         "./src/scenes/hybrid_model_brian/hybrid_model_brian_demo.ts",
+        "./src/scenes/three_point_dolly/three_point_dolly_demo.ts",
+        "./src/scenes/three_point_dolly/three_point_dolly.ts",
       ],
     }),
     ffmpeg(),
