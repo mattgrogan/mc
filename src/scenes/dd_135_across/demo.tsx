@@ -48,8 +48,12 @@ export default makeScene2D(function* (view) {
         opacity={0}
         scale={0.6}
       />
-      <CrapsWinConditions ref={winConds} opacity={0} width={180} height={900} x={830} lineWidth={3} stroke={Grays.GRAY1}
-
+      
+      <CrapsWinConditions 
+        ref={winConds}
+        opacity={0} 
+        x={650}
+        tableProps={{ lineWidth: 3, stroke: Grays.GRAY1, width:200, height: 900 }}
       />
     </Layout>
   );
