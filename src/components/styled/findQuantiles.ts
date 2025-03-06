@@ -50,7 +50,7 @@ export function getQuantileData(
   return data;
 }
 
-export function getQuantile(id: string, source: any, quantile: number) {
+export function getQuantile(id: string, source: any, quantile: number): number {
   return source.find(
     (stat: any) => stat.ID === id && stat.QUANTILE === quantile
   ).VALUE;

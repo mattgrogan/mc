@@ -9,17 +9,28 @@ import {
   TxtProps,
   initial,
   signal,
+  Node,
+  RectProps,
+  Rect,
 } from "@motion-canvas/2d";
 import {
   PossibleVector2,
   SignalValue,
   SimpleSignal,
+  SimpleVector2Signal,
   TimingFunction,
   Vector2,
   all,
   easeInOutExpo,
+  makeRef,
+  makeRefs,
 } from "@motion-canvas/core";
-import { AxisDirection, PlotAxis, TickLabelProps } from "./PlotAxis";
+import {
+  AxisDirection,
+  PlotAxis,
+  PlotAxisProps,
+  TickLabelProps,
+} from "./PlotAxis";
 import { PlotBox } from "./PlotBox";
 
 export interface PlotProps extends LayoutProps {
@@ -27,8 +38,8 @@ export interface PlotProps extends LayoutProps {
   xMax?: SignalValue<number>;
   yMin?: SignalValue<number>;
   yMax?: SignalValue<number>;
-  xAxisProps?: SignalValue<LineProps>;
-  yAxisProps?: SignalValue<LineProps>;
+  xAxisProps?: SignalValue<PlotAxisProps>;
+  yAxisProps?: SignalValue<PlotAxisProps>;
   xTickProps?: SignalValue<LineProps>;
   yTickProps?: SignalValue<LineProps>;
   xLabelProps?: SignalValue<TickLabelProps>;
@@ -172,10 +183,10 @@ export class Plot extends Layout {
       lineWidth: 20,
       stroke: "green",
       lineCap: "square",
+      tickLength: 20,
       ...this.xAxisProps(),
       plot: this,
       dir: AxisDirection.X,
-      tickLength: 20,
       tickProps: {
         ...this.xTickProps(),
       },
@@ -375,6 +386,42 @@ export class Plot extends Layout {
 
     return line;
   }
+
+  // public cToPLine(
+  //   cStart: PossibleVector2,
+  //   end: SimpleVector2Signal<Layout>,
+  //   startVerticalOffset: number, // vertical change from start
+  //   endVerticalOffset: number, // vertical change from end
+  //   horizontalOffset: number, // horizontal change
+  //   props: LineProps = {}
+  // ): Line {
+  //   /**
+  //    * Create a line between the given coordinates.
+  //    * The first coordinate is in plot space.
+  //    * The second coordinate (end) is in local space
+  //    */
+
+  //   const endVector = () => new Vector2(end());
+
+  //   const vectorCStart = new Vector2(cStart);
+  //   const start = () =>
+  //     this.c2p([vectorCStart.x, vectorCStart.y], PlotSpace.LOCAL);
+
+  //   // First points move vertically
+  //   const p1 = () => start().addY(startVerticalOffset);
+  //   const p4 = () => endVector().addY(endVerticalOffset);
+
+  //   const p2 = () => p1().addX(horizontalOffset);
+  //   const p3 = () => new Vector2([p2().x, p4().y]);
+
+  //   const line = new Line({
+  //     ...props,
+  //     points: [start, p1, p2, p3, p4, endVector],
+  //   });
+  //   this.add(line);
+
+  //   return line;
+  // }
 
   public text(c: PossibleVector2, props: TxtProps = {}): Txt {
     /**

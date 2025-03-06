@@ -55,8 +55,8 @@ export interface TickLabelProps extends TxtProps {
 }
 
 export interface PlotAxisProps extends LineProps {
-  plot: Plot;
-  dir: AxisDirection;
+  plot?: Plot;
+  dir?: AxisDirection;
   axisLineWidth?: number;
   tickLength?: number;
   tickProps?: LineProps;
@@ -185,6 +185,8 @@ export class PlotAxis extends Line {
       points: [
         [0, this.tickLength() / 2],
         [0, -this.tickLength() / 2],
+        // [0, 0],
+        // [0, this.tickLength()],
       ],
       ...this.tickProps(),
     });
@@ -236,7 +238,10 @@ export class PlotAxis extends Line {
 
     const label = tickLabelPrototype.clone();
 
-    const padding = defaults.lineToLabelPadding;
+    let padding = defaults.lineToLabelPadding;
+    if (this.tickLabelProps().lineToLabelPadding != null) {
+      padding = this.tickLabelProps().lineToLabelPadding;
+    }
 
     if (this.dir() === AxisDirection.X) {
       label.absolutePosition(() => this.plot().xAxisC2P(where).addY(padding));

@@ -83,7 +83,7 @@ export class CrapsBets extends Layout {
   }
 
   public *removeBet(where: c) {
-    useLogger().debug("Removing chip from " + where.toString());
+    // useLogger().debug("Removing chip from " + where.toString());
     const chip = this.chips[where];
 
     if (chip === undefined) {
