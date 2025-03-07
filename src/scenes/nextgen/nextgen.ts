@@ -10,6 +10,8 @@ import "../../global.css";
 // import DD_TOC_07_Bankroll_Survival from "../titles/DD_TOC_07_Bankroll_Survival?scene";
 // import DD_TOC_08_Strategy_Score from "../titles/DD_TOC_08_Strategy_Score?scene";
 
+import Craps_Shooter from "./Craps_Shooter?scene";
+
 import DD_20_Simulation from "./DD_20_Simulation?scene";
 
 import DD_30_Dice_Throws from "./DD_30_Dice_Throws?scene";
@@ -28,6 +30,7 @@ import DD_70_Bankroll_Survival from "./DD_70_Bankroll_Survival?scene";
 
 export default makeProject({
   scenes: [
+    Craps_Shooter,
     // DD_TOC_01_Strategy,
     // DD_TOC_02_Simulation,
 
@@ -39,7 +42,7 @@ export default makeProject({
     // DD_32_Dice_Rolls_Per_Shooter,
 
     // // DD_TOC_04_House_Take_And_Edge,
-    DD_40_House_Take_And_Edge,
+    // DD_40_House_Take_And_Edge,
 
     // // DD_TOC_05_Won_Lost_By_Shooter,
     // DD_50_Outcomes_Per_Shooter,
@@ -47,7 +50,7 @@ export default makeProject({
 
     // // DD_TOC_06_Won_Lost_By_Session,
     // DD_60_Outcomes_Per_Session,
-    DD_61_Won_Lost_Per_Session,
+    // DD_61_Won_Lost_Per_Session,
 
     // DD_TOC_07_Bankroll_Survival,
     // DD_70_Bankroll_Survival,
