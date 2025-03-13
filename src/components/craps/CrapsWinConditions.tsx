@@ -160,6 +160,20 @@ export class CrapsWinConditions extends Layout {
     highlighter().remove();
   }
 
+  /*
+  * This method converts the throw values array object to a simple array where the throw value is the index
+  * and the winloss value is the data at that index.
+  * 
+  * N:B  The throw value is converted by substracting 2.         5   ->   index 3.        10   -> index 8.   5H  -> index 3.
+  *   
+  * 
+  * example.
+  *   input:
+  *     data: [ { throw: 5, winloss: 30 },  { throw: 3, winloss: 40 }, { throw: 6, winloss: 70 }]
+  *
+  * 
+  *   result: [ undefined, 40, undefined, 30, 70 ]
+  */
   private indexByThrowValues(data: { throw: string; winloss: number }[], useHardPattern: boolean = false): number[] {
     const result = [];
 
