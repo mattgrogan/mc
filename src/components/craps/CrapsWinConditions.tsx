@@ -20,8 +20,6 @@ export interface CrapsWinConditionsProps extends LayoutProps {
   labelProps?: TxtProps;
   extensionWidth?: SignalValue<number>;
   valueColumnWidth?: SignalValue<Length>;
-  valueCellWidth?: SignalValue<Length>;
-  valueCellHeight?: SignalValue<Length>;
 }
 
 export class CrapsWinConditions extends Layout {
@@ -51,20 +49,6 @@ export class CrapsWinConditions extends Layout {
   @initial(100)
   @signal()
   public declare readonly valueColumnWidth: SimpleSignal<Length, this>;
-
-  /*
-  * Width of individual cells rect
-  */
-  @initial(50)
-  @signal()
-  public declare readonly valueCellWidth: SimpleSignal<Length, this>;
-
-  /*
-  * Height of individual cells rect
-  */
-  @initial(50)
-  @signal()
-  public declare readonly valueCellHeight: SimpleSignal<Length, this>;
 
   public declare readonly labelColumnRect: Rect;
 
@@ -103,8 +87,8 @@ export class CrapsWinConditions extends Layout {
           <Rect width={this.valueColumnWidth} height={"100%"} layout direction={"column"}>
             {
               this.values.map((v) => (
-                <Rect ref={makeRef(v, "rect")} fill={grayGradient} grow={1} width={"100%"} height={"100%"} lineWidth={2} stroke={Grays.GRAY4} justifyContent={"end"} alignItems={"center"} padding={10}>
-                  <RollText width={this.valueCellWidth} height={this.valueCellHeight} justifyContent={"center"} alignItems={"center"} initialText={"-"} fill={{r: 0, g: 0, b: 0, a: .1 }} txtProps={{ ...PoppinsWhite, textAlign: "right", fontSize: 25, fill: this.valueColor(v.value()) }} />
+                <Rect ref={makeRef(v, "rect")} fill={grayGradient} grow={1} width={"100%"} height={"100%"} lineWidth={2} stroke={Grays.GRAY4}>
+                  <RollText justifyContent={"center"} alignItems={"center"} initialText={"-"} fill={{r: 0, g: 0, b: 0, a: .1 }} txtProps={{ ...PoppinsWhite, textAlign: "right", fontSize: 25, fill: this.valueColor(v.value()) }} />
                 </Rect>
               ))
             }
@@ -113,45 +97,30 @@ export class CrapsWinConditions extends Layout {
         <Rect width={() => this.extensionWidth()} height={tableProps.height} layout direction={"column"} alignItems={"center"} justifyContent={"center"} zIndex={0}>
           {
             this.hardValues.map((v) => (
-              <Rect ref={makeRef(v, "rect")} lineWidth={() => (v.value() ? 1 : 0) * 2 } stroke={Grays.GRAY4} fill={grayGradient} grow={1} width={() => (v.value() ? 1 : 0) * this.extensionWidth()} height={"100%"} justifyContent={"center"} alignItems={"center"}>
-                <RollText layout width={"80%"} height={"80%"} justifyContent={"center"} alignItems={"center"} initialText={"-"} fill={{r: 0, g: 0, b: 0, a: .1 }} txtProps={{ ...PoppinsWhite, textAlign: "right", fontSize: 25, fill: this.valueColor(v.value()) }} ></RollText>
+              <Rect layout ref={makeRef(v, "rect")} lineWidth={() => (v.value() ? 1 : 0) * 2 } stroke={Grays.GRAY4} fill={grayGradient} grow={1} width={() => (v.value() ? 1 : 0) * this.extensionWidth()} height={"100%"}>
+                <RollText justifyContent={"center"} alignItems={"center"} initialText={"-"} fill={{r: 0, g: 0, b: 0, a: .1 }} txtProps={{ ...PoppinsWhite, textAlign: "right", fontSize: 25, fill: this.valueColor(v.value()) }} ></RollText>
               </Rect>
             ))
           }
         </Rect>
       </>
-    )
+    );
+
+    this.hardValues.forEach((x) => x.rect.findFirst(is(Rect)).size(x.rect.size))
+    this.values.forEach((x) => x.rect.findFirst(is(Rect)).size(x.rect.size))
   }
 
   public *update(data: { throw: string; winloss: number }[]) {
     yield* this.reset();
-    const valuesArr = data.reduce<Array<number>>((acc, val) => {
-      const t = (val.throw.match(/^([2-9]|1[0-2])E?$/) || [])[1];
-      if (!t) return acc;
-      acc[Number(t) - 2] = val.winloss;
-      return acc;
-    }, []);
 
-    const newValues = data.reduce<{ data: number, winloss: number }[]>((acc, val) => {
-      const t = (val.throw.match(/^([2-9]|1[0-2])E?$/) || [])[1];
-      if (!t) return acc;
-      acc.push({ data: Number(t) - 2, winloss: val.winloss });
-      return acc;
-    }, []);
-
-    const newHardValues = data.reduce<{ data: number, winloss: number }[]>((acc, val) => {
-      const t = (val.throw.match(/^([2-9]|1[0-2])H$/) || [])[1];
-      if (!t || (valuesArr[Number(t) - 2] && valuesArr[Number(t) - 2] === val.winloss) || (!valuesArr[Number(t) - 2] && this.values[Number(t) - 2].value() === val.winloss)) return acc;
-      acc.push({ data: Number(t) - 2, winloss: val.winloss });
-      return acc;
-    },
-      []
-    );
+    const newValues = this.indexByThrowValues(data);
+    const newHardValues = this.indexByThrowValues(data, true);
+    const filteredCollidingHardValue = newHardValues.map((x, i) => (x && newValues[i] === x) ? undefined : x);
 
     yield* sequence(
       0.05,
-      ...this.updateValuesGenerators(newValues),
-      ...this.updateHardValuesGenerators(newHardValues)
+      ...this.updateValuesGenerators(newValues.map((x, i) => ({ data: i, winloss: x })).filter(x => x.winloss)),
+      ...this.updateHardValuesGenerators(filteredCollidingHardValue.map((x, i) => ({ data: i, winloss: x })).filter(x => x.winloss))
     )
   }
 
@@ -186,9 +155,22 @@ export class CrapsWinConditions extends Layout {
       opacity: .1,
     }
     const highlighter = createRef<Rect>();
-    rect.add(<Rect ref={highlighter} size={0} layout={false} {...props}></Rect>);
+    rect.findFirst(is(Rect)).add(<Rect zIndex={-1} ref={highlighter} size={0} layout={false} {...props}></Rect>);
     yield*  highlighter().size(rect.size(), 1).back(1);
     highlighter().remove();
+  }
+
+  private indexByThrowValues(data: { throw: string; winloss: number }[], useHardPattern: boolean = false): number[] {
+    const result = [];
+
+    const regex = useHardPattern ? /^([2-9]|1[0-2])H$/ : /^([2-9]|1[0-2])E?$/
+    for(let i = 0; i < data.length; i++) {
+      const match = (data[i].throw.match(regex) || [])[1];
+      if (!match) continue;
+
+      result[Number(match) - 2] = data[i].winloss;
+    }
+    return result;
   }
 
   private valueCellAt(diceValue: number): ValueContainer {
