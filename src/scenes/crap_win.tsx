@@ -85,8 +85,8 @@ export default makeScene2D(function* (view) {
   yield* winconditions().update([
     { throw: "2", winloss: 10 },
     { throw: "3", winloss: 10 },
-    { throw: "4E", winloss: 0 },
-    { throw: "4H", winloss: 0 },
+    { throw: "4E", winloss: 50 },
+    { throw: "4H", winloss: 200 },
     { throw: "5", winloss: 0 },
     { throw: "6E", winloss: -49 },
     { throw: "6H", winloss: 149 },
