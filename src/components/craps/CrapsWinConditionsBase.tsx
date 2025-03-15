@@ -1,7 +1,6 @@
 import { Rect, RectProps, Txt, signal, initial, LayoutProps, TxtProps, Layout, is } from "@motion-canvas/2d";
-import { DEFAULT, Direction, sequence, SignalValue, SimpleSignal, ThreadGenerator, createSignal, createRef } from "@motion-canvas/core";
-import { Bright, Grays, PoppinsWhite } from "../../styles";
-import { RollText } from "../../utils/RollText";
+import { Direction, sequence, SignalValue, SimpleSignal, ThreadGenerator, createSignal, createRef } from "@motion-canvas/core";
+import { Bright, grayGradient, Grays, PoppinsWhite } from "../../styles";
 
 type ValueContainer = {
   /**
@@ -16,10 +15,16 @@ type ValueContainer = {
 }
 
 export interface CrapsWinConditionsBaseProps extends LayoutProps {
-  // labelProps?: TxtProps;
   tableProps: RectProps;
   labelProps?: TxtProps;
+  labelCellRectProps?: RectProps;
+  easyValueTxtProps?: TxtProps;
+  hardValueTxtProps?: TxtProps;
+  easyCellRectProps?: RectProps;
+  hardCellRectProps?: RectProps;
   extensionLength?: SignalValue<number>;
+  easyAnimationDirection?: SignalValue<Direction>
+  hardAnimationDirection?: SignalValue<Direction>
 }
 
 export abstract class CrapsWinConditionsBase extends Layout {
@@ -27,6 +32,15 @@ export abstract class CrapsWinConditionsBase extends Layout {
   @initial(100)
   @signal()
   public declare readonly extensionLength: SimpleSignal<number, this>
+
+  @initial(Direction.Right)
+  @signal()
+  public declare readonly easyAnimationDirection: SimpleSignal<Direction, this>
+
+  @initial(Direction.Right)
+  @signal()
+  public declare readonly hardAnimationDirection: SimpleSignal<Direction, this>
+
 
   /*
   * Column Or Row values for easy throws.
@@ -49,20 +63,46 @@ export abstract class CrapsWinConditionsBase extends Layout {
     ...PoppinsWhite
   };
 
+  protected readonly defaultValueTxtProps: TxtProps = {
+    ...PoppinsWhite, textAlign: "right", fontSize: 25,
+  }
+
+  protected readonly defaultCellRectProps: RectProps = {
+    fill: grayGradient,
+    stroke: Grays.GRAY4,
+    lineWidth: 2
+  }
+
   public constructor(props?: CrapsWinConditionsBaseProps) {
-    const { tableProps, labelProps, ...others } = props;
+    const {
+      tableProps,
+      labelProps,
+      labelCellRectProps,
+      easyValueTxtProps,
+      hardValueTxtProps,
+      easyCellRectProps,
+      hardCellRectProps,
+      ...others 
+  } = props;
     super({
       ...others,
       layout: true,
       gap: 2
     });
-    this.extensionLength(0);
-    this.addTable(tableProps, labelProps);
+    this.addTable(tableProps, labelProps, labelCellRectProps, easyValueTxtProps, hardValueTxtProps, easyCellRectProps, hardCellRectProps);
     this.hardValues.forEach((x) => x.rect?.findFirst(is(Rect))?.size(x.rect.size))
     this.values.forEach((x) => x.rect?.findFirst(is(Rect))?.size(x.rect.size))
   }
 
-  abstract addTable(tableProps: RectProps, labelProps: TxtProps): void;
+  abstract addTable(
+    tableProps: RectProps,
+    labelProps: TxtProps,
+    labelCellRectProps: RectProps,
+    easyValueTxtProp: TxtProps,
+    hardValueTxtProp: TxtProps,
+    easyCellRectProps: RectProps,
+    hardCellRectProps: RectProps
+  ): void;
 
   private valueCellAt(diceValue: number): ValueContainer {
     return this.values[diceValue - 2]
@@ -99,10 +139,11 @@ export abstract class CrapsWinConditionsBase extends Layout {
   *     data: [ { throw: 5, winloss: 30 },  { throw: 3, winloss: 40 }, { throw: 6, winloss: 70 }]
   *
   * 
-  *   result: [ undefined, 40, undefined, 30, 70 ]
+  * 
+  *   result: [ 0, 40, 0, 30, 70, 0, 0, 0, 0, 0, 0 ]
   */
   private indexByThrowValues(data: { throw: string; winloss: number }[], useHardPattern: boolean = false): number[] {
-    const result = [];
+    const result = Array.from({ length: 11 }, (_, i) => 0);
 
     const regex = useHardPattern ? /^([2-9]|1[0-2])H$/ : /^([2-9]|1[0-2])E?$/
     for (let i = 0; i < data.length; i++) {
@@ -114,34 +155,20 @@ export abstract class CrapsWinConditionsBase extends Layout {
     return result;
   }
 
-  private updateValuesGenerators(data: { data: number; winloss: number }[]): ThreadGenerator[] {
-    return data.map(x => this.updateRectGenerator(x.data, x.winloss))
-  }
-  
-  private updateHardValuesGenerators(data: { data: number; winloss: number }[]): ThreadGenerator[] {
-    const result = [this.extensionLength(0, .1)]
-
-    if (!data.length) return result;
-    return [
-      ...result,
-      this.extensionLength(DEFAULT, .1),
-      ...data.map(x => this.updateRectGenerator(x.data, x.winloss, true))
-    ]
+  private generatorsForEasyCellsUpdate(data: { data: number; winloss: number }[]): ThreadGenerator[] {
+    return data.map(x => this.generatorForCellUpdate(x.data, x.winloss, false))
   }
 
-  private updateRectGenerator(index: number, winloss: number, isHard: boolean = false): ThreadGenerator {
-    const val = isHard ? this.hardValues[index] : this.values[index];
-    val.value(winloss)
-    return val.rect.findFirst(is(RollText)).next(this.formatValue(winloss), Direction.Right, { fill: this.valueColor(winloss) })
+  private generatorsForHardCellsUpdate(data: { data: number; winloss: number }[]): ThreadGenerator[] {
+    return data.map(x => this.generatorForCellUpdate(x.data, x.winloss, true))
   }
 
-  private *reset() {
+  protected abstract generatorForCellUpdate(index: number, winloss: number, isHard: boolean): ThreadGenerator;
+    
+  public *reset() {
     yield* sequence(0.05,
-      ...this.values.map(x => x.value(0, .5)),
-      ...this.hardValues.map(x => x.value(0, .5)),
-      ...this.values.map(x => x.rect.findFirst(is(RollText)).next("-", Direction.Right, { fill: this.valueColor(0) })),
-      ...this.hardValues.map(x => x.rect.findFirst(is(RollText)).next("-", Direction.Right, { fill: this.valueColor(0) })),
-      this.extensionLength(0, .1)
+      ...this.values.map((_, i) => this.generatorForCellUpdate(i, 0, false)),
+      ...this.hardValues.map((_, i) => this.generatorForCellUpdate(i, 0, true))
     )
   }
 
@@ -182,16 +209,21 @@ export abstract class CrapsWinConditionsBase extends Layout {
   }
 
   public *update(data: { throw: string; winloss: number }[]) {
-    yield* this.reset();
-
     const newValues = this.indexByThrowValues(data);
     const newHardValues = this.indexByThrowValues(data, true);
-    const filteredCollidingHardValue = newHardValues.map((x, i) => (x && newValues[i] === x) ? undefined : x);
+    const filteredCollidingHardValue = newHardValues.map((x, i) => (x && newValues[i] === x) ? 0 : x);
+    const closingHardValue = filteredCollidingHardValue.map((x, i) => !x && this.hardValues[i].value() ? 0 : undefined);
+
+    const allGenerators = [
+      ...this.generatorsForHardCellsUpdate(closingHardValue.map((x, i) => ({ data: i, winloss: x })).filter(x => x.winloss === 0)),
+      ...this.generatorsForEasyCellsUpdate(newValues.map((x, i) => ({ data: i, winloss: x }))),
+      ...this.generatorsForHardCellsUpdate(filteredCollidingHardValue.map((x, i) => ({ data: i, winloss: x })))
+    ]
 
     yield* sequence(
       0.05,
-      ...this.updateValuesGenerators(newValues.map((x, i) => ({ data: i, winloss: x })).filter(x => x.winloss)),
-      ...this.updateHardValuesGenerators(filteredCollidingHardValue.map((x, i) => ({ data: i, winloss: x })).filter(x => x.winloss))
+      ...allGenerators
     )
   }
+
 }
