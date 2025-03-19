@@ -1,6 +1,6 @@
 
 import { makeScene2D } from "@motion-canvas/2d";
-import { chain, createRef, Direction, waitFor } from "@motion-canvas/core";
+import { chain, createRef, Direction, waitFor, easeInQuad } from "@motion-canvas/core";
 import { CrapsWinConditions } from "../components/craps/CrapsWinConditions";
 import { grayGradient, Grays } from "../styles";
 
@@ -92,7 +92,7 @@ export default makeScene2D(function* (view) {
   // );
 
   // TODO: How to change the speed of the highlight?
-  yield* winconditions().highlight(2, 4, { fill: "yellow", opacity: 1 });
+  yield* winconditions().highlight(2, 4, { fill: "yellow", opacity: 1, time: 2, timingFunction: easeInQuad });
 
   yield* winconditions().update([
     { throw: "2", winloss: 10 },

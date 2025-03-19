@@ -1,5 +1,5 @@
-import { Rect, RectProps, Txt, signal, initial, LayoutProps, TxtProps, Layout, is } from "@motion-canvas/2d";
-import { Direction, sequence, SignalValue, SimpleSignal, ThreadGenerator, createSignal, createRef } from "@motion-canvas/core";
+import { Rect, RectProps, Txt, signal, initial, LayoutProps, TxtProps, Layout, is, NodeProps } from "@motion-canvas/2d";
+import { Direction, sequence, SignalValue, SimpleSignal, ThreadGenerator, createSignal, TimingFunction, InterpolationFunction, Vector2 } from "@motion-canvas/core";
 import { Bright, grayGradient, Grays, PoppinsWhite } from "../../styles";
 
 type ValueContainer = {
@@ -104,12 +104,31 @@ export abstract class CrapsWinConditionsBase extends Layout {
     hardCellRectProps: RectProps
   ): void;
 
+  protected abstract generatorForCellUpdate(index: number, winloss: number, isHard: boolean): ThreadGenerator;
+
+  protected abstract highlightCell(
+    cell: Rect,
+    props?: NodeProps,
+    time?: number,
+    timingFunction?: TimingFunction,
+    interpolationFunction?: InterpolationFunction<unknown, any[]>
+  ): ThreadGenerator
+
   private valueCellAt(diceValue: number): ValueContainer {
     return this.values[diceValue - 2]
   }
 
   private hardValueCellAt(diceValue: number): ValueContainer {
     return this.hardValues[diceValue - 2]
+  }
+
+  private valueCellFromDiceRoll(diceOne: number, diceTwo: number): ValueContainer {
+    if (diceOne === diceTwo) {
+      const valueCell = this.hardValueCellAt(diceOne + diceTwo);
+      if (valueCell.value()) return valueCell
+    }
+    
+    return this.valueCellAt(diceOne + diceTwo);
   }
 
 
@@ -162,8 +181,6 @@ export abstract class CrapsWinConditionsBase extends Layout {
   private generatorsForHardCellsUpdate(data: { data: number; winloss: number }[]): ThreadGenerator[] {
     return data.map(x => this.generatorForCellUpdate(x.data, x.winloss, true))
   }
-
-  protected abstract generatorForCellUpdate(index: number, winloss: number, isHard: boolean): ThreadGenerator;
     
   public *reset() {
     yield* sequence(0.05,
@@ -172,16 +189,21 @@ export abstract class CrapsWinConditionsBase extends Layout {
     )
   }
 
-  public *highlight(d1: number, d2: number, highlighterProp?: RectProps) {
-    const rect = d1 === d2 && this.hardValues[d1 + d2 - 2].value() ? this.hardValues[d1 + d2 - 2].rect : this.values[d1 + d2 - 2].rect;
-    const props = highlighterProp ?? {
-      fill: rect.findFirst(is(Txt)).fill(),
-      opacity: .1,
+  public *highlight<T extends NodeProps>(
+    d1: number, 
+    d2: number,
+    defaultHighlighterProp?:  T & { time?: number, timingFunction?: TimingFunction, interpolationFunction?: InterpolationFunction<unknown, any[]> },
+    customCellHighlighter?: (cell: Rect) => ThreadGenerator
+  ) {
+    const rect = this.valueCellFromDiceRoll(d1, d2).rect;
+    if (customCellHighlighter) {
+      yield* customCellHighlighter(rect);
+      return;
     }
-    const highlighter = createRef<Rect>();
-    rect.findFirst(is(Rect)).add(<Rect zIndex={-1} ref={highlighter} size={0} layout={false} {...props}></Rect>);
-    yield* highlighter().size(rect.size(), 1).back(1);
-    highlighter().remove();
+
+    const { time, timingFunction, interpolationFunction, ...props } = defaultHighlighterProp || {};
+
+    yield* this.highlightCell(rect, defaultHighlighterProp ? props: undefined, time, timingFunction, interpolationFunction);
   }
 
   public valueCellRectAt(diceValue: number): Rect {

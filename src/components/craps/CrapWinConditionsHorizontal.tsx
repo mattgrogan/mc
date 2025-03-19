@@ -1,4 +1,4 @@
-import { all, delay, Direction, makeRef, range, SignalValue, SimpleSignal, ThreadGenerator, unwrap } from "@motion-canvas/core";
+import { all, createRef, delay, Direction, InterpolationFunction, makeRef, range, SignalValue, SimpleSignal, ThreadGenerator, TimingFunction, unwrap, Vector2 } from "@motion-canvas/core";
 import { CrapsWinConditionsBase, CrapsWinConditionsBaseProps } from "./CrapsWinConditionsBase";
 import { initial, is, Length, Rect, RectProps, signal, Txt, TxtProps } from "@motion-canvas/2d";
 import { RollText } from "../../utils/RollText";
@@ -42,7 +42,7 @@ export class CrapsWinConditionsHorizontal extends CrapsWinConditionsBase {
 
     return val.rect.findFirst(is(RollText)).next(this.formatValue(winloss), this.easyAnimationDirection(), { fill: this.valueColor(winloss) });
   }
-  
+
   addTable(tableProps: RectProps, labelProps: TxtProps, labelCellRectProps: RectProps, easyValueTxtProp: TxtProps, hardValueTxtProp: TxtProps, easyCellRectProps: RectProps, hardCellRectProps: RectProps): void {
     labelProps = labelProps ?? this.defaultLabelProps;
     easyValueTxtProp = easyValueTxtProp ?? this.defaultValueTxtProps;
@@ -83,5 +83,17 @@ export class CrapsWinConditionsHorizontal extends CrapsWinConditionsBase {
         </Rect>
       </>
     );
+  }
+
+  protected *highlightCell(cell: Rect, props?: RectProps, time?: number, timingFunction?: TimingFunction, interpolationFunction?: InterpolationFunction<Vector2, any[]>): ThreadGenerator {
+    props = props ?? {
+      fill: cell.findFirst(is(Txt)).fill(),
+      opacity: .1,
+    } as RectProps
+    time = time ?? 1
+    const highlighter = createRef<Rect>();
+    cell.findFirst(is(Rect)).add(<Rect zIndex={-1} ref={highlighter} size={0} layout={false} {...props}></Rect>);
+    yield* highlighter().size(cell.size(), time, timingFunction, interpolationFunction).back(time, timingFunction, interpolationFunction);
+    highlighter().remove();
   }
 }

@@ -1,5 +1,5 @@
-import { Rect, RectProps, Txt, Length, initial, signal, TxtProps, is } from "@motion-canvas/2d";
-import { all, delay, Direction, makeRef, range, SignalValue, SimpleSignal, ThreadGenerator, unwrap } from "@motion-canvas/core";
+import { Rect, RectProps, Txt, Length, initial, signal, TxtProps, is, NodeProps } from "@motion-canvas/2d";
+import { all, createRef, delay, Direction, InterpolationFunction, makeRef, range, SignalValue, SimpleSignal, ThreadGenerator, TimingFunction, unwrap, Vector2 } from "@motion-canvas/core";
 import { grayGradient, Grays } from "../../styles";
 import { RollText } from "../../utils/RollText";
 import { CrapsWinConditionsBase, CrapsWinConditionsBaseProps } from "./CrapsWinConditionsBase";
@@ -81,5 +81,18 @@ export class CrapsWinConditions extends CrapsWinConditionsBase {
         </Rect>
       </>
     );
+  }
+
+  protected *highlightCell(cell: Rect, props?: NodeProps, time?: number, timingFunction?: TimingFunction, interpolationFunction?: InterpolationFunction<Vector2, any[]>): ThreadGenerator {
+    props = props ?? {
+      fill: "yellow",
+      opacity: .1,
+    } as RectProps
+
+    time = time ?? 1
+    const highlighter = createRef<Rect>();
+    cell.findFirst(is(Rect)).add(<Rect zIndex={-1} ref={highlighter} size={0} layout={false} {...props}></Rect>);
+    yield* highlighter().size(cell.size(), time, timingFunction, interpolationFunction).back(time, timingFunction, interpolationFunction);
+    highlighter().remove();
   }
 }
