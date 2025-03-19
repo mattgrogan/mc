@@ -1,4 +1,4 @@
-import { Rect, RectProps, Txt, signal, initial, LayoutProps, TxtProps, Layout, is, NodeProps } from "@motion-canvas/2d";
+import { Rect, RectProps, Txt, signal, initial, LayoutProps, TxtProps, Layout, is, NodeProps, Node } from "@motion-canvas/2d";
 import { Direction, sequence, SignalValue, SimpleSignal, ThreadGenerator, createSignal, TimingFunction, InterpolationFunction, Vector2 } from "@motion-canvas/core";
 import { Bright, grayGradient, Grays, PoppinsWhite } from "../../styles";
 
@@ -181,6 +181,11 @@ export abstract class CrapsWinConditionsBase extends Layout {
   private generatorsForHardCellsUpdate(data: { data: number; winloss: number }[]): ThreadGenerator[] {
     return data.map(x => this.generatorForCellUpdate(x.data, x.winloss, true))
   }
+
+  private setCellZIndex(rect: Rect, value: number) {
+    rect.findAncestor(is(Node)).zIndex(value);
+    rect.zIndex(value)
+  }
     
   public *reset() {
     yield* sequence(0.05,
@@ -196,14 +201,17 @@ export abstract class CrapsWinConditionsBase extends Layout {
     customCellHighlighter?: (cell: Rect) => ThreadGenerator
   ) {
     const rect = this.valueCellFromDiceRoll(d1, d2).rect;
+    this.setCellZIndex(rect, 10)
     if (customCellHighlighter) {
       yield* customCellHighlighter(rect);
+      this.setCellZIndex(rect, 0)
       return;
     }
 
     const { time, timingFunction, interpolationFunction, ...props } = defaultHighlighterProp || {};
 
     yield* this.highlightCell(rect, defaultHighlighterProp ? props: undefined, time, timingFunction, interpolationFunction);
+    this.setCellZIndex(rect, 10)
   }
 
   public valueCellRectAt(diceValue: number): Rect {
