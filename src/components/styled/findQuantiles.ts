@@ -2,14 +2,14 @@ const default_formatter = (n: number) => {
   return n.toFixed(0);
 };
 
-export const plusCommaFormmatter = (n: number) => {
+export const plusCommaFormmatter = (n: number, decimals: number = 0) => {
   /**
    * Add a leading plus to positive numbers
    * and comma separator.
    */
 
   let nFormatted = n.toLocaleString("en-US", {
-    maximumFractionDigits: 0,
+    maximumFractionDigits: decimals,
   });
 
   if (n > 0) {

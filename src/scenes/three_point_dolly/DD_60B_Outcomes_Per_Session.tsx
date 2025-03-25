@@ -49,7 +49,7 @@ const plotAreaFill = new Gradient({
 });
 
 export default makeScene2D(function* (view) {
-  view.fill(Theme.BG);
+  // view.fill(Theme.BG);
 
   params.audioPlayer.woosh();
   // yield* slideTransition(Direction.Right);

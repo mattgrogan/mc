@@ -55,7 +55,7 @@ const TITLE = "HOW MUCH MONEY DID THE PLAYERS WIN OR LOSE?";
 const SUBTITLE = "BY SESSION";
 
 // PLOT OPTIONS
-const X_AXIS_MIN = -75000;
+const X_AXIS_MIN = -80000;
 const X_AXIS_MAX = 30000;
 const X_AXIS_STEP = 5000;
 const Y_AXIS_MAX = 7;
@@ -97,7 +97,7 @@ const DEFAULTS_LABEL_AND_POINTER = {
 };
 
 export default makeScene2D(function* (view) {
-  view.fill(Theme.BG);
+  // view.fill(Theme.BG);
   yield* waitFor(1);
 
   // CONTAINER
@@ -119,21 +119,21 @@ export default makeScene2D(function* (view) {
     </Camera>
   );
 
-  // TITLE BOX
-  const plotTitle = makeRefs<typeof TitleBox>();
-  container().add(
-    <TitleBox
-      refs={plotTitle}
-      fontSize={100}
-      nodeOpacity={0}
-      rectProps={{ fill: sessionGradient, stroke: Grays.GRAY1 }}
-      headerProps={{ ...PoppinsWhite }}
-      subheadProps={{ ...PoppinsWhite }}
-    >
-      {TITLE}
-    </TitleBox>
-  );
-  plotTitle.subhead.text(SUBTITLE);
+  // // TITLE BOX
+  // const plotTitle = makeRefs<typeof TitleBox>();
+  // container().add(
+  //   <TitleBox
+  //     refs={plotTitle}
+  //     fontSize={100}
+  //     nodeOpacity={0}
+  //     rectProps={{ fill: sessionGradient, stroke: Grays.GRAY1 }}
+  //     headerProps={{ ...PoppinsWhite }}
+  //     subheadProps={{ ...PoppinsWhite }}
+  //   >
+  //     {TITLE}
+  //   </TitleBox>
+  // );
+  // plotTitle.subhead.text(SUBTITLE);
 
   // PLOT AREA
   const plotArea = makeRefs<typeof PlotArea>();
@@ -188,10 +188,10 @@ export default makeScene2D(function* (view) {
 
   // START DRAWING THE COMPONENTS HERE
 
-  // Draw the title
-  yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
-  yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
-  yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
+  // // Draw the title
+  // yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
 
   // yield* waitFor(1);
 
@@ -347,6 +347,8 @@ export default makeScene2D(function* (view) {
     offsetX: -75,
   });
 
+
+
   // MOST LOST
   const mostLostValue = getQuantile(QUANTILES_ID, params.quantiles, 0);
   const mostLost = createLabelAndPointer({
@@ -355,7 +357,7 @@ export default makeScene2D(function* (view) {
     target: [mostLostValue, 0],
     label: "MOST LOST",
     value: plusCommaFormmatter(mostLostValue),
-    offsetX: 0,
+    offsetX: 90,
   });
 
   // MOST WON
@@ -366,7 +368,7 @@ export default makeScene2D(function* (view) {
     target: [mostWonValue, 0],
     label: "MOST WON",
     value: plusCommaFormmatter(mostWonValue),
-    offsetX: -100,
+    offsetX: -60,
   });
 
   // 25th PERCENTILE
@@ -374,7 +376,7 @@ export default makeScene2D(function* (view) {
   const p25 = createLabelAndPointer({
     ...DEFAULTS_LABEL_AND_POINTER,
     plot: plot,
-    target: [p25Value, Y_AXIS_MAX * 0.95],
+    target: [p25Value, Y_AXIS_MAX * 0.925],
     label: "25TH PERCENTILE",
     value: plusCommaFormmatter(p25Value),
     offsetX: -80,
@@ -390,7 +392,7 @@ export default makeScene2D(function* (view) {
   const p75 = createLabelAndPointer({
     ...DEFAULTS_LABEL_AND_POINTER,
     plot: plot,
-    target: [p75Value, Y_AXIS_MAX * 0.95],
+    target: [p75Value, Y_AXIS_MAX * 0.925],
     label: "75TH PERCENTILE",
     value: plusCommaFormmatter(p75Value),
     offsetX: 80,
@@ -463,7 +465,9 @@ export default makeScene2D(function* (view) {
   // ************************
   // COUNT
   yield FadeIn(countRefs.layout, 0.6, easeOutCubic, [0, 50]);
-
+  
+  yield* zeroLine.end(1, 0.6, easeOutCubic);
+  
   yield sequence(0.1, ...bars.map((line) => line.end(1, 1, easeOutCubic)));
   yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 0.6)));
 
@@ -474,7 +478,6 @@ export default makeScene2D(function* (view) {
   if (maxValue < X_AXIS_MAX) {
     yield* upperRangeBox.opacity(0.2, 0.6, linear);
   }
-  yield* zeroLine.end(1, 0.6, easeOutCubic);
 
   // MEDIAN
   yield* FadeIn(median.valueLabel, 0.6, easeOutCubic, [0, 50]);
@@ -484,62 +487,57 @@ export default makeScene2D(function* (view) {
   yield* FadeIn(avg.valueLabel, 0.6, easeOutCubic, [0, 50]);
   yield* avg.arrow.end(1, 1, easeInOutCubic);
 
-  // MOST LOST
-  yield* FadeIn(mostLost.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* mostLost.arrow.end(1, 1, easeInOutCubic);
-
+  yield* waitFor(1)
+  camera().save();
+  yield camera().position([550, -130], 2, easeInOutCubic);
+  yield camera().zoom(1.3, 2, easeInOutCubic);
+  
+  yield* waitFor(1)
+  
+  yield* iqrBoxFill.opacity(0.3, 1);
+  
+  // 25th PERCENTILE
+  yield FadeIn(p25.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield p25.arrow.end(1, 1, easeInOutCubic);
+  
+  // 75th PERCENTILE
+  yield FadeIn(p75.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield* p75.arrow.end(1, 1, easeInOutCubic);
+  
+  yield* waitFor(1)
+  
+  // Middle 90%
+  yield* p90BoxFill.opacity(0.3, 1);
+  
+  // 5th PERCENTILE
+  yield FadeIn(p05.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield p05.arrow.end(1, 1, easeInOutCubic);
+  
+  // 95th PERCENTILE
+  yield FadeIn(p95.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield* p95.arrow.end(1, 1, easeInOutCubic);
+  
+  
+  yield* waitFor(3)
+  yield camera().position([550, 130], 3, easeInOutCubic);
+  yield* waitFor(2)
+  
   // MOST WON
   yield* FadeIn(mostWon.valueLabel, 0.6, easeOutCubic, [0, 50]);
   yield* mostWon.arrow.end(1, 1, easeInOutCubic);
+  
+  yield* camera().position([-1000, 130], 2, easeInOutCubic);
+  
+  // MOST LOST
+  yield FadeIn(mostLost.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield mostLost.arrow.end(1, 1, easeInOutCubic);
+  
+  yield camera().restore(5, easeInOutCubic)
+  yield* waitFor(8)
 
-  //////////////////////////////
 
-  // yield* plot().rescale(-1400, -600, 50, 0, Y_AXIS_MAX, 1, 2);
-  // yield* waitFor(2);
-  // yield* plot().rescale(0, X_AXIS_MAX, 50, 0, Y_AXIS_MAX, 1, 2);
-  // yield* waitFor(2);
-  // yield* plot().rescale(
-  //   X_AXIS_MIN,
-  //   X_AXIS_MAX,
-  //   X_AXIS_STEP,
-  //   0,
-  //   Y_AXIS_MAX,
-  //   1,
-  //   2
-  // );
-  // yield* waitFor(2);
 
-  ///////////////////////////////
 
-  camera().save();
-  yield camera().position([-550, 130], 2, easeInOutCubic);
-  yield* camera().zoom(1.3, 2, easeInOutCubic);
-
-  yield* iqrBoxFill.opacity(0.3, 1);
-
-  // 25th PERCENTILE
-  yield* FadeIn(p25.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* p25.arrow.end(1, 1, easeInOutCubic);
-
-  // 75th PERCENTILE
-  yield* FadeIn(p75.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* p75.arrow.end(1, 1, easeInOutCubic);
-
-  // Middle 90%
-  yield* p90BoxFill.opacity(0.3, 1);
-
-  // 5th PERCENTILE
-  yield* FadeIn(p05.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* p05.arrow.end(1, 1, easeInOutCubic);
-
-  // 95th PERCENTILE
-  yield* FadeIn(p95.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* p95.arrow.end(1, 1, easeInOutCubic);
-
-  yield* waitFor(2);
-  yield* camera().restore(2, easeInOutCubic);
-
-  yield* waitFor(2);
 
   // middle 90%
   // Show the middle 90%
@@ -547,6 +545,8 @@ export default makeScene2D(function* (view) {
   yield eraseLabelAndPointer(p75);
   yield eraseLabelAndPointer(p05);
   yield eraseLabelAndPointer(p95);
+  yield iqrBoxFill.opacity(0, 1)
+  yield p90BoxFill.opacity(0, 1)
 
   yield* waitFor(3);
 

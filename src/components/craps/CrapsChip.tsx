@@ -31,10 +31,10 @@ interface iChipColor {
 }
 
 const redChip: iChipColor = {
-  background: "#99000d",
-  outerCircle: "#ef3b2c",
-  innerCircle: "#cb181d",
-  marks: "#cb181d",
+  background: "#7e1e1e",
+  outerCircle: "#bc1017",
+  innerCircle: "#bc1017",
+  marks: "#bc1017",
   text: "#fff",
   textOutline: "#222222",
 };

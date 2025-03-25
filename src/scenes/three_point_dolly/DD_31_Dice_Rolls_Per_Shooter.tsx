@@ -99,7 +99,7 @@ const DEFAULTS_LABEL_AND_POINTER = {
 };
 
 export default makeScene2D(function* (view) {
-  view.fill(Theme.BG);
+  // view.fill(Theme.BG);
   yield* waitFor(1);
 
   // CONTAINER
@@ -191,9 +191,9 @@ export default makeScene2D(function* (view) {
   // START DRAWING THE COMPONENTS HERE
 
   // Draw the title
-  yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
-  yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
-  yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
 
   // yield* waitFor(1);
 
@@ -386,7 +386,7 @@ export default makeScene2D(function* (view) {
     labelRectProps: { fill: MAIN_GRADIENT },
     lineProps: { stroke: BAR_COLOR },
     plot: plot,
-    target: [p25Value, Y_AXIS_MAX * 0.95],
+    target: [p25Value, Y_AXIS_MAX * 0.925],
     label: "25TH PERCENTILE",
     value: p25Value.toFixed(0),
     offsetX: -80,
@@ -404,7 +404,7 @@ export default makeScene2D(function* (view) {
     labelRectProps: { fill: MAIN_GRADIENT },
     lineProps: { stroke: BAR_COLOR },
     plot: plot,
-    target: [p75Value, Y_AXIS_MAX * 0.95],
+    target: [p75Value, Y_AXIS_MAX * 0.925],
     label: "75TH PERCENTILE",
     value: p75Value.toFixed(0),
     offsetX: 80,
@@ -499,57 +499,76 @@ export default makeScene2D(function* (view) {
   }
 
   // // Zoom in on central tendency
-  // camera().save();
-  // yield camera().position([550, 130], 2, easeInOutCubic);
-  // yield* camera().zoom(1.3, 2, easeInOutCubic);
+  camera().save();
+  yield camera().position([-550, 200], 2, easeInOutCubic);
+  yield camera().zoom(1.3, 2, easeInOutCubic);
 
-  // MEDIAN
-  yield* FadeIn(median.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* median.arrow.end(1, 1, easeInOutCubic);
-
-  // MOST WON
-  yield* FadeIn(mostWon.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* mostWon.arrow.end(1, 1, easeInOutCubic);
-
+  yield waitFor(1)
+  
   // AVERAGE
   yield* FadeIn(avg.valueLabel, 0.6, easeOutCubic, [0, 50]);
   yield* avg.arrow.end(1, 1, easeInOutCubic);
-
+  
+  yield waitFor(1)
+  
+  // MEDIAN
+  yield* FadeIn(median.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield* median.arrow.end(1, 1, easeInOutCubic);
+  
+  yield waitFor(1)
+  
+  // MINIMUM
+  yield* FadeIn(mostLost.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield* mostLost.arrow.end(1, 1, easeInOutCubic);
+  
+  yield* waitFor(5)
+  
+  yield* camera().restore(2)
+  
+  // MOST WON
+  yield* FadeIn(mostWon.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield* mostWon.arrow.end(1, 1, easeInOutCubic);
+  
+  yield* waitFor(3)
+  
+  // // Zoom in on central tendency
+  camera().save();
+  yield camera().position([-400,170], 2, easeInOutCubic);
+  yield* camera().zoom(1.3, 2, easeInOutCubic);
+  
   yield* iqrBoxFill.opacity(0.3, 1);
-
+  
   // 25th PERCENTILE
-  yield* FadeIn(p25.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield FadeIn(p25.valueLabel, 0.6, easeOutCubic, [0, 50]);
   yield* p25.arrow.end(1, 1, easeInOutCubic);
-
+  
   // 75th PERCENTILE
-  yield* FadeIn(p75.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield FadeIn(p75.valueLabel, 0.6, easeOutCubic, [0, 50]);
   yield* p75.arrow.end(1, 1, easeInOutCubic);
-
+  
+  yield* waitFor(10)
   // Middle 90%
   yield* p90BoxFill.opacity(0.3, 1);
-
+  
   // 5th PERCENTILE
-  yield* FadeIn(p05.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield FadeIn(p05.valueLabel, 0.6, easeOutCubic, [0, 50]);
   yield* p05.arrow.end(1, 1, easeInOutCubic);
-
+  
   // 95th PERCENTILE
-  yield* FadeIn(p95.valueLabel, 0.6, easeOutCubic, [0, 50]);
+  yield FadeIn(p95.valueLabel, 0.6, easeOutCubic, [0, 50]);
   yield* p95.arrow.end(1, 1, easeInOutCubic);
-
+  
   // // ZOOM OUT
-  // yield* waitFor(2);
-  // yield* camera().restore(2, easeInOutCubic);
-
+  yield* waitFor(2);
+  yield* camera().restore(2, easeInOutCubic);
+  
   // // RESCALE
   // yield* plot().rescale(-50000, 10000, 5000, 0, Y_AXIS_MAX, 10, 2);
   // plot().xAxis.updateTicks(-50000, 10000, 5000, 1);
   // yield lowerRangeBox.opacity(0.2, 1, linear);
+  
+  yield* waitFor(10)
 
-  // MOST LOST
-  yield* FadeIn(mostLost.valueLabel, 0.6, easeOutCubic, [0, 50]);
-  yield* mostLost.arrow.end(1, 1, easeInOutCubic);
-
-  yield* waitFor(2);
 
   // middle 90%
   // Show the middle 90%
@@ -557,6 +576,8 @@ export default makeScene2D(function* (view) {
   yield eraseLabelAndPointer(p75);
   yield eraseLabelAndPointer(p05);
   yield eraseLabelAndPointer(p95);
+  yield iqrBoxFill.opacity(0, 1)
+  yield p90BoxFill.opacity(0, 1)
 
   yield* waitFor(3);
 

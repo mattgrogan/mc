@@ -22,6 +22,7 @@ import {
   waitUntil,
 } from "@motion-canvas/core";
 import {
+  Bright,
   grayGradient,
   Grays,
   PoppinsBlack,
@@ -33,7 +34,10 @@ import { FadeIn } from "../../utils/FadeIn";
 import * as params from "./DD_00_Params";
 
 import { Plot } from "../../components/plot/plot";
-import { commaFormmatter } from "../../components/styled/findQuantiles";
+import {
+  commaFormmatter,
+  plusCommaFormmatter,
+} from "../../components/styled/findQuantiles";
 import { PlotArea } from "../../components/styled/plotArea";
 import { TitleBox } from "../../components/styled/titleBox";
 import { createLabelAndPointer } from "../../components/styled/labelAndPointer";
@@ -43,10 +47,19 @@ const X_AXIS_MAX = 40;
 const X_AXIS_STEP = 100;
 
 const Y_AXIS_MIN = 0;
-const Y_AXIS_MAX = 5;
-const Y_AXIS_STEP = 0.5;
+const Y_AXIS_MAX = 22;
+const Y_AXIS_STEP = 2;
 
 const BETWEEN_SECS = 0.7;
+
+const PLOT_AREA_FILL = Grays.WHITE;
+
+// The total bet for casino's purposes is
+// actually the average bet resolved. So
+// it's adjusted here for the ATS video.
+const TOTAL_BET_ADJUSTED = 15000000;
+const TOTAL_BET = TOTAL_BET_ADJUSTED;
+// const TOTAL_BET = params.data.OVERALL_STATS.PLYR_175.TOTAL_BET
 
 let titleGradient = new Gradient({
   from: [0, -100],
@@ -54,17 +67,6 @@ let titleGradient = new Gradient({
   stops: [
     { offset: 0, color: "#831414" },
     { offset: 1, color: "#6a1010" },
-  ],
-});
-
-const plotAreaFill = new Gradient({
-  type: "linear",
-
-  from: [0, -200],
-  to: [0, 500],
-  stops: [
-    { offset: 0, color: "#d2d2d2" },
-    { offset: 1, color: "#818181" },
   ],
 });
 
@@ -157,7 +159,7 @@ export default makeScene2D(function* (view) {
         ref={rowNodes}
         opacity={0}
       ></Node>
-      {range(5).map((index) => (
+      {range(6).map((index) => (
         <Node
           ref={rowNodes}
           opacity={0}
@@ -205,7 +207,8 @@ export default makeScene2D(function* (view) {
                 {...PoppinsWhite}
                 fill={Grays.BLACK}
                 // text={"100,000"}
-                fontSize={90}
+                fontFamily={"Azeret Mono"}
+                fontSize={80}
                 fontWeight={600}
               ></Txt>
             </Rect>
@@ -215,18 +218,27 @@ export default makeScene2D(function* (view) {
     </Layout>
   );
 
-  rowTitles[0].text("TOTAL BET");
-  rowTitles[1].text("TOTAL WON");
-  rowTitles[2].text("TOTAL LOST");
-  rowTitles[3].text("HOUSE TAKE");
-  rowTitles[4].text("HOUSE EDGE");
+  rowTitles[0].text("TOTAL DROP");
+  rowTitles[1].text("TOTAL BET");
+  rowTitles[2].text("TOTAL WON");
+  rowTitles[3].text("TOTAL LOST");
+  rowTitles[4].text("HOUSE TAKE");
+  rowTitles[5].text("HOUSE EDGE");
 
-  rowValues[0].text(commaFormmatter(params.casinostats[0].TOTAL_BET));
-  rowValues[1].text(commaFormmatter(params.casinostats[0].TOTAL_WON));
-  rowValues[2].text(commaFormmatter(params.casinostats[0].TOTAL_LOST * -1));
-  rowValues[3].text(commaFormmatter(params.casinostats[0].HOUSE_TAKE * -1));
+  rowValues[0].text(commaFormmatter(params.data.OVERALL_STATS.PLYR_175.DROP));
+  rowValues[1].text(commaFormmatter(TOTAL_BET));
+  rowValues[2].text(
+    plusCommaFormmatter(params.data.OVERALL_STATS.PLYR_175.TOTAL_WON)
+  );
+  rowValues[3].text(
+    commaFormmatter(params.data.OVERALL_STATS.PLYR_175.TOTAL_LOST)
+  );
   rowValues[4].text(
-    commaFormmatter(params.casinostats[0].HOUSE_EDGE * -100, 3) + "%"
+    commaFormmatter(params.data.OVERALL_STATS.PLYR_175.HOUSE_TAKE)
+  );
+  rowValues[5].text(
+    commaFormmatter(params.data.OVERALL_STATS.PLYR_175.HOUSE_EDGE * 100, 3) +
+      "%"
   );
   // ADD THE PLOT AREA
   const plotArea = makeRefs<typeof PlotArea>();
@@ -238,7 +250,7 @@ export default makeScene2D(function* (view) {
       props={{
         height: "100%",
         width: "50%",
-        fill: plotAreaFill,
+        fill: PLOT_AREA_FILL,
         stroke: Grays.GRAY1,
       }}
     ></PlotArea>
@@ -314,7 +326,7 @@ export default makeScene2D(function* (view) {
   yield* waitFor(1);
   // Show the table
   yield* sequence(
-    0.4,
+    0.7,
     ...rowNodes.map((r) => FadeIn(r, 1, easeOutCubic, [0, 50]))
   );
 
@@ -332,20 +344,23 @@ export default makeScene2D(function* (view) {
 
   arrow.position(rowRects[0].right);
   col2().add(arrow);
-  // Total Bet
+  // Drop
   yield* FadeIn(arrow, 1, easeOutBounce, [100, 0]);
   yield* waitFor(2);
-  // Total Won
+  // Bet
   yield* arrow.position(rowRects[1].right, 1, easeInOutCubic);
   yield* waitFor(2);
-  // Total Lost
+  // won
   yield* arrow.position(rowRects[2].right, 1, easeInOutCubic);
   yield* waitFor(3);
-  // House Take
+  // lost
   yield* arrow.position(rowRects[3].right, 1, easeInOutCubic);
   yield* waitFor(2);
-  // House Edge
+  // take
   yield* arrow.position(rowRects[4].right, 1, easeInOutCubic);
+  yield* waitFor(2);
+  // House Edge
+  yield* arrow.position(rowRects[5].right, 1, easeInOutCubic);
 
   yield* waitFor(2);
   yield* arrow.opacity(0, 0.6);
@@ -367,14 +382,15 @@ export default makeScene2D(function* (view) {
   // Zoom camera
   camera().save();
   yield parameterTable().opacity(0, 0.6);
-  yield camera().centerOn([700, 200], 4, easeInOutCubic);
-  yield camera().zoom(1.35, 4, easeInOutCubic);
+  yield camera().centerOn([700, 165], 4, easeInOutCubic);
+  yield camera().zoom(1.3, 4, easeInOutCubic);
   yield* waitFor(1);
 
   // ************************
   // THIS STRATEGY
   // ************************
-  const HOUSE_EDGE_PERCENT = params.casinostats[0].HOUSE_EDGE * -100;
+  const HOUSE_EDGE_PERCENT =
+    params.data.OVERALL_STATS.PLYR_175.HOUSE_EDGE * 100;
   const strat = createLabelAndPointer({
     plot: plot,
     target: [0, HOUSE_EDGE_PERCENT],
@@ -549,17 +565,17 @@ export default makeScene2D(function* (view) {
   // ************************
   // RESCALE
   // ************************
-  yield* plot().rescale(
-    X_AXIS_MIN,
-    X_AXIS_MAX,
-    X_AXIS_STEP,
-    0,
-    18,
-    2,
-    2,
-    easeInOutCubic
-  );
-  yield* waitFor(BETWEEN_SECS);
+  // yield* plot().rescale(
+  //   X_AXIS_MIN,
+  //   X_AXIS_MAX,
+  //   X_AXIS_STEP,
+  //   0,
+  //   18,
+  //   2,
+  //   2,
+  //   easeInOutCubic
+  // );
+  // yield* waitFor(BETWEEN_SECS);
 
   // ************************
   // Field 2x

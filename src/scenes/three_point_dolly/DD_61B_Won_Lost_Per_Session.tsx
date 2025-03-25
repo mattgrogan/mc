@@ -60,7 +60,7 @@ const SUBTITLE = "BY SESSION";
 const X_AXIS_MIN = -10000;
 const X_AXIS_MAX = 30000;
 const X_AXIS_STEP = 5000;
-const Y_AXIS_MAX = 30;
+const Y_AXIS_MAX = 40;
 const X_TICKS_EVERY = 1;
 const PCT_FONT_SIZE = 35;
 
@@ -99,7 +99,7 @@ const DEFAULTS_LABEL_AND_POINTER = {
 };
 
 export default makeScene2D(function* (view) {
-  view.fill(Theme.BG);
+  // view.fill(Theme.BG);
   yield* waitFor(1);
 
   // CONTAINER
@@ -121,21 +121,21 @@ export default makeScene2D(function* (view) {
     </Camera>
   );
 
-  // TITLE BOX
-  const plotTitle = makeRefs<typeof TitleBox>();
-  container().add(
-    <TitleBox
-      refs={plotTitle}
-      fontSize={100}
-      nodeOpacity={0}
-      rectProps={{ fill: sessionGradient, stroke: Grays.GRAY1 }}
-      headerProps={{ ...PoppinsWhite }}
-      subheadProps={{ ...PoppinsWhite }}
-    >
-      {TITLE}
-    </TitleBox>
-  );
-  plotTitle.subhead.text(SUBTITLE);
+  // // TITLE BOX
+  // const plotTitle = makeRefs<typeof TitleBox>();
+  // container().add(
+  //   <TitleBox
+  //     refs={plotTitle}
+  //     fontSize={100}
+  //     nodeOpacity={0}
+  //     rectProps={{ fill: sessionGradient, stroke: Grays.GRAY1 }}
+  //     headerProps={{ ...PoppinsWhite }}
+  //     subheadProps={{ ...PoppinsWhite }}
+  //   >
+  //     {TITLE}
+  //   </TitleBox>
+  // );
+  // plotTitle.subhead.text(SUBTITLE);
 
   // PLOT AREA
   const plotArea = makeRefs<typeof PlotArea>();
@@ -191,9 +191,9 @@ export default makeScene2D(function* (view) {
   // START DRAWING THE COMPONENTS HERE
 
   // Draw the title
-  yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
-  yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
-  yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.headerContainer, 0, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.subheadContainer, 0, easeOutCubic, [100, 0]);
+  // yield* FadeIn(plotTitle.container, 0.6, easeOutCubic, [100, 0]);
 
   // yield* waitFor(1);
 
@@ -357,7 +357,7 @@ export default makeScene2D(function* (view) {
     target: [mostLostValue, 0],
     label: "MOST LOST",
     value: plusCommaFormmatter(mostLostValue),
-    offsetX: 0,
+    offsetX: 200,
   });
 
   // MOST WON
@@ -376,7 +376,7 @@ export default makeScene2D(function* (view) {
   const p25 = createLabelAndPointer({
     ...DEFAULTS_LABEL_AND_POINTER,
     plot: plot,
-    target: [p25Value, Y_AXIS_MAX * 0.95],
+    target: [p25Value, Y_AXIS_MAX * 0.925],
     label: "25TH PERCENTILE",
     value: plusCommaFormmatter(p25Value),
     offsetX: -80,
@@ -392,7 +392,7 @@ export default makeScene2D(function* (view) {
   const p75 = createLabelAndPointer({
     ...DEFAULTS_LABEL_AND_POINTER,
     plot: plot,
-    target: [p75Value, Y_AXIS_MAX * 0.95],
+    target: [p75Value, Y_AXIS_MAX * 0.925],
     label: "75TH PERCENTILE",
     value: plusCommaFormmatter(p75Value),
     offsetX: 80,
@@ -513,9 +513,9 @@ export default makeScene2D(function* (view) {
 
   ///////////////////////////////
 
-  camera().save();
-  yield camera().position([-550, 130], 2, easeInOutCubic);
-  yield* camera().zoom(1.3, 2, easeInOutCubic);
+  // camera().save();
+  // yield camera().position([-550, 130], 2, easeInOutCubic);
+  // yield* camera().zoom(1.3, 2, easeInOutCubic);
 
   yield* iqrBoxFill.opacity(0.3, 1);
 
@@ -539,7 +539,7 @@ export default makeScene2D(function* (view) {
   yield* p95.arrow.end(1, 1, easeInOutCubic);
 
   yield* waitFor(2);
-  yield* camera().restore(2, easeInOutCubic);
+  // yield* camera().restore(2, easeInOutCubic);
 
   yield* waitFor(2);
 
@@ -549,7 +549,9 @@ export default makeScene2D(function* (view) {
   yield eraseLabelAndPointer(p75);
   yield eraseLabelAndPointer(p05);
   yield eraseLabelAndPointer(p95);
-
+  yield iqrBoxFill.opacity(0, 1)
+  yield p90BoxFill.opacity(0, 1)
+  
   yield* waitFor(3);
 
   yield* waitUntil("end");

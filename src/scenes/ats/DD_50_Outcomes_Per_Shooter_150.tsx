@@ -14,25 +14,26 @@ import {
   Grays,
   PoppinsBlack,
   PoppinsWhite,
-  sessionGradient,
+  shooterGradient,
   Theme,
 } from "../../styles";
 import { FadeIn } from "../../utils/FadeIn";
 import * as params from "./DD_00_Params";
 import {
   loserGradient,
+  // loserIcon,
   OutcomeCard,
   outcomeCardColors,
+  // pusherIcon,
   pushGradient,
   winnerGradient,
 } from "../../components/styled/outcomeCard";
 import { TitleBox } from "../../components/styled/titleBox";
-import { audioPlayer } from "./DD_00_Params";
 
-const WINNERS = params.winlose.find((stat) => stat.STAT == "N_UP").BY_SESSION;
-const PUSHERS = params.winlose.find((stat) => stat.STAT == "N_EVEN").BY_SESSION;
-const LOSERS = params.winlose.find((stat) => stat.STAT == "N_DOWN").BY_SESSION;
-const TOTAL = params.winlose.find((stat) => stat.STAT == "N").BY_SESSION;
+const WINNERS = params.data.OUTCOMES_BY_SHOOTER.PLYR_150.N_UP;
+const PUSHERS = params.data.OUTCOMES_BY_SHOOTER.PLYR_150.N_EVEN;
+const LOSERS = params.data.OUTCOMES_BY_SHOOTER.PLYR_150.N_DOWN;
+const TOTAL = params.data.OUTCOMES_BY_SHOOTER.PLYR_150.N;
 
 const plotAreaFill = new Gradient({
   type: "linear",
@@ -48,9 +49,8 @@ const plotAreaFill = new Gradient({
 export default makeScene2D(function* (view) {
   // view.fill(Theme.BG);
 
-  params.audioPlayer.woosh();
   // yield* slideTransition(Direction.Right);
-  yield* waitFor(1)
+  yield* waitFor(1);
   const container = createRef<Layout>();
   view.add(
     <Layout
@@ -74,14 +74,14 @@ export default makeScene2D(function* (view) {
       refs={plotTitle}
       fontSize={100}
       nodeOpacity={0}
-      rectProps={{ fill: sessionGradient, stroke: Grays.GRAY1 }}
+      rectProps={{ fill: shooterGradient, stroke: Grays.GRAY1 }}
       headerProps={{ ...PoppinsWhite }}
       subheadProps={{ ...PoppinsWhite }}
     >
       HOW MANY PLAYERS WON OR LOST ANY MONEY?
     </TitleBox>
   );
-  plotTitle.subhead.text("BY SESSION");
+  plotTitle.subhead.text("BY SHOOTER");
 
   const winCard = makeRefs<typeof OutcomeCard>();
   const loseCard = makeRefs<typeof OutcomeCard>();
@@ -141,21 +141,18 @@ export default makeScene2D(function* (view) {
   // Draw the boxes
   yield* waitUntil("winners");
   yield* FadeIn(winCard.container, 1, easeOutCubic, [0, 100]);
-  audioPlayer.scroll_2s()
   yield* nWinners(WINNERS, 2, easeInOutCubic);
   yield* waitFor(3);
-  
+
   yield* waitUntil("losers");
   yield* FadeIn(loseCard.container, 1, easeOutCubic, [0, 100]);
-  audioPlayer.scroll_2s()
   yield* nLosers(LOSERS, 2, easeInOutCubic);
   yield* waitFor(3);
-  
+
   yield* waitUntil("pushes");
   yield* FadeIn(pushCard.container, 1, easeOutCubic, [0, 100]);
-  audioPlayer.scroll_2s()
   yield* nPushers(PUSHERS, 2, easeInOutCubic);
 
-  yield* waitFor(8);
+  yield* waitFor(2);
   yield* waitUntil("end");
 });

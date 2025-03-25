@@ -15,6 +15,7 @@ import intro from "./intro?scene";
 import endCard from "./endCard?scene";
 
 import DD_20_Simulation from "./DD_20_Simulation?scene";
+import DD_20_Simulation_ONLY from "./DD_20_Simulation_ONLY?scene";
 
 import DD_30_Dice_Throws from "./DD_30_Dice_Throws?scene";
 import DD_31_Dice_Rolls_Per_Shooter from "./DD_31_Dice_Rolls_Per_Shooter?scene";
@@ -31,12 +32,15 @@ import DD_61_Won_Lost_Per_Session from "./DD_61_Won_Lost_Per_Session?scene";
 
 import DD_60B_Outcomes_Per_Session from "./DD_60B_Outcomes_Per_Session?scene";
 import DD_61B_Won_Lost_Per_Session from "./DD_61B_Won_Lost_Per_Session?scene";
-import DD_70_Bankroll_Survival from "./DD_70_Bankroll_Survival?scene";
+import DD_70_Bankroll_Survival from "./DD_70_Bankroll_Survival?scene"; 
+
+import win_conditions from "./win_conditions?scene";
 
 export default makeProject({
   scenes: [
     intro,
     DD_20_Simulation,
+    DD_20_Simulation_ONLY,
     // DD_TOC_01_Strategy,
     // DD_TOC_02_Simulation,
 
@@ -61,6 +65,7 @@ export default makeProject({
     DD_40_House_Take_And_Edge,
     DD_60B_Outcomes_Per_Session,
     DD_61B_Won_Lost_Per_Session,
+    win_conditions,
     endCard,
 
     // DD_TOC_08_Strategy_Score,

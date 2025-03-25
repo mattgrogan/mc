@@ -29,6 +29,7 @@ export const Grays = {
   WHITE: "#fefefe",
   GRAY1: "#e7e7e7",
   GRAY2: "#797979",
+  GRAY25: "#696969",
   GRAY3: "#434343",
   GRAY4: "#333333",
   BLACK: "#101010",
