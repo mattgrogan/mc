@@ -1,135 +1,98 @@
-import { Layout, Rect, RectProps, Node, Txt } from "@motion-canvas/2d";
-import { all, createRefArray, createRefMap, Direction, easeOutCubic, linear, range, sequence, useLogger } from "@motion-canvas/core";
-import { Bright, grayGradient, Grays, greenGradient, PoppinsWhite, redGradient, silverGradient, yellowGradient } from "../../styles";
+import { Rect, RectProps, Txt, Length, initial, signal, TxtProps, is, NodeProps } from "@motion-canvas/2d";
+import { all, createRef, delay, Direction, InterpolationFunction, makeRef, range, SignalValue, SimpleSignal, ThreadGenerator, TimingFunction, unwrap, Vector2 } from "@motion-canvas/core";
+import { grayGradient, Grays } from "../../styles";
 import { RollText } from "../../utils/RollText";
-import { CircumscribeRect } from "../../utils/Circumscribe";
-
-const default_data = [
-    { 'throw': '2', 'winloss': 0 },
-    { 'throw': '3', 'winloss': 0 },
-    { 'throw': '4E', 'winloss': 0 },
-    { 'throw': '4H', 'winloss': 0 },
-    { 'throw': '5', 'winloss': 0 },
-    { 'throw': '6E', 'winloss': 0 },
-    { 'throw': '6H', 'winloss': 0 },
-    { 'throw': '7', 'winloss': 0 },
-    { 'throw': '8E', 'winloss': 0 },
-    { 'throw': '8H', 'winloss': 0 },
-    { 'throw': '9', 'winloss': 0 },
-    { 'throw': '10E', 'winloss': 0 },
-    { 'throw': '10H', 'winloss': 0 },
-    { 'throw': '11', 'winloss': 0 },
-    { 'throw': '12', 'winloss': 0 }
-]
-
-function prepareWinConditions(data: { throw: string; winloss: number }[]) {
-    const newData = []
-    for (const row of data) {
-        let fill = Grays.GRAY2
-        if (row.winloss > 0) {
-            fill = Bright.GREEN
-        }
-        if (row.winloss <0) {
-            fill= Bright.RED
-        }
-
-        let label = "-"
-        if (row.winloss > 0) {
-            label = "+" + row.winloss.toFixed(0)
-        }
-        if (row.winloss < 0) {
-            label = row.winloss.toFixed(0)
-        }
+import { CrapsWinConditionsBase, CrapsWinConditionsBaseProps } from "./CrapsWinConditionsBase";
 
 
-        const newRow = {
-            "throw": row.throw,
-            "winloss": row.winloss,
-            "label": label,
-            "fill": fill
-        }
-        newData.push(newRow)
-    }
-    return newData
+export interface CrapsWinConditionsProps extends CrapsWinConditionsBaseProps {
+  valueColumnWidth?: SignalValue<Length>;
 }
 
-export interface CrapsWinConditionsProps extends RectProps {
-}
+export class CrapsWinConditions extends CrapsWinConditionsBase {
+  /*
+  * Width of the values column
+  */
+  @initial(100)
+  @signal()
+  public declare readonly valueColumnWidth: SimpleSignal<Length, this>;
 
-export class CrapsWinConditions extends Rect {
-    private declare data;
-    private readonly values = createRefArray<RollText>();
-    private readonly rows = createRefArray<Layout>();
-    private readonly labelRects = createRefArray<Rect>();
+  public constructor(props?: CrapsWinConditionsProps) {
+    super({
+      ...props,
+      easyAnimationDirection: props.easyAnimationDirection ?? Direction.Left,
+      hardAnimationDirection: props.hardAnimationDirection ?? Direction.Right,
+      offsetX: -1
+    });
+  }
 
-    public constructor(props?: CrapsWinConditionsProps) {
-        super({
-            layout: true,
-            direction: "column",
-            justifyContent: "space-evenly",
-            ...props,
-        });
-
-        this.data = prepareWinConditions(default_data)
-
-        this.add(
-            <Node >
-
-                {range(this.data.length).map((index) => (
-                    <Layout ref={this.rows} direction="row" height={"100%"}>
-                        <Rect ref={this.labelRects} fill={grayGradient} width={"30%"} height={"100%"} lineWidth={2} stroke={Grays.GRAY4} justifyContent={"center"} alignItems={"center"}>
-                            <Txt text={this.data[index].throw} alignSelf={"center"} textAlign={"center"}{...PoppinsWhite} fontSize={25} ></Txt>
-                        </Rect>
-                        <Rect fill={grayGradient} width={"70%"} height={"100%"} lineWidth={2} stroke={Grays.GRAY4} justifyContent={"end"} alignItems={"center"} padding={10}>
-                            <RollText ref={this.values} width={120} height={50} initialText={"-"} fill={grayGradient} txtProps={{...PoppinsWhite, textAlign: "right", fontSize: 25,  fill: this.data[index].fill}} ></RollText>
-                        </Rect>
-                    </Layout>
-                ))}
-            </Node>
-        )
+  protected generatorForCellUpdate(index: number, winloss: number, isHard: boolean = false): ThreadGenerator {
+    const val = isHard ? this.hardValues[index] : this.values[index];
+    val.value(winloss);
+    if (isHard) {
+      const length = winloss ? this.extensionLength() : 0
+      return all(
+        delay(0.15, val.rect.findFirst(is(RollText)).next(this.formatValue(winloss), this.hardAnimationDirection(), { fill: this.valueColor(winloss) })),
+        val.rect.width(length, .5)
+      )
     }
 
+    return val.rect.findFirst(is(RollText)).next(this.formatValue(winloss), this.easyAnimationDirection(), { fill: this.valueColor(winloss) });
+  }
 
-    public *update(data: { throw: string; winloss: number }[]) {
-        const newData = prepareWinConditions(data)
-        const generators = []
-        for (let i = 0; i < newData.length; i++) {
+  addTable(tableProps: RectProps, labelProps: TxtProps, labelCellRectProps: RectProps, easyValueTxtProp: TxtProps, hardValueTxtProp: TxtProps, easyCellRectProps: RectProps, hardCellRectProps: RectProps): void {
+    labelProps = labelProps ?? this.defaultLabelProps;
+    labelCellRectProps = labelCellRectProps ?? this.defaultCellRectProps;
+    easyValueTxtProp = easyValueTxtProp ?? this.defaultValueTxtProps;
+    hardValueTxtProp = hardValueTxtProp ?? this.defaultValueTxtProps;
+    hardCellRectProps = hardCellRectProps ?? this.defaultCellRectProps;
+    easyCellRectProps = easyCellRectProps ?? this.defaultCellRectProps;
 
-            generators.push(this.values[i].next(newData[i].label, Direction.Right , {fill: newData[i].fill}))
-        }
-        yield* sequence(0.05, ...generators)
-    }
+    this.add(
+      <>
+        <Rect {...tableProps} zIndex={1}>
+          <Rect ref={makeRef(this, "labelBasisRect")} grow={1} height={"100%"} layout direction={"column"}>
+            {
+              range(2, 13).map((key) => (
+                <Rect {...labelCellRectProps} width={"100%"} height={"100%"} grow={1} justifyContent={"center"} alignItems={"center"}>
+                  <Txt {...labelProps} text={key.toString()}></Txt>
+                </Rect>
+              ))
+            }
+          </Rect>
+          <Rect width={this.valueColumnWidth} height={"100%"} layout direction={"column"}>
+            {
+              this.values.map((v) => (
+                <Rect ref={makeRef(v, "rect")} grow={1} width={"100%"} height={"100%"}>
+                  <RollText {...easyCellRectProps} justifyContent={"center"} alignItems={"center"} initialText={"-"} txtProps={{ ...easyValueTxtProp, fill: easyValueTxtProp.fill ?? this.valueColor(v.value()) }} />
+                </Rect>
+              ))
+            }
+          </Rect>
+        </Rect>
+        <Rect width={() => this.extensionLength()} height={tableProps.height} layout direction={"column"} alignItems={"start"} justifyContent={"center"} zIndex={0}>
+          {
+            this.hardValues.map((v) => (
+              <Rect layout ref={makeRef(v, "rect")} lineWidth={() => (v.value() ? 1 : 0) * 2} stroke={Grays.GRAY4} fill={grayGradient} grow={1} width={0} height={"100%"}>
+                <RollText {...hardCellRectProps} lineWidth={() => (v.value() ? 1 : 0) * unwrap(hardCellRectProps.lineWidth)} justifyContent={"center"} alignItems={"center"} initialText={"-"} txtProps={{ ...hardValueTxtProp, fill: hardValueTxtProp.fill ?? this.valueColor(v.value()) }} ></RollText>
+              </Rect>
+            ))
+          }
+        </Rect>
+      </>
+    );
+  }
 
-    public *highlight(d1: number, d2: number) {
-        let category = ""
+  protected *highlightCell(cell: Rect, props?: NodeProps, time?: number, timingFunction?: TimingFunction, interpolationFunction?: InterpolationFunction<Vector2, any[]>): ThreadGenerator {
+    props = props ?? {
+      fill: "yellow",
+      opacity: .1,
+    } as RectProps
 
-        if ([2, 3, 5, 7, 9, 11, 12].includes(d1 + d2)) {
-            category = (d1 + d2).toString()
-        }
-
-        if (d1 + d2 == 4) {
-            category = d1 == d2 ? "4H" : "4E"
-        }
-        if (d1 + d2 == 6) {
-            category = d1 == d2 ? "6H" : "6E"
-        }
-        if (d1 + d2 == 8) {
-            category = d1 == d2 ? "8H" : "8E"
-        }
-        if (d1 + d2 == 10) {
-            category = d1 == d2 ? "10H" : "10E"
-        }
-
-        const index = this.data.findIndex(
-          (t) => t.throw === category
-        );
-
-        
-
-        yield* CircumscribeRect(this.values[index], Bright.YELLOW, 0.95, 10, 1)
-        // yield* this.values[index].scale(2, 0.5, easeOutCubic).to(1, 0.5, easeOutCubic)
-        // yield* this.labelRects[index].fill(yellowGradient, 0.5)
-    }
-
-
+    time = time ?? 1
+    const highlighter = createRef<Rect>();
+    cell.findFirst(is(Rect)).add(<Rect zIndex={-1} ref={highlighter} size={0} layout={false} {...props}></Rect>);
+    yield* highlighter().size(cell.size(), time, timingFunction, interpolationFunction).back(time, timingFunction, interpolationFunction);
+    highlighter().remove();
+  }
 }

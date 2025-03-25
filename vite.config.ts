@@ -12,6 +12,7 @@ export default defineConfig({
   plugins: [
     motionCanvas({
       project: [
+        "./src/crap.ts",
         "./src/scenes/audio_example/audio_example.ts",
         "./src/scenes/nextgen/nextgen.ts",
         // // "./src/utils/utilsDemoProject.ts",
