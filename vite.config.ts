@@ -68,6 +68,8 @@ export default defineConfig({
         // "./src/scenes/three_point_dolly/three_point_dolly_demo.ts",
         "./src/scenes/three_point_dolly/three_point_dolly.ts",
         "./src/scenes/ats/ats.ts",
+        "./src/scenes/arnold/arnold.ts",
+        "./src/scenes/arnold/arnold_demo.ts",
       ],
     }),
     ffmpeg(),
