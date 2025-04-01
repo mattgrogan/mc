@@ -1,0 +1,50 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "arrow",
+      "targetTime": 1.1
+    },
+    {
+      "name": "shooters",
+      "targetTime": 2.1
+    },
+    {
+      "name": "house-edge",
+      "targetTime": 5.819271106291631
+    },
+    {
+      "name": "win-rate",
+      "targetTime": 10.7916214252928
+    },
+    {
+      "name": "lose-rate",
+      "targetTime": 14.616422467784197
+    },
+    {
+      "name": "outcome-50",
+      "targetTime": 18.728110829403036
+    },
+    {
+      "name": "highlight-50",
+      "targetTime": 21.728110829403036
+    },
+    {
+      "name": "outcome-90",
+      "targetTime": 26.728110829403036
+    },
+    {
+      "name": "highlight-90",
+      "targetTime": 27.728110829403036
+    },
+    {
+      "name": "Bankroll",
+      "targetTime": 35.413573829276764
+    },
+    {
+      "name": "endslide",
+      "targetTime": 44.276833413943876
+    }
+  ],
+  "seed": 487058937
+}

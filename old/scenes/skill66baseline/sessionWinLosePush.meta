@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-chart",
+      "targetTime": 2.8
+    },
+    {
+      "name": "show-pushes",
+      "targetTime": 6.3
+    },
+    {
+      "name": "show-losers",
+      "targetTime": 7.535998603619384
+    },
+    {
+      "name": "end",
+      "targetTime": 17.37836882019281
+    }
+  ],
+  "seed": 2443755832
+}

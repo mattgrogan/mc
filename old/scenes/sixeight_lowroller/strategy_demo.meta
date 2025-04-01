@@ -1,0 +1,66 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-step2",
+      "targetTime": 3.5397252448668013
+    },
+    {
+      "name": "show-step3",
+      "targetTime": 11.952821411128632
+    },
+    {
+      "name": "show-step4",
+      "targetTime": 19.229419522609884
+    },
+    {
+      "name": "show-step5",
+      "targetTime": 28.848595257210285
+    },
+    {
+      "name": "show-step6",
+      "targetTime": 40.937914723119505
+    },
+    {
+      "name": "Show-table",
+      "targetTime": 48.933521808033376
+    },
+    {
+      "name": "step1",
+      "targetTime": 51.933521808033376
+    },
+    {
+      "name": "step2",
+      "targetTime": 58.63352180803338
+    },
+    {
+      "name": "step3",
+      "targetTime": 74.13352180803335
+    },
+    {
+      "name": "step4",
+      "targetTime": 91.23352180803332
+    },
+    {
+      "name": "step5",
+      "targetTime": 104.43352180803328
+    },
+    {
+      "name": "pointis4",
+      "targetTime": 143.41403842401292
+    },
+    {
+      "name": "easy6",
+      "targetTime": 156.616136741628
+    },
+    {
+      "name": "step6",
+      "targetTime": 166.716136741628
+    },
+    {
+      "name": "restart",
+      "targetTime": 188.41613674162792
+    }
+  ],
+  "seed": 143858825
+}

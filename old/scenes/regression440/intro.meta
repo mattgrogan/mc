@@ -1,0 +1,30 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-score",
+      "targetTime": 5.3
+    },
+    {
+      "name": "hit-1",
+      "targetTime": 8.4628749654957
+    },
+    {
+      "name": "hit-2",
+      "targetTime": 13.394769673281555
+    },
+    {
+      "name": "hit-3",
+      "targetTime": 17.094769673281558
+    },
+    {
+      "name": "hit-4",
+      "targetTime": 22.37313476763219
+    },
+    {
+      "name": "end",
+      "targetTime": 50.4262626784666
+    }
+  ],
+  "seed": 628996707
+}

@@ -1,0 +1,66 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-chart",
+      "targetTime": 3.5
+    },
+    {
+      "name": "show-bars",
+      "targetTime": 5.75
+    },
+    {
+      "name": "show-box",
+      "targetTime": 7.950000000000002
+    },
+    {
+      "name": "expand-1",
+      "targetTime": 9.950000000000003
+    },
+    {
+      "name": "expand2",
+      "targetTime": 12.950000000000003
+    },
+    {
+      "name": "expand3",
+      "targetTime": 15.950000000000003
+    },
+    {
+      "name": "expand4",
+      "targetTime": 18.950000000000003
+    },
+    {
+      "name": "expand5",
+      "targetTime": 20.950000000000003
+    },
+    {
+      "name": "expand6",
+      "targetTime": 22.950000000000003
+    },
+    {
+      "name": "expand7",
+      "targetTime": 24.950000000000003
+    },
+    {
+      "name": "expand8",
+      "targetTime": 26.950000000000003
+    },
+    {
+      "name": "expand9",
+      "targetTime": 31.091867927664136
+    },
+    {
+      "name": "expand10",
+      "targetTime": 33.09186792766414
+    },
+    {
+      "name": "undraw",
+      "targetTime": 35.09186792766414
+    },
+    {
+      "name": "end",
+      "targetTime": 37.09186792766414
+    }
+  ],
+  "seed": 4254191397
+}

@@ -1,0 +1,34 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-arrow",
+      "targetTime": 7.200000000000002
+    },
+    {
+      "name": "total-won",
+      "targetTime": 10.200000000000003
+    },
+    {
+      "name": "total-lost",
+      "targetTime": 15.600373666237727
+    },
+    {
+      "name": "house-take",
+      "targetTime": 20.890370398433515
+    },
+    {
+      "name": "house-edge",
+      "targetTime": 23.890370398433515
+    },
+    {
+      "name": "show-plot",
+      "targetTime": 27.490370398433516
+    },
+    {
+      "name": "end",
+      "targetTime": 52.148804261628904
+    }
+  ],
+  "seed": 3989801480
+}

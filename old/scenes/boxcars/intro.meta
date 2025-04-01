@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "bouncein",
+      "targetTime": 3.5113352262001483
+    },
+    {
+      "name": "swap",
+      "targetTime": 5.111335226200148
+    },
+    {
+      "name": "roll",
+      "targetTime": 7.539284089248924
+    },
+    {
+      "name": "end",
+      "targetTime": 24.132562556025157
+    }
+  ],
+  "seed": 128921756
+}

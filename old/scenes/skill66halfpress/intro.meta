@@ -1,0 +1,18 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-rect",
+      "targetTime": 7.910634181471682
+    },
+    {
+      "name": "table",
+      "targetTime": 18.518960455510012
+    },
+    {
+      "name": "end",
+      "targetTime": 34.653010859371506
+    }
+  ],
+  "seed": 2027296123
+}

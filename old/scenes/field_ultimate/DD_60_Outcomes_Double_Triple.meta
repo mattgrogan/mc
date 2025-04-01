@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "winners",
+      "targetTime": 5.2
+    },
+    {
+      "name": "losers",
+      "targetTime": 11.2
+    },
+    {
+      "name": "pushes",
+      "targetTime": 17.2
+    },
+    {
+      "name": "end",
+      "targetTime": 28.2
+    }
+  ],
+  "seed": 3730655567
+}

@@ -1,0 +1,82 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "THIS",
+      "targetTime": 2.2498964447143264
+    },
+    {
+      "name": "IS",
+      "targetTime": 2.517576562368062
+    },
+    {
+      "name": "THE",
+      "targetTime": 2.746839832168726
+    },
+    {
+      "name": "SAFEST",
+      "targetTime": 3.0596675744498487
+    },
+    {
+      "name": "WAY",
+      "targetTime": 3.39177461816146
+    },
+    {
+      "name": "TO",
+      "targetTime": 3.696041176026499
+    },
+    {
+      "name": "PLAY",
+      "targetTime": 3.966282764926509
+    },
+    {
+      "name": "CRAPS",
+      "targetTime": 4.165177253534022
+    },
+    {
+      "name": "fadeout",
+      "targetTime": 4.886626972121112
+    },
+    {
+      "name": "money",
+      "targetTime": 5.782821570250516
+    },
+    {
+      "name": "time",
+      "targetTime": 7.482821570250516
+    },
+    {
+      "name": "comps",
+      "targetTime": 9.347264073593719
+    },
+    {
+      "name": "BUT-2",
+      "targetTime": 12.556153908210097
+    },
+    {
+      "name": "HOW-2",
+      "targetTime": 12.956153908210098
+    },
+    {
+      "name": "SAFE-2",
+      "targetTime": 13.15126243254645
+    },
+    {
+      "name": "IS-2",
+      "targetTime": 13.350322231226171
+    },
+    {
+      "name": "IT-2",
+      "targetTime": 13.530583193399014
+    },
+    {
+      "name": "REALLY-2",
+      "targetTime": 13.70541009931873
+    },
+    {
+      "name": "end",
+      "targetTime": 26.0126983364429
+    }
+  ],
+  "seed": 61230112
+}

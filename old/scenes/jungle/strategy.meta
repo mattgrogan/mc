@@ -1,0 +1,34 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "step1",
+      "targetTime": 1.6
+    },
+    {
+      "name": "step2",
+      "targetTime": 5.792657839585418
+    },
+    {
+      "name": "step3",
+      "targetTime": 15.512370351735267
+    },
+    {
+      "name": "step4",
+      "targetTime": 24.323881391867484
+    },
+    {
+      "name": "step5",
+      "targetTime": 30.942734592414283
+    },
+    {
+      "name": "scale-down",
+      "targetTime": 38.43679287992834
+    },
+    {
+      "name": "end",
+      "targetTime": 190.9514421652155
+    }
+  ],
+  "seed": 3039455850
+}

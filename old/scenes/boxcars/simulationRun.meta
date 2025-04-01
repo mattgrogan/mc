@@ -1,0 +1,58 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "circ",
+      "targetTime": 2.1
+    },
+    {
+      "name": "shooters",
+      "targetTime": 8.875251003743948
+    },
+    {
+      "name": "run",
+      "targetTime": 14.99909893772411
+    },
+    {
+      "name": "results",
+      "targetTime": 29.99909893772411
+    },
+    {
+      "name": "tps",
+      "targetTime": 32.99909893772411
+    },
+    {
+      "name": "total-bet",
+      "targetTime": 37.49909893772411
+    },
+    {
+      "name": "total-won",
+      "targetTime": 40.99909893772411
+    },
+    {
+      "name": "total-lost",
+      "targetTime": 42.99909893772411
+    },
+    {
+      "name": "zoom-in",
+      "targetTime": 44.99909893772411
+    },
+    {
+      "name": "house-take",
+      "targetTime": 46.99909893772411
+    },
+    {
+      "name": "house-edge",
+      "targetTime": 51.99909893772411
+    },
+    {
+      "name": "zoom-out",
+      "targetTime": 58.49909893772411
+    },
+    {
+      "name": "end",
+      "targetTime": 61.755687367578055
+    }
+  ],
+  "seed": 3462246526
+}
