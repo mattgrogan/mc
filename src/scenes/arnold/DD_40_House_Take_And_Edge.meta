@@ -1,0 +1,18 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-arrow",
+      "targetTime": 10.799999999999999
+    },
+    {
+      "name": "show-plot",
+      "targetTime": 30.4
+    },
+    {
+      "name": "end",
+      "targetTime": 63.700000000000045
+    }
+  ],
+  "seed": 829750280
+}

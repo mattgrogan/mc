@@ -10,6 +10,7 @@ export const plusCommaFormmatter = (n: number, decimals: number = 0) => {
 
   let nFormatted = n.toLocaleString("en-US", {
     maximumFractionDigits: decimals,
+    minimumFractionDigits: decimals,
   });
 
   if (n > 0) {

@@ -3,18 +3,18 @@ import motionCanvas from "@motion-canvas/vite-plugin";
 import ffmpeg from "@motion-canvas/ffmpeg";
 
 export default defineConfig({
-  server: {
-    fs: {
-      // let it load external files
-      strict: false,
-    },
-  },
+  // server: {
+  //   fs: {
+  //     // let it load external files
+  //     strict: false,
+  //   },
+  // },
   plugins: [
     motionCanvas({
       project: [
-        "./src/crap.ts",
-        "./src/scenes/audio_example/audio_example.ts",
-        "./src/scenes/nextgen/nextgen.ts",
+        // "./src/crap.ts",
+        // "./src/scenes/audio_example/audio_example.ts",
+        // "./src/scenes/nextgen/nextgen.ts",
         // // "./src/utils/utilsDemoProject.ts",
         // // "./src/coordinates.ts",
         // // "./src/regression440_demo.ts",

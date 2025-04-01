@@ -18,6 +18,8 @@ import {
   PoppinsWhite,
   silverGradient,
 } from "../../styles";
+import { plusCommaFormmatter } from "./findQuantiles";
+import { tw_colors } from "../../tw_colors";
 
 // Colors are from:
 // https://tailwindcss.com/docs/customizing-colors
@@ -103,6 +105,7 @@ export function OutcomeCard({
   barFill,
   maximum,
   value,
+  avgValue,
   icon,
   headerFill = blackBgGradient,
   props = {},
@@ -113,6 +116,7 @@ export function OutcomeCard({
   barFill: SignalValue<PossibleCanvasStyle>;
   maximum: number;
   value: SimpleSignal<number, void>;
+  avgValue: SimpleSignal<number, void>;
   icon: string;
   props?: RectProps;
 }) {
@@ -128,6 +132,7 @@ export function OutcomeCard({
       maximumFractionDigits: 1,
       minimumFractionDigits: 1,
     });
+
   return (
     <Node
       ref={makeRef(refs, "container")}
@@ -254,7 +259,7 @@ export function OutcomeCard({
         </Rect>
         <Rect
           width={"100%"}
-          height={"20%"}
+          height={"15%"}
           grow={2}
           basis={2}
           justifyContent={"end"}
@@ -278,6 +283,27 @@ export function OutcomeCard({
           >
             {"%"}
           </Txt>
+        </Rect>
+        <Rect
+          width={"100%"}
+          height={"5%"}
+          grow={1}
+          basis={1}
+          justifyContent={"end"}
+          alignItems={"baseline"}
+          padding={50}
+          opacity={1}
+          // paddingTop={150}
+          //fill={blackBgGradient}
+          fill={tw_colors.zinc[300]}
+        >
+          <Txt
+            {...MonoWhite}
+            fontSize={120}
+            fontWeight={800}
+            fill={barFill}
+            text={() => plusCommaFormmatter(avgValue(), 2)}
+          ></Txt>
         </Rect>
       </Rect>
     </Node>

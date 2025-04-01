@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
   "extends": "@motion-canvas/2d/tsconfig.project.json",
   "include": ["src"]
 }

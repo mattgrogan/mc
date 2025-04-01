@@ -51,22 +51,22 @@ export class CrapsProcessor {
 
     yield* all(
       this.scoreBug().updateRoll(data.SHOOTER_ROLL == 1),
-      this.scoreBug().updateBankroll(data.PLYR_NET_BR_START),
-      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_START)
+      this.scoreBug().updateBankroll(data.NET_BR_START),
+      this.scoreBug().updateExposure(data.NET_SHBR_START)
     );
 
     yield* this.scoreBug().updateLabel("PLACE BETS");
 
     // Take any bets down
     const downBets = [];
-    for (const bet of data.PLYR_BETSDOWN) {
+    for (const bet of data.BETSDOWN) {
       downBets.push(this.table().bets().removeBet(bet.bet));
     }
     yield* sequence(0.2, ...downBets);
 
     // Place new bets
     const newBets = [];
-    for (const betType of data.PLYR_NEWBETS) {
+    for (const betType of data.NEWBETS) {
       const isBuy = betType.bet == "BUY4" || betType.bet == "BUY10";
       newBets.push(
         this.table().bets().makeBet(betType.amount, betType.bet, false, isBuy)
@@ -75,7 +75,7 @@ export class CrapsProcessor {
     yield* sequence(0.3, ...newBets);
 
     // Update working indicator if it does not match the puck
-    for (const bet of data.PLYR_BETS) {
+    for (const bet of data.BETS) {
       // Only for place bets - need to keep WORKING_INDICATOR_BETS updated
       if (WORKING_INDICATOR_BETS.includes(bet.bet)) {
         if (data.POINT_STATUS != bet.working) {
@@ -92,10 +92,10 @@ export class CrapsProcessor {
 
     // Update scorebug after bets down and placed
     yield* all(
-      this.scoreBug().updateBankroll(data.PLYR_NET_BR_UPDATED),
-      this.scoreBug().updateBets(data.PLYR_BETS_TOTAL),
-      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_UPDATED),
-      this.winConds().update(data.PLYR_WIN_CONDITIONS)
+      this.scoreBug().updateBankroll(data.NET_BR_UPDATED),
+      this.scoreBug().updateBets(data.BETS_TOTAL),
+      this.scoreBug().updateExposure(data.NET_SHBR_UPDATED),
+      this.winConds().update(data.WIN_CONDITIONS)
     );
 
     yield* waitFor(0.6);
@@ -159,20 +159,20 @@ export class CrapsProcessor {
 
     // TAKE
     const lostBets = [];
-    for (const bet of data.PLYR_LOST) {
+    for (const bet of data.LOST) {
       lostBets.push(this.table().bets().loseBet(bet.bet));
     }
     yield* sequence(0.2, ...lostBets);
 
     // RETURN
-    for (const pushedBet of data.PLYR_RETURNED) {
+    for (const pushedBet of data.RETURNED) {
       yield* this.table().bets().removeBet(pushedBet.bet);
     }
 
     // PAY
     const wonBets = [];
 
-    for (const bet of data.PLYR_WON) {
+    for (const bet of data.WON) {
       const continues = bet.continues.toString() === "true";
       wonBets.push(this.table().bets().winBet(bet.won, bet.bet, !continues));
       // win.play(0.4);
@@ -180,33 +180,33 @@ export class CrapsProcessor {
     yield* sequence(0.2, ...wonBets);
 
     // PUSH
-    for (const pushedBet of data.PLYR_PUSHED) {
+    for (const pushedBet of data.PUSHED) {
       yield* this.table().bets().removeBet(pushedBet.bet);
     }
 
     // MOVE
-    for (const movedBet of data.PLYR_MOVED) {
+    for (const movedBet of data.MOVED) {
       yield* this.table().bets().moveBet(movedBet.bet, movedBet.to);
     }
 
     // Update the scorebug fields
     yield* all(
-      this.scoreBug().updateBankroll(data.PLYR_NET_BR_END),
-      this.scoreBug().updateBets(data.PLYR_BETSREMAINING_TOTAL),
-      this.scoreBug().updateExposure(data.PLYR_NET_SHBR_END)
+      this.scoreBug().updateBankroll(data.NET_BR_END),
+      this.scoreBug().updateBets(data.BETSREMAINING_TOTAL),
+      this.scoreBug().updateExposure(data.NET_SHBR_END)
     );
 
     // Hide the dice
     yield this.table().dice().removeDice();
 
-    if (data.PLYR_WONLOST > 0) {
+    if (data.WONLOST > 0) {
       yield* this.scoreBug().updateLabel(
-        "PLAYER WINS " + data.PLYR_WONLOST.toString()
+        "PLAYER WINS " + data.WONLOST.toString()
       );
     }
-    if (data.PLYR_WONLOST < 0) {
+    if (data.WONLOST < 0) {
       yield* this.scoreBug().updateLabel(
-        "PLAYER LOSES " + data.PLYR_WONLOST.toString()
+        "PLAYER LOSES " + data.WONLOST.toString()
       );
     }
 
