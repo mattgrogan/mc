@@ -19,7 +19,7 @@ export interface LayoutToCoordLineProps {
    * This is a signal to a position on the layout.
    * For example, layout.top or layout.bottom
    */
-  source: SimpleVector2Signal<Layout>;
+  source: PossibleVector2;
 
   /**
    * The target that the arrow line ends at in plot
@@ -60,7 +60,7 @@ export interface LayoutToCoordLineProps {
  * the target (in coordinate space).
  */
 export function createLayoutToCoordLine(props: LayoutToCoordLineProps) {
-  const sourceVector = () => new Vector2(props.source());
+  const sourceVector = () => new Vector2(props.source);
   const targetCoordinates = new Vector2(props.target);
 
   // Convert the target plot coordinates to a point

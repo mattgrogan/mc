@@ -19,6 +19,7 @@ export function DataTable({
 }: {
   refs: {
     container: Node;
+    layout: Layout;
     columns: Node[];
     headerRects: Rect[];
     headerTxts: Txt[];
@@ -42,6 +43,7 @@ export function DataTable({
   return (
     <Node ref={makeRef(refs, "container")}>
       <Layout
+        ref={makeRef(refs, "layout")}
         width={"100%"}
         height={"20%"}
         direction={"row"}

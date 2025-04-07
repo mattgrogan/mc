@@ -9,21 +9,15 @@ import {
   TxtProps,
   initial,
   signal,
-  Node,
-  RectProps,
-  Rect,
 } from "@motion-canvas/2d";
 import {
   PossibleVector2,
   SignalValue,
   SimpleSignal,
-  SimpleVector2Signal,
   TimingFunction,
   Vector2,
   all,
   easeInOutExpo,
-  makeRef,
-  makeRefs,
 } from "@motion-canvas/core";
 import {
   AxisDirection,
@@ -52,9 +46,6 @@ export enum PlotSpace {
   "WORLD" = 1,
   "LOCAL" = 2,
 }
-
-const DEFAULT_X_TITLE_PADDING = 100;
-const DEFAULT_Y_TITLE_PADDING = -250;
 
 export class Plot extends Layout {
   /**

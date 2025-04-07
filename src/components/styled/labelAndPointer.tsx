@@ -152,7 +152,7 @@ export function createLabelAndPointer(
   const arrow = createLayoutToCoordLine({
     plot: props.plot,
     target: props.target,
-    source: source,
+    source: source(),
     sourceElbowOffset: props.sourceElbowOffset,
     targetElbowOffset: props.targetElbowOffset,
     sourceElbowOffset2: props.sourceElbowOffset2,

@@ -259,7 +259,8 @@ export class PlotAxis extends Line {
     max: number,
     step: number,
     every: number = 1,
-    buffer = 0.5
+    buffer: number = 0.5,
+    showLabel: boolean = true
   ) {
     /**
      * Remove unneeded ticks and draw new ticks.
@@ -287,7 +288,7 @@ export class PlotAxis extends Line {
     );
     const additions = [];
     for (const where of ticksToAdd) {
-      additions.push(this.addTick(where));
+      additions.push(this.addTick(where, 0.4, showLabel));
     }
     spawn(sequence(0.1, ...additions));
 
@@ -330,7 +331,11 @@ export class PlotAxis extends Line {
     this.tickSet.delete(index);
   }
 
-  public *addTick(where: PossibleVector2, seconds: number = 0.4) {
+  public *addTick(
+    where: PossibleVector2,
+    seconds: number = 0.4,
+    showLabel: boolean = true
+  ) {
     /**
      * Add the tick to the node tree.
      */
@@ -347,12 +352,16 @@ export class PlotAxis extends Line {
     }
 
     const tick = this.createTick(where);
-    const tickLabel = this.createTickLabel(where);
     this.tickMarks[index] = tick;
-    this.tickLabels[index] = tickLabel;
     this.add(tick);
-    this.add(tickLabel);
     this.tickSet.add(index);
-    yield* all(tick.opacity(1, seconds), tickLabel.opacity(1, seconds));
+
+    if (showLabel) {
+      const tickLabel = this.createTickLabel(where);
+      this.tickLabels[index] = tickLabel;
+      this.add(tickLabel);
+      yield tickLabel.opacity(1, seconds);
+    }
+    yield* all(tick.opacity(1, seconds));
   }
 }
