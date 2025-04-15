@@ -26,6 +26,12 @@ const WORKING_INDICATOR_BETS = [
   "PLACE9",
   "PLACE10",
   "BUY10",
+  "COME4ODDS",
+  "COME5ODDS",
+  "COME6ODDS",
+  "COME8ODDS",
+  "COME9ODDS",
+  "COME10ODDS",
 ];
 
 export class CrapsProcessor {

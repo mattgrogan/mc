@@ -17,9 +17,9 @@ import { c } from "../../components/craps/CrapsTableCoords";
 import { CrapsWinConditionsHorizontal } from "../../components/craps/CrapWinConditionsHorizontal";
 
 // SCENE-NAME-worst_sessions.json
-import simData from "../../../../dicedata/output/cold_table_on_steroids-100k/cold_table_on_steroids-100k-best_sessions.json";
-const player = "ColdTable";
-const rank = 5;
+import simData from "../../../../dicedata/output/three_point_molly_working-test/three_point_molly_working-test-best_sessions.json";
+const player = "3PM_Working";
+const rank = 1;
 
 export default makeScene2D(function* (view) {
   // view.fill(Theme.BG);
@@ -104,8 +104,6 @@ export default makeScene2D(function* (view) {
 
   const sessionData = simData[player][rank];
   for (const roll of sessionData) {
-    // useLogger().debug({ message: "checking", object: roll });
-    // useLogger().debug("ROLL=" + roll.ROLL);
     yield* processor.round(roll);
   }
 

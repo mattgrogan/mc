@@ -12,6 +12,8 @@ import DD_61_Won_Lost_Per_Session from "./DD_61_Won_Lost_Per_Session?scene";
 import DD_62_Outlay_Per_Session from "./DD_62_Outlay_Per_Session?scene";
 import DD_63_Outlay_by_Hour from "./DD_63_Outlay_by_Hour?scene";
 
+import steps from "./steps?scene";
+
 export default makeProject({
   scenes: [
     DD_50_Outcomes_Per_Shooter,
@@ -24,5 +26,6 @@ export default makeProject({
     DD_63_Outlay_by_Hour,
 
     DD_40_House_Take_And_Edge,
+    steps,
   ],
 });
