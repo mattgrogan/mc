@@ -81,6 +81,7 @@ export default defineConfig({
         "./src/scenes/one_hit_wonder/one_hit_wonder_demo.ts",
         "./src/scenes/sonic_the_hedgehog/sonic_the_hedgehog_demo.ts",
         "./src/scenes/three_point_molly_working/three_point_molly_working_demo.ts",
+        "./src/scenes/three_point_molly_working/three_point_molly_working.ts",
       ],
     }),
     ffmpeg(),

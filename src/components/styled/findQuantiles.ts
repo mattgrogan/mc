@@ -26,6 +26,7 @@ export const commaFormmatter = (n: number, decimals: number = 0) => {
 
   let nFormatted = n.toLocaleString("en-US", {
     maximumFractionDigits: decimals,
+    minimumFractionDigits: decimals,
   });
   return nFormatted;
 };
