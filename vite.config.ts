@@ -78,6 +78,7 @@ export default defineConfig({
         "./src/scenes/cover4/cover4_demo.ts",
         "./src/scenes/cold_table_steroids/cold_table_steroids.ts",
         "./src/scenes/cold_table_steroids/cold_table_steroids_demo.ts",
+        "./src/scenes/table/project.ts"
       ],
     }),
     ffmpeg(),
