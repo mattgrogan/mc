@@ -53,8 +53,8 @@ const X_AXIS_MAX = DATA.HIST_MAX;
 const X_AXIS_STEP = DATA.BIN_WIDTH;
 const Y_AXIS_MAX = Math.max(...DATA.HIST.PCT) * 1.3;
 const X_TICKS_EVERY = 1;
-const PCT_FONT_SIZE = 40;
-const BAR_WIDTH = 100;
+const PCT_FONT_SIZE = 80;
+const BAR_WIDTH = 200;
 const SECOND_AXIS_OFFSET_Y = -20;
 
 // THEME

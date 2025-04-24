@@ -26,12 +26,19 @@ const WORKING_INDICATOR_BETS = [
   "PLACE9",
   "PLACE10",
   "BUY10",
+  "COME4ODDS",
+  "COME5ODDS",
+  "COME6ODDS",
+  "COME8ODDS",
+  "COME9ODDS",
+  "COME10ODDS",
 ];
 
 export class CrapsProcessor {
   private declare table: Reference<CrapsTable>;
   private declare scoreBug: Reference<CrapsScoreBug>;
   private declare winConds: Reference<CrapsWinConditions>;
+  public declare forceWorkingIndicator: boolean;
 
   public constructor(
     table: Reference<CrapsTable>,
@@ -41,6 +48,7 @@ export class CrapsProcessor {
     this.table = table;
     this.scoreBug = scoreBug;
     this.winConds = winConds;
+    this.forceWorkingIndicator = false;
   }
 
   public *round(data: any) {
@@ -78,7 +86,7 @@ export class CrapsProcessor {
     for (const bet of data.BETS) {
       // Only for place bets - need to keep WORKING_INDICATOR_BETS updated
       if (WORKING_INDICATOR_BETS.includes(bet.bet)) {
-        if (data.POINT_STATUS != bet.working) {
+        if (data.POINT_STATUS != bet.working || this.forceWorkingIndicator) {
           yield* this.table()
             .bets()
             .chip(bet.bet)

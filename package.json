@@ -3,7 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start": "vite --force --debug",
+    "start_debug": "vite --force --debug",
+    "start": "vite",
     "serve": "vite",
     "build": "tsc && vite build",
     "skip-worktree": "git update-index --skip-worktree package.json && git update-index --skip-worktree package-lock.json",

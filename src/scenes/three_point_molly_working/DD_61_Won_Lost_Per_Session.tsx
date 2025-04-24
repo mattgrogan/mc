@@ -45,19 +45,19 @@ import { DataTable } from "../../components/styled/dataTable";
 import { createLayoutToCoordLine } from "../../components/plot/LayoutToCoordLine";
 
 const title = createSignal(
-  "How much did the bots\nwin or lose during a shooter?"
+  "How much did the default bots\nwin or lose during a session?"
 );
-const TITLE_POSITION = new Vector2(-400, -800);
+const TITLE_POSITION = new Vector2(100, -450);
 
 // PLOT OPTIONS
-const DATA = data.SHOOTER_WINLOSS_HIST.ColdTable;
+const DATA = data.SESSION_WINLOSS_HIST.Default;
 const X_AXIS_MIN = DATA.HIST_MIN;
 const X_AXIS_MAX = DATA.HIST_MAX;
 const X_AXIS_STEP = DATA.BIN_WIDTH;
 const Y_AXIS_MAX = Math.max(...DATA.HIST.PCT) * 1.3;
-const X_TICKS_EVERY = 1;
-const PCT_FONT_SIZE = 60;
-const BAR_WIDTH = 100;
+const X_TICKS_EVERY = 2;
+const PCT_FONT_SIZE = 40;
+const BAR_WIDTH = 60;
 const SECOND_AXIS_OFFSET_Y = -20;
 
 // THEME
@@ -214,7 +214,7 @@ export default makeScene2D(function* (view) {
   // --------------- table ----------------
   const dataTable = makeRefs<typeof DataTable>();
   const tableData = [
-    { label: "MOST LOST", value: plusCommaFormmatter(DATA.QUANTILES.MIN) },
+    { label: "MIN", value: plusCommaFormmatter(DATA.QUANTILES.MIN) },
     { label: "5TH", value: plusCommaFormmatter(DATA.QUANTILES.P05) },
     {
       label: "25TH",
@@ -236,7 +236,7 @@ export default makeScene2D(function* (view) {
       label: "95TH",
       value: plusCommaFormmatter(DATA.QUANTILES.P95),
     },
-    { label: "MOST WON", value: plusCommaFormmatter(DATA.QUANTILES.MAX) },
+    { label: "MAX", value: plusCommaFormmatter(DATA.QUANTILES.MAX) },
   ];
 
   plot().add(

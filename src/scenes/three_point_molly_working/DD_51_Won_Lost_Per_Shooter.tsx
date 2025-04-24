@@ -50,18 +50,17 @@ const title = createSignal(
 const TITLE_POSITION = new Vector2(-400, -800);
 
 // PLOT OPTIONS
-const DATA = data.SHOOTER_WINLOSS_HIST.ColdTable;
+const DATA = data.SHOOTER_WINLOSS_HIST.Default;
 const X_AXIS_MIN = DATA.HIST_MIN;
 const X_AXIS_MAX = DATA.HIST_MAX;
 const X_AXIS_STEP = DATA.BIN_WIDTH;
 const Y_AXIS_MAX = Math.max(...DATA.HIST.PCT) * 1.3;
 const X_TICKS_EVERY = 1;
-const PCT_FONT_SIZE = 60;
+const PCT_FONT_SIZE = 40;
 const BAR_WIDTH = 100;
 const SECOND_AXIS_OFFSET_Y = -20;
 
 // THEME
-const PLOT_AREA_FILL = Bright.WHITE;
 const BAR_COLOR = tw_colors.blue[500];
 
 // The amount those gray limit bars go to X

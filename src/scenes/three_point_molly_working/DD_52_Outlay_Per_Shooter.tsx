@@ -35,34 +35,31 @@ import { FadeIn } from "../../utils/FadeIn";
 import { data } from "././DD_00_Params";
 import { Plot } from "../../components/plot/plot";
 import { PlotArea } from "../../components/styled/plotArea";
-import {
-  plusCommaFormmatter,
-  commaFormmatter,
-} from "../../components/styled/findQuantiles";
+import { commaFormmatter } from "../../components/styled/findQuantiles";
 import { createValueLabel } from "../../components/plot/PlotValueLabel";
 import { tw_colors } from "../../../src/tw_colors";
 import { DataTable } from "../../components/styled/dataTable";
 import { createLayoutToCoordLine } from "../../components/plot/LayoutToCoordLine";
 
 const title = createSignal(
-  "How much did the bots\nwin or lose during a shooter?"
+  "How much did the bots\noutlay out their pocket\nduring a shooter?"
 );
-const TITLE_POSITION = new Vector2(-400, -800);
+const TITLE_POSITION = new Vector2(-1400, -800);
 
 // PLOT OPTIONS
-const DATA = data.SHOOTER_WINLOSS_HIST.ColdTable;
-const X_AXIS_MIN = DATA.HIST_MIN;
+const DATA = data.SHOOTER_OUTLAY.Default;
+const X_AXIS_MIN = Math.max(DATA.HIST_MIN, 0);
 const X_AXIS_MAX = DATA.HIST_MAX;
 const X_AXIS_STEP = DATA.BIN_WIDTH;
 const Y_AXIS_MAX = Math.max(...DATA.HIST.PCT) * 1.3;
 const X_TICKS_EVERY = 1;
-const PCT_FONT_SIZE = 60;
-const BAR_WIDTH = 100;
+const PCT_FONT_SIZE = 40;
+const BAR_WIDTH = 80;
 const SECOND_AXIS_OFFSET_Y = -20;
 
 // THEME
 const PLOT_AREA_FILL = Bright.WHITE;
-const BAR_COLOR = tw_colors.blue[500];
+const BAR_COLOR = tw_colors.fuchsia[500];
 
 // The amount those gray limit bars go to X
 const MINMAX_HIGH = Y_AXIS_MAX * 0.01;
@@ -214,29 +211,29 @@ export default makeScene2D(function* (view) {
   // --------------- table ----------------
   const dataTable = makeRefs<typeof DataTable>();
   const tableData = [
-    { label: "MOST LOST", value: plusCommaFormmatter(DATA.QUANTILES.MIN) },
-    { label: "5TH", value: plusCommaFormmatter(DATA.QUANTILES.P05) },
+    { label: "MIN", value: commaFormmatter(DATA.QUANTILES.MIN) },
+    { label: "5TH", value: commaFormmatter(DATA.QUANTILES.P05) },
     {
       label: "25TH",
-      value: plusCommaFormmatter(DATA.QUANTILES.P25),
+      value: commaFormmatter(DATA.QUANTILES.P25),
     },
     {
       label: "MEDIAN",
-      value: plusCommaFormmatter(DATA.QUANTILES.MEDIAN),
+      value: commaFormmatter(DATA.QUANTILES.MEDIAN),
     },
     {
       label: "AVERAGE",
-      value: plusCommaFormmatter(DATA.QUANTILES.MEAN, 2),
+      value: commaFormmatter(DATA.QUANTILES.MEAN, 2),
     },
     {
       label: "75TH",
-      value: plusCommaFormmatter(DATA.QUANTILES.P75),
+      value: commaFormmatter(DATA.QUANTILES.P75),
     },
     {
       label: "95TH",
-      value: plusCommaFormmatter(DATA.QUANTILES.P95),
+      value: commaFormmatter(DATA.QUANTILES.P95),
     },
-    { label: "MOST WON", value: plusCommaFormmatter(DATA.QUANTILES.MAX) },
+    { label: "MAX", value: commaFormmatter(DATA.QUANTILES.MAX) },
   ];
 
   plot().add(

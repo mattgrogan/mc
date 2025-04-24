@@ -1,0 +1,18 @@
+{
+  "version": 0,
+  "timeEvents": [
+    {
+      "name": "show-empty",
+      "targetTime": 6.5
+    },
+    {
+      "name": "show-half",
+      "targetTime": 11.5
+    },
+    {
+      "name": "show-full",
+      "targetTime": 16.5
+    }
+  ],
+  "seed": 1438825514
+}
