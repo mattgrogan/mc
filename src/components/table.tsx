@@ -1,5 +1,5 @@
 import { Layout, Rect, Txt, Node, RectProps, TxtProps, Line, signal, initial } from "@motion-canvas/2d";
-import { all, BBox, createRef, makeRef, range, sequence, SimpleSignal, ThreadGenerator, Vector2 } from "@motion-canvas/core";
+import { all, BBox, chain, createRef, createRefArray, makeRef, range, sequence, SimpleSignal, ThreadGenerator, Vector2 } from "@motion-canvas/core";
 
 
 interface TableComponent {
@@ -209,16 +209,6 @@ export class Table extends Rect {
     yield* this.displacementY(margin, duration);
   }
 
-  public * scrollToColumn(columnNo: number, duration: number) {
-    if (!this.components[columnNo]?.column) return;
-
-    const viewportAbsoluteX = this.absolutePosition().x;
-    const columnOrignalAbsoluteX = this.components[columnNo].column.absolutePosition().x + Math.abs(this.displacementX());
-    const maxHorizontalDispalcement = this.width() - this.container.cacheBBox().width;
-    const margin = Math.min(0, Math.max(viewportAbsoluteX - columnOrignalAbsoluteX, maxHorizontalDispalcement));
-    yield* this.displacementX(margin, duration)
-  }
-
   public * highlightRow(rowNo: number, highlighterProp?: RectProps, duration: number = .5, customHighlighter?: (row: Rect, table: Rect) => ThreadGenerator) {
     const row = this.components[0].rows[rowNo - 1];
     if (!row) return;
@@ -227,10 +217,18 @@ export class Table extends Rect {
       yield* customHighlighter(row, this);
       return;
     }
-    const highlighter = this.defaultHighlighterRect(highlighterProp);
-    highlighter.absolutePosition([this.left().transformAsPoint(this.localToWorld()).x, row.absolutePosition().y]);
-    highlighter.height(row.height);
-    yield* highlighter.width(this.width, duration);
+    const highlighers = createRefArray<Rect>()
+    this.components.forEach(x => {
+      const cell = x.rows[rowNo - 1];
+      cell.add(
+        <Rect ref={highlighers} layout={false} height={cell.height} width={0} zIndex={-1} offsetX={-1} position={[cell.width() / -2, 0]} />
+      )
+    })
+    this.highlighters.push(...highlighers);
+    yield* chain(...highlighers.map(x => all(
+      x.width((x.parent() as Rect).width, duration / this.components.length),
+      x.fill(highlighterProp?.fill || "blue", duration / this.components.length))
+    ));
   }
 
   public * highlighCell(rowNo: number, columnNo: number, highlighterProp?: RectProps, duration: number = .5, customHighlighter?: (row: Rect) => ThreadGenerator) {
