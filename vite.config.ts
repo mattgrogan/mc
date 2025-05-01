@@ -82,6 +82,7 @@ export default defineConfig({
         "./src/scenes/sonic_the_hedgehog/sonic_the_hedgehog_demo.ts",
         "./src/scenes/three_point_molly_working/three_point_molly_working_demo.ts",
         "./src/scenes/three_point_molly_working/three_point_molly_working.ts",
+        "./src/scenes/table/project.ts"
       ],
     }),
     ffmpeg(),
