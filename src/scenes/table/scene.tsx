@@ -18,14 +18,19 @@ const alias: Record<string, string> = {
 };
 // const cover4press = d.slice(0, 40);
 
-const data: Record<string, Array<string | number>> = {};
-const cover4press = datac["ROLLS_TO_PROFIT"]["Cover4Press"].slice(0, 30);
-cover4press.forEach((row) => {
+const data: Record<string, Array<string | number>> = Object.values(
+  alias
+).reduce((acc: Record<string, Array<string | number>>, x: string) => {
+  acc[x] = [];
+  return acc;
+}, {});
+
+const cover4press = datac["ROLLS_TO_PROFIT"]["Cover4Press"].slice(0, 40);
+cover4press.forEach((row: Record<string, string | number>) => {
   Object.keys(row).forEach((key) => {
-    if (alias[key]) {
-      data[key] ??= [];
-      data[key].push(row[key]);
-    }
+    if (!data[alias[key]]) return;
+
+    data[alias[key]].push(row[key]);
   });
 });
 
