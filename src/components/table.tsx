@@ -1,5 +1,6 @@
 import { Layout, Rect, Txt, Node, RectProps, TxtProps, Line, signal, initial } from "@motion-canvas/2d";
 import { all, BBox, chain, createRef, createRefArray, makeRef, range, sequence, SimpleSignal, ThreadGenerator, Vector2 } from "@motion-canvas/core";
+import { NumberFormat, NumberFormatter } from "./styled/findQuantiles";
 
 
 interface TableComponent {
@@ -7,21 +8,26 @@ interface TableComponent {
   header: Layout
   contentColumn: Layout
   rows: Rect[]
+  numberFormatterConfig?: NumberFormat
 }
 
 type Range = `${number} - ${number}`;
 type Group = { range: Range, title: string };
 
 export interface TabledProps extends RectProps {
-  data: Record<string, Array<string | number>>,
-  headerCellProps?: RectProps,
+  data: Record<string, Array<string | number>>
+  headerCellProps?: RectProps
   headerTxtProps?: TxtProps
   CellProps?: RectProps
   CellTxtProps?: TxtProps
   titleAlias?: Record<string, string>
   headerGrouping?: Group[]
+  numberFormat?: TableNumberFormat | TableNumberFormat[]
 }
 
+interface TableNumberFormat extends NumberFormat {
+  columns?: Array<string>
+}
 
 export class Table extends Rect {
 
@@ -81,7 +87,7 @@ export class Table extends Rect {
     return highlighter();
   }
 
-  public constructor({ data, headerCellProps, headerTxtProps, CellProps, CellTxtProps, headerGrouping, titleAlias = {}, ...others }: TabledProps) {
+  public constructor({ data, numberFormat, headerCellProps, headerTxtProps, CellProps, CellTxtProps, headerGrouping, titleAlias = {}, ...others }: TabledProps) {
     super({
       layout: true,
       clip: true,
@@ -92,48 +98,54 @@ export class Table extends Rect {
 
     this.headerGrouping = headerGrouping;
 
+    const columnNumberConfigs = this.setupFormatterConfig(numberFormat)
 
-    Object.keys(data).forEach((_, i) => this.components[i] = { rows: [], column: null, contentColumn: null, header: null });
+    Object.keys(data).forEach((x, i) => {
+      this.components[i] = { rows: [], column: null, contentColumn: null, header: null, numberFormatterConfig: columnNumberConfigs[x] }
+    });
 
     this.add(
       <Node ref={makeRef(this, "container")} x={this.displacementX}>
         <Rect layout direction={"column"}>
           <Rect ref={makeRef(this, "table")} layout>
             {
-              Object.entries(data).map(([key, values], i) => (
-                <>
-                  <Rect
-                    layout
-                    direction={"column"}
-                    ref={makeRef(this.components[i], "column")}
-                  >
-                    <Layout direction={"column"} ref={makeRef(this.components[i], "header")} zIndex={1}>
-                      {
-                        headerGrouping && headerGrouping.map((_, w) => (
-                          <Rect {...{ ...this.defaultHeaderCellProps, ...headerCellProps }} padding={15}>
-                          </Rect>
-                        ))
-                      }
-                      <Rect  {...{ ...this.defaultHeaderCellProps, ...headerCellProps }}>
-                        <Txt {...{ ...this.defaultHeaderTxtProps, ...headerTxtProps }}>{titleAlias[key] || key}</Txt>
-                      </Rect>
-                    </Layout>
-
-
-                    <Layout ref={makeRef(this.components[i], "contentColumn")} layout direction={"column"}>
-                      <Node y={() => this.displacementY()}>
+              Object.entries(data).map(([key, values], i) => {
+                const formatter = new NumberFormatter(this.components[i].numberFormatterConfig)
+                return (
+                  <>
+                    <Rect
+                      layout
+                      direction={"column"}
+                      ref={makeRef(this.components[i], "column")}
+                    >
+                      <Layout direction={"column"} ref={makeRef(this.components[i], "header")} zIndex={1}>
                         {
-                          values.map((val, j) => (
-                            <Rect ref={makeRef(this.components[i].rows, j)} {...{ ...this.defaultCellProps, ...CellProps }}>
-                              <Txt {...{ ...this.defaultCellTxtProps, ...CellTxtProps }}>{val.toString()}</Txt>
+                          headerGrouping && headerGrouping.map((_, w) => (
+                            <Rect {...{ ...this.defaultHeaderCellProps, ...headerCellProps }} padding={15}>
                             </Rect>
                           ))
                         }
-                      </Node>
-                    </Layout>
-                  </Rect>
-                </>
-              ))
+                        <Rect  {...{ ...this.defaultHeaderCellProps, ...headerCellProps }}>
+                          <Txt {...{ ...this.defaultHeaderTxtProps, ...headerTxtProps }}>{titleAlias[key] || key}</Txt>
+                        </Rect>
+                      </Layout>
+
+
+                      <Layout ref={makeRef(this.components[i], "contentColumn")} layout direction={"column"}>
+                        <Node y={() => this.displacementY()}>
+                          {
+                            values.map((val, j) => (
+                              <Rect ref={makeRef(this.components[i].rows, j)} {...{ ...this.defaultCellProps, ...CellProps }}>
+                                <Txt {...{ ...this.defaultCellTxtProps, ...CellTxtProps }}>{ this.isNumber(val.toString()) ? formatter.format(Number(val)) : val.toString()}</Txt>
+                              </Rect>
+                            ))
+                          }
+                        </Node>
+                      </Layout>
+                    </Rect>
+                  </>
+                )
+              })
             }
           </Rect>
         </Rect>
@@ -192,6 +204,22 @@ export class Table extends Rect {
   private cellPointToTablePoint(point: Vector2, cell: Rect): Vector2 {
     return point.transformAsPoint(cell.parentToWorld()).transformAsPoint(this.table.worldToLocal())
   }
+
+  private setupFormatterConfig(config: TableNumberFormat | TableNumberFormat[] = { columns: [] }): Record<string, Omit<TableNumberFormat, "columns">> {
+    let configs: TableNumberFormat[] = Array.isArray(config) ? config : [config];
+    const result: Record<string, NumberFormat> = {};
+    configs.forEach((config: TableNumberFormat) => {
+      const { columns, ...others } = config;
+      config.columns.reduce((acc: Record<string, NumberFormat>, val: string) => {
+        acc[val] = { ...acc[val], ...others };
+        return acc;
+      }, result);
+    })
+
+    return result;
+  }
+
+  private isNumber(n: string) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
 
   protected viewportVericalCenter(): number {
     return (this.height() - (this.components[0]?.header.height() || 0)) / 2;

@@ -27,11 +27,11 @@ const data: Record<string, Array<string | number>> = Object.values(
 
 const cover4press = datac["ROLLS_TO_PROFIT"]["Cover4Press"].slice(0, 40);
 cover4press.forEach((row: Record<string, string | number>) => {
-  Object.keys(row).forEach((key) => {
-    if (!data[alias[key]]) return;
-
-    data[alias[key]].push(row[key]);
-  });
+  Object.keys(row).forEach(key => {
+    if (!data[key]) return;
+   
+    data[key].push(row[key])  
+  })
 });
 
 export default makeScene2D(function* (view) {
@@ -47,12 +47,18 @@ export default makeScene2D(function* (view) {
       height={800}
       // width={600}
       y={0}
+      numberFormat={[
+        { columns: ["MEDIAN_WINLOSS", "MOST_WON", "AVG_WINLOSS"], forceSign: true },
+        { columns: ["AVG_WINLOSS", "PCT_COMBINED"], decimals: 2 },
+        { columns: ["PCT_COMBINED", "PCT_GR_ZERO", "PCT_SURVIVAL"], usePercentage: true },
+      ]}
       titleAlias={alias}
       headerGrouping={[
         // { range: "1 - 5", title: "Just because" },
         // { range: "0 - 8", title: "Cold Table: Roll To Profit" },
         { range: "3 - 6", title: "Bankroll After Roll" },
       ]}
+
     />
   );
 
