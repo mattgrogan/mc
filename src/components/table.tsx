@@ -226,9 +226,9 @@ export class Table extends Rect {
   }
 
 
-  public * scrollToRow(rowNo: number, duration: number) {
+  public * scrollToRow(rowNo: number | "end", duration: number) {
     const component = this.components[0];
-    const row = component?.rows[rowNo - 1];
+    const row = rowNo == "end" ? component?.rows[component?.rows.length - 1] : component?.rows[rowNo - 1];
     if (!component || !row) return;
 
     const columnTop = component.contentColumn.top().transformAsPoint(component.contentColumn.parentToWorld()).y;
