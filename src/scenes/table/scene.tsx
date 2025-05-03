@@ -18,7 +18,7 @@ const alias: Record<string, string> = {
 };
 // const cover4press = d.slice(0, 40);
 
-const data: Record<string, Array<string | number>> = Object.values(
+const data: Record<string, Array<string | number>> = Object.keys(
   alias
 ).reduce((acc: Record<string, Array<string | number>>, x: string) => {
   acc[x] = [];
