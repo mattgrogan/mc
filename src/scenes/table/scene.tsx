@@ -50,7 +50,9 @@ export default makeScene2D(function* (view) {
       numberFormat={[
         { columns: ["MEDIAN_WINLOSS", "MOST_WON", "AVG_WINLOSS"], forceSign: true },
         { columns: ["AVG_WINLOSS", "PCT_COMBINED"], decimals: 2 },
+        { columns: ["PCT_COMBINED"], decimals: 1 },
         { columns: ["PCT_COMBINED", "PCT_GR_ZERO", "PCT_SURVIVAL"], usePercentage: true },
+        { columns: ["PCT_COMBINED", "PCT_SURVIVAL"], zeroText: "< 0.1%"}
       ]}
       titleAlias={alias}
       headerGrouping={[

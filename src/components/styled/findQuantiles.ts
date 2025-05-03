@@ -26,7 +26,6 @@ export const commaFormmatter = (n: number, decimals: number = 0) => {
 
   let nFormatted = n.toLocaleString("en-US", {
     maximumFractionDigits: decimals,
-    minimumFractionDigits: decimals,
   });
   return nFormatted;
 };
@@ -126,10 +125,10 @@ export class NumberFormatter {
 
   private formatter(): Intl.NumberFormat {
     const decimal = this.config.decimals;
-    if (this.config.suffixing) return new Intl.NumberFormat("en-US", { maximumFractionDigits: decimal, notation: 'compact', compactDisplay: 'short' });
-    if (this.config.usePercentage) return new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: decimal });
+    if (this.config.suffixing) return new Intl.NumberFormat("en-US", { maximumFractionDigits: decimal, minimumFractionDigits: this.config.decimals, notation: 'compact', compactDisplay: 'short' });
+    if (this.config.usePercentage) return new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: decimal, minimumFractionDigits: this.config.decimals });
 
-    return new Intl.NumberFormat("en-US", { maximumFractionDigits: this.config.decimals })
+    return new Intl.NumberFormat("en-US", { maximumFractionDigits: this.config.decimals, minimumFractionDigits: this.config.decimals })
   }
 
   public format(val: number): string {
