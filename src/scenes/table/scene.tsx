@@ -66,6 +66,10 @@ export default makeScene2D(function* (view) {
 
   tabled().addHeaderGrouping();
 
+  yield* tabled().scrollToRow(data[Object.keys(data)[0]].length, 3);
+
+  yield* waitFor(1);
+
   yield* tabled().scrollToRow(7, 1);
 
   yield* waitFor(1);
