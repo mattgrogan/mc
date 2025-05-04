@@ -90,7 +90,7 @@ export default makeScene2D(function* (view) {
 
   yield* waitFor(1);
 
-  yield* tabled().highlighCell(7, 6, { fill: "green", opacity: 0.6 });
+  yield* tabled().highlightCell(7, 6, { fill: "green", opacity: 0.6 });
 
   yield* tabled().removeHighlighters();
 

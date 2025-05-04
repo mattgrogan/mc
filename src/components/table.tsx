@@ -46,7 +46,7 @@ export class Table extends Rect {
   @signal()
   public declare readonly displacementX: SimpleSignal<number, this>
 
-  protected readonly defaultHeaderCellProps: RectProps = {
+  protected defaultHeaderCellProps: RectProps = {
     fill: "#fff",
     padding: 10,
     layout: true,
@@ -59,7 +59,7 @@ export class Table extends Rect {
     justifyContent: "end"
   }
 
-  protected readonly defaultHeaderTxtProps: TxtProps = {
+  protected defaultHeaderTxtProps: TxtProps = {
     fontSize: 20,
     wrap: "wrap"
   }
@@ -98,7 +98,9 @@ export class Table extends Rect {
 
     this.headerGrouping = headerGrouping;
 
-    const columnNumberConfigs = this.setupFormatterConfig(numberFormat)
+    const columnNumberConfigs = this.setupFormatterConfig(numberFormat);
+    this.defaultHeaderCellProps = { ...this.defaultHeaderCellProps, ...headerCellProps };
+    this.defaultHeaderTxtProps = { ...this.defaultHeaderTxtProps, ...headerTxtProps };
 
     Object.keys(data).forEach((x, i) => {
       this.components[i] = { rows: [], column: null, contentColumn: null, header: null, numberFormatterConfig: columnNumberConfigs[x] }
@@ -120,13 +122,15 @@ export class Table extends Rect {
                     >
                       <Layout direction={"column"} ref={makeRef(this.components[i], "header")} zIndex={1}>
                         {
-                          headerGrouping && headerGrouping.map((_, w) => (
-                            <Rect {...{ ...this.defaultHeaderCellProps, ...headerCellProps }} padding={15}>
+                          headerGrouping && headerGrouping.map((t, w) => (
+                            <Rect {...this.defaultHeaderCellProps}>
+                              {/* Random chracter to create space for grouping text */}
+                              <Txt {...this.defaultHeaderTxtProps} opacity={0}>F</Txt>  
                             </Rect>
                           ))
                         }
-                        <Rect  {...{ ...this.defaultHeaderCellProps, ...headerCellProps }}>
-                          <Txt {...{ ...this.defaultHeaderTxtProps, ...headerTxtProps }}>{titleAlias[key] || key}</Txt>
+                        <Rect  {...this.defaultHeaderCellProps}>
+                          <Txt {...this.defaultHeaderTxtProps}>{titleAlias[key] || key}</Txt>
                         </Rect>
                       </Layout>
 
@@ -259,7 +263,7 @@ export class Table extends Rect {
     ));
   }
 
-  public * highlighCell(rowNo: number, columnNo: number, highlighterProp?: RectProps, duration: number = .5, customHighlighter?: (row: Rect) => ThreadGenerator) {
+  public * highlightCell(rowNo: number, columnNo: number, highlighterProp?: RectProps, duration: number = .5, customHighlighter?: (row: Rect) => ThreadGenerator) {
     const cell = this.components[columnNo]?.rows[rowNo - 1];
     if (!cell) return;
 
