@@ -17,9 +17,9 @@ import { c } from "../../components/craps/CrapsTableCoords";
 import { CrapsWinConditionsHorizontal } from "../../components/craps/CrapWinConditionsHorizontal";
 
 // SCENE-NAME-worst_sessions.json
-import simData from "../../../../dicedata/output/sonic_the_hedgehog-test/sonic_the_hedgehog-test-best_sessions.json";
+import simData from "../../../../dicedata/output/sonic_the_hedgehog-100k/sonic_the_hedgehog-100k-best_sessions.json";
 const player = "SonicTheHedgehog";
-const rank = 1;
+const rank = 3;
 
 export default makeScene2D(function* (view) {
   // view.fill(Theme.BG);

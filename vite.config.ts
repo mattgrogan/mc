@@ -85,6 +85,7 @@ export default defineConfig({
         "./src/scenes/theone/theone_demo.ts",
         "./src/scenes/p16/p16_demo.ts",
         "./src/scenes/four_five_pt_molly/four_five_pt_molly_demo.ts",
+        "./src/scenes/sonic_the_hedgehog/sonic_the_hedgehog.ts",
       ],
     }),
     ffmpeg(),
