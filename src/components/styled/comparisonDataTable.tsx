@@ -103,7 +103,10 @@ export function ComparisonDataTable({
                     //   {...PoppinsBlack}
                     fontSize={fontSize}
                     fontWeight={600}
-                    text={formatter(data[keys[keyIndex]][cols[index]])}
+                    text={() => {
+                      debug(keys[keyIndex] + [cols[index]]);
+                      return formatter(data[keys[keyIndex]][cols[index]]);
+                    }}
                     {...valueTxtProps}
                   ></Txt>
                 </Rect>

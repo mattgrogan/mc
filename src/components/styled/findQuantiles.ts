@@ -19,10 +19,18 @@ export const plusCommaFormmatter = (n: number, decimals: number = 0) => {
   return nFormatted;
 };
 
-export const commaFormmatter = (n: number, decimals: number = 0) => {
+export const commaFormmatter = (
+  n: number,
+  decimals: number = 0,
+  sub_zero: string | null = null
+) => {
   /**
    * Format with comma separator.
    */
+
+  if (n == 0 && sub_zero != null) {
+    return sub_zero;
+  }
 
   let nFormatted = n.toLocaleString("en-US", {
     maximumFractionDigits: decimals,
