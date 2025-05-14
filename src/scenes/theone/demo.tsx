@@ -4,7 +4,6 @@ import {
   Direction,
   easeOutCubic,
   sequence,
-  useLogger,
   waitFor,
 } from "@motion-canvas/core";
 import { CrapsTable } from "../../components/craps/CrapsTable";
@@ -17,9 +16,7 @@ import { c } from "../../components/craps/CrapsTableCoords";
 import { CrapsWinConditionsHorizontal } from "../../components/craps/CrapWinConditionsHorizontal";
 
 // SCENE-NAME-worst_sessions.json
-import simData from "../../../../dicedata/output/sonic_the_hedgehog-100k/sonic_the_hedgehog-100k-best_sessions.json";
-const player = "SonicTheHedgehog";
-const rank = 3;
+import simData from "../../../../dicedata/output/theone-100k/theone-100k-worst-TheOne-1.json";
 
 export default makeScene2D(function* (view) {
   // view.fill(Theme.BG);
@@ -54,6 +51,7 @@ export default makeScene2D(function* (view) {
         easyAnimationDirection={Direction.Top}
         opacity={0}
       />
+      \
     </Layout>
   );
 
@@ -73,36 +71,9 @@ export default makeScene2D(function* (view) {
   yield* waitFor(1);
 
   const processor = new CrapsProcessor(table, bug, winConds);
+  processor.forceWorkingIndicator = true;
 
-  // let session = simData[15].SESSION;
-  // let session = 188;
-  // useLogger().debug("SESSION=" + session);
-
-  // let session = simData[0].SESSION;
-
-  // if (whichSession == s.BEST) {
-  //   session = sessions[0].SESSION;
-  // }
-  // if (whichSession == s.WORST) {
-  //   session = sessions[sessions.length - 1].SESSION;
-  // }
-
-  // // session = 52332;
-
-  // const firstSession = simData.filter(
-  //   ({ SESSION, ROLL }) => SESSION === session //&& ROLL < 20
-  // );
-
-  // useLogger().info("SESSION=" + session);
-  // for (const roll of firstSession) {
-  //   useLogger().debug("ROLL=" + roll.ROLL);
-  //   yield* processor.round(roll);
-  // }
-
-  // // yield* bug().hideLabel();
-  // // yield* bug().hidePlayer();
-
-  const sessionData = simData[player][rank];
+  const sessionData = simData;
   for (const roll of sessionData) {
     yield* processor.round(roll);
   }
