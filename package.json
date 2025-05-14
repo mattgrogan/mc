@@ -3,10 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "start_debug": "vite --force --debug",
     "start": "vite",
     "serve": "vite",
     "build": "tsc && vite build",
+    "test": "vitest",
     "skip-worktree": "git update-index --skip-worktree package.json && git update-index --skip-worktree package-lock.json",
     "no-skip-worktree": "git update-index --no-skip-worktree package.json && git update-index --no-skip-worktree package-lock.json"
   },
@@ -19,6 +19,7 @@
     "@motion-canvas/ui": "^3.17.0",
     "@motion-canvas/vite-plugin": "^3.17.0",
     "typescript": "^5.2.2",
-    "vite": "^4.0.0"
+    "vite": "^4.0.0",
+    "vitest": "^3.1.2"
   }
 }
