@@ -68,10 +68,10 @@ export class RollText extends Rect {
       ...props,
     });
 
-    if (this.width() == 0 || this.height() == 0) {
-      const logger = useLogger();
-      logger.warn("Reminder: set size on RollText to make it visible.");
-    }
+    // if (this.width() == 0 || this.height() == 0) {
+    //   const logger = useLogger();
+    //   logger.warn("Reminder: set size on RollText to make it visible.");
+    // }
 
     this.txtField = new Txt({
       text: this.initialText(),

@@ -17,7 +17,9 @@ import {
   TimingFunction,
   Vector2,
   all,
+  debug,
   easeInOutExpo,
+  useLogger,
 } from "@motion-canvas/core";
 import {
   AxisDirection,
@@ -376,6 +378,94 @@ export class Plot extends Layout {
     this.add(line);
 
     return line;
+  }
+
+  public steppedLine(
+    cStart: PossibleVector2,
+    cSteps: PossibleVector2[],
+    props: LineProps = {}
+  ): Line {
+    /**
+     * Create a stepped line between the given coordinates.
+     */
+
+    // Array of points that will be stored in the line
+    const points = [];
+
+    // Convert the starting coords into a vector, then find its point.
+    const vcStart = new Vector2(cStart);
+    const pStart = () => this.c2p([vcStart.x, vcStart.y], PlotSpace.LOCAL);
+    points.push(pStart);
+
+    // Save the previous coord so that it can be reused
+    let cPrevious = vcStart;
+    // useLogger().debug({ message: "START", object: vcStart });
+
+    for (const cStep of cSteps) {
+      // Next coord we want to end up at
+      const cNext = new Vector2(cStep);
+      // useLogger().debug({ message: "NEXT", object: cNext });
+
+      // Horizontal coord: new X, previous Y
+      const cHorizontal = new Vector2(cNext.x, cPrevious.y);
+      // useLogger().debug({ message: "HMOVE", object: cHorizontal });
+
+      const pHorizontal = () =>
+        this.c2p([cHorizontal.x, cHorizontal.y], PlotSpace.LOCAL);
+      points.push(pHorizontal);
+      const pNext = () => this.c2p([cNext.x, cNext.y], PlotSpace.LOCAL);
+      points.push(pNext);
+
+      // Save this coord as the previous coord
+      cPrevious = cNext;
+    }
+
+    const line = new Line({ ...props, points: points });
+    this.add(line);
+
+    return line;
+  }
+
+  public steppedLinePoints(
+    cStart: PossibleVector2,
+    cSteps: PossibleVector2[]
+  ): (() => Vector2)[] {
+    /**
+     * Create a stepped line between the given coordinates.
+     */
+
+    // Array of points that will be stored in the line
+    const points = [];
+
+    // Convert the starting coords into a vector, then find its point.
+    const vcStart = new Vector2(cStart);
+    const pStart = () => this.c2p([vcStart.x, vcStart.y], PlotSpace.LOCAL);
+    points.push(pStart);
+
+    // Save the previous coord so that it can be reused
+    let cPrevious = vcStart;
+    // useLogger().debug({ message: "START", object: vcStart });
+
+    for (const cStep of cSteps) {
+      // Next coord we want to end up at
+      const cNext = new Vector2(cStep);
+      // useLogger().debug({ message: "NEXT", object: cNext });
+
+      // Horizontal coord: new X, previous Y
+      const cHorizontal = new Vector2(cNext.x, cPrevious.y);
+      // useLogger().debug({ message: "HMOVE", object: cHorizontal });
+
+      const pHorizontal = () =>
+        this.c2p([cHorizontal.x, cHorizontal.y], PlotSpace.LOCAL);
+      points.push(pHorizontal);
+      const pNext = () => this.c2p([cNext.x, cNext.y], PlotSpace.LOCAL);
+      points.push(pNext);
+
+      // Save this coord as the previous coord
+      cPrevious = cNext;
+    }
+
+    return points;
   }
 
   // public cToPLine(
