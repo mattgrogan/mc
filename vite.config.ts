@@ -93,6 +93,8 @@ export default defineConfig({
         "./src/scenes/ehackstate95/ehackstate95_demo.ts",
         "./src/scenes/wgs_tweak/wgs_tweak_demo.ts",
         "./src/scenes/wgs_tweak/wgs_tweak.ts",
+        "./src/scenes/ken_440_regression/ken_440_regression.ts",
+        "./src/scenes/ken_440_regression/ken_440_regression_demo.ts",
       ],
     }),
     ffmpeg(),
