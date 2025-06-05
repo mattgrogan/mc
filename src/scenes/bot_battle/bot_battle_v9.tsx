@@ -450,6 +450,7 @@ export default makeScene2D(function* (view) {
 
     // Create leaderboard item
     const board = createLeaderboardItem(botSignal, leaderboardArea());
+    // @ts-expect-error
     leaderboards.push(board);
     leaderboardAreaItems().add(board);
 
