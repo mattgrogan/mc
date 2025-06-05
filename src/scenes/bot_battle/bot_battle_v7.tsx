@@ -265,7 +265,10 @@ function createLeaderboardItem(
   );
 }
 
-// Animation Generator Functions
+// Add this variable at the top level to track bankroll lines
+let currentBankrollLines: Line[] = [];
+
+// Updated createBotAnimations function to track the lines
 function* createBotAnimations(
   currentHand: any,
   botSignals: BotWithSignals[],
@@ -343,13 +346,20 @@ function* createBotAnimations(
     )
   );
 
+  // Store the lines for later cleanup
+  currentBankrollLines = bankrollLines;
+
   return { bankrollLineGenerators, bankrollLines };
 }
 
-// Cleanup Functions
+// Fixed clearBankrollLines function
 function* clearBankrollLines(plot: Plot) {
-  // Remove all existing lines from the plot
-  plot.removeChildren();
+  // Remove only the tracked bankroll lines
+  for (const line of currentBankrollLines) {
+    line.remove();
+  }
+  // Clear the tracking array
+  currentBankrollLines = [];
 }
 
 function resetBotSignals(botSignals: BotWithSignals[], currentHand: any) {

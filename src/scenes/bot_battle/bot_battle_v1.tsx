@@ -22,7 +22,7 @@ import { Grays } from "../../styles";
 // import simData1 from "../../../../dicedata/output/ats_hedge-100k-600/sessions/ats_hedge-100k-600-best-ATS_Lay-1.json";
 // import simData2 from "../../../../dicedata/output/ats_hedge-100k-600/sessions/ats_hedge-100k-600-best-ATS_Lay-2.json";
 // import simData3 from "../../../../dicedata/output/ats_hedge-100k-600/sessions/ats_hedge-100k-600-best-ATS_Lay-3.json";
-import bbData from "../../../../dicedata/bot_battle_test.json";
+import bbData from "../../../../dicedata/output/three_point_molly_working-100k/bot_battle/AlwaysWorking/battle_export.json";
 
 import { tw_colors } from "../../tw_colors";
 
