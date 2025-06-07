@@ -34,21 +34,27 @@ import {
 import { FadeIn } from "../../utils/FadeIn";
 import { Plot } from "../../components/plot/plot";
 import { PlotArea } from "../../components/styled/plotArea";
-import { commaFormmatter } from "../../components/styled/findQuantiles";
+import {
+  plusCommaFormmatter,
+  commaFormmatter,
+} from "../../components/styled/findQuantiles";
 import { createValueLabel } from "../../components/plot/PlotValueLabel";
 import { tw_colors } from "../../../src/tw_colors";
 import { DataTable } from "../../components/styled/dataTable";
 import { createLayoutToCoordLine } from "../../components/plot/LayoutToCoordLine";
 
-// hist_hand_outlay.v1.json
-import dataImport from "../../../../dicedata/output/ken_440_regress-100k-newreport/json/hist_hand_outlay.v1.json";
-// quantiles_hand_outlay.v1.json
-import quantilesImport from "../../../../dicedata/output/ken_440_regress-100k-newreport/json/quantiles_hand_outlay.v1.json";
+// hist_session_cwonlost.v1.json
+import dataImport from "../../../../dicedata/output/theone-100k-newreport/json/hist_session_cwonlost.v1.json";
+// quantiles_session_cwonlost.v1.json
+import quantilesImport from "../../../../dicedata/output/theone-100k-newreport/json/quantiles_session_cwonlost.v1.json";
 
-const DATA = dataImport["440Regress"];
-const QUANTILES = quantilesImport["440Regress"];
-const title = createSignal("How much did the bots\noutlay during a shooter?");
-const TITLE_POSITION = new Vector2(-1000, -600);
+const DATA = dataImport["TheOne"];
+const QUANTILES = quantilesImport["TheOne"];
+
+const title = createSignal(
+  "How much did the bots\nwin or lose during a session?"
+);
+const TITLE_POSITION = new Vector2(-1650, -850);
 
 // PLOT OPTIONS
 const X_AXIS_MIN = DATA.HIST_MIN[0];
@@ -61,8 +67,7 @@ const BAR_WIDTH = 80;
 const SECOND_AXIS_OFFSET_Y = -20;
 
 // THEME
-const PLOT_AREA_FILL = Bright.WHITE;
-const BAR_COLOR = tw_colors.fuchsia[500];
+const BAR_COLOR = tw_colors.blue[500];
 
 // The amount those gray limit bars go to X
 const MINMAX_HIGH = Y_AXIS_MAX * 0.01;
@@ -214,29 +219,29 @@ export default makeScene2D(function* (view) {
   // --------------- table ----------------
   const dataTable = makeRefs<typeof DataTable>();
   const tableData = [
-    { label: "MIN", value: commaFormmatter(QUANTILES.MIN) },
-    { label: "5TH", value: commaFormmatter(QUANTILES.P05) },
+    { label: "MOST LOST", value: plusCommaFormmatter(QUANTILES.MIN) },
+    { label: "5TH", value: plusCommaFormmatter(QUANTILES.P05) },
     {
       label: "25TH",
-      value: commaFormmatter(QUANTILES.P25),
+      value: plusCommaFormmatter(QUANTILES.P25),
     },
     {
       label: "MEDIAN",
-      value: commaFormmatter(QUANTILES.MEDIAN),
+      value: plusCommaFormmatter(QUANTILES.MEDIAN),
     },
     {
       label: "AVERAGE",
-      value: commaFormmatter(QUANTILES.MEAN, 2),
+      value: plusCommaFormmatter(QUANTILES.MEAN, 2),
     },
     {
       label: "75TH",
-      value: commaFormmatter(QUANTILES.P75),
+      value: plusCommaFormmatter(QUANTILES.P75),
     },
     {
       label: "95TH",
-      value: commaFormmatter(QUANTILES.P95),
+      value: plusCommaFormmatter(QUANTILES.P95),
     },
-    { label: "MAX", value: commaFormmatter(QUANTILES.MAX) },
+    { label: "MOST WON", value: plusCommaFormmatter(QUANTILES.MAX) },
   ];
 
   plot().add(

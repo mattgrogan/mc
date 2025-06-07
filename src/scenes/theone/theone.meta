@@ -1,7 +1,7 @@
 {
   "version": 0,
   "shared": {
-    "background": "rgb(14,13,13)",
+    "background": "rgba(14,13,13,0)",
     "range": [
       0,
       null
@@ -17,15 +17,15 @@
     "resolutionScale": 1
   },
   "rendering": {
-    "fps": 60,
+    "fps": 30,
     "resolutionScale": 1,
-    "colorSpace": "srgb",
+    "colorSpace": "display-p3",
     "exporter": {
       "name": "@motion-canvas/core/image-sequence",
       "options": {
         "fileType": "image/png",
         "quality": 100,
-        "groupByScene": false
+        "groupByScene": true
       }
     }
   }

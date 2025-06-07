@@ -14,11 +14,13 @@ import { commaFormmatter } from "../../components/styled/findQuantiles";
 import { FadeIn } from "../../utils/FadeIn";
 import { tw_colors } from "../../tw_colors";
 
+// outcomes_by_hand.v1.json
+import byhand from "../../../../dicedata/output/theone-100k-newreport/json/outcomes_by_hand.v1.json";
 // outcomes_by_session.v1.json
-import bySession from "../../../../dicedata/output/ken_440_regress-100k-newreport/json/outcomes_by_session.v1.json";
+import bySession from "../../../../dicedata/output/theone-100k-newreport/json/outcomes_by_session.v1.json";
 
-// const byHandData = byhand["440Regress"];
-const bySessionData = bySession["440Regress"];
+const byHandData = byhand["TheOne"];
+const bySessionData = bySession["TheOne"];
 
 interface WinLossBarProps {
   ref: Reference<Layout>;
@@ -327,21 +329,21 @@ export default makeScene2D(function* (view) {
   view.add(
     <WinLossBar
       ref={winLossBar}
-      title="Outcomes by Session"
-      totalNumber={bySessionData.N}
+      title="Outcomes by Shooter"
+      totalNumber={byHandData.N}
       totalWon={totalWon}
       totalLoss={totalLoss}
       width={2000}
       height={200}
-      units={" bots"}
+      units={" hands"}
     />
   );
 
   yield* waitFor(1);
   yield* FadeIn(winLossBar, 1, easeInOutCubic, [0, 100]);
   yield* waitFor(2);
-  yield* totalWon(bySessionData.N_UP, 3, easeInOutCubic);
-  yield* totalLoss(bySessionData.N_DOWN, 3, easeInOutCubic);
+  yield* totalWon(byHandData.N_UP, 3, easeInOutCubic);
+  yield* totalLoss(byHandData.N_DOWN, 3, easeInOutCubic);
 
   yield* waitFor(10);
 });

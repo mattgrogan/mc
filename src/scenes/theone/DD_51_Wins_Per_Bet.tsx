@@ -29,10 +29,10 @@ import { FadeIn } from "../../utils/FadeIn";
 import { commaFormmatter } from "../../components/styled/findQuantiles";
 
 // resolved_bets.v1.json
-import dataImport from "../../../../dicedata/output/ken_440_regress-100k-newreport/json/resolved_bets.v1.json";
-const DATA = dataImport["440Regress"];
+import dataImport from "../../../../dicedata/output/theone-100k-newreport/json/resolved_bets.v1.json";
+const DATA = dataImport["TheOne"];
 
-const TITLE = "How much did each bet\ncontribute to the overall loss?";
+const TITLE = "How much did each bet\ncontribute to the overall win?";
 const SCALE = 0.7;
 
 // Sorting for the bets
@@ -186,7 +186,7 @@ export default makeScene2D(function* (view) {
                     ]}
                     lineWidth={100}
                     end={() => signals[index]()}
-                    stroke={tw_colors.rose[500]}
+                    stroke={tw_colors.emerald[500]}
                   ></Line>
                 </Layout>
               </Rect>
@@ -253,7 +253,7 @@ export default makeScene2D(function* (view) {
   const generators = [];
   let waitSecs = 0;
   for (const i in range(DATA.length)) {
-    generators.push(signals[i](DATA[i].PCT_OF_LOSS, DRAW_SECS, easeOutCubic));
+    generators.push(signals[i](DATA[i].PCT_OF_WINS, DRAW_SECS, easeOutCubic));
     generators.push(waitFor(BETWEEN_SECS));
     waitSecs += DRAW_SECS + BETWEEN_SECS;
   }

@@ -6,8 +6,8 @@ import { PoppinsWhite } from "../../styles";
 import { tw_colors } from "../../tw_colors";
 
 // throws_to_profit.v1.json
-import dataImport from "../../../../dicedata/output/ken_440_regress-100k-newreport/json/throws_to_profit.v1.json";
-const cover4press = dataImport["440Regress"];
+import dataImport from "../../../../dicedata/output/theone-100k-newreport/json/throws_to_profit.v1.json";
+const cover4press = dataImport["TheOne"];
 
 const alias: Record<string, string> = {
   SHOOTER_ROLL: "Throw",

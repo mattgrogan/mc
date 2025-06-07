@@ -12,12 +12,13 @@ import {
 import {
   chain,
   createRef,
-  createRefArray,
   createSignal,
+  debug,
   delay,
   easeInOutCubic,
   easeOutCubic,
   range,
+  SignalValue,
   SimpleSignal,
   Vector2,
   waitFor,
@@ -28,53 +29,32 @@ import { tw_colors } from "../../tw_colors";
 import { FadeIn } from "../../utils/FadeIn";
 import { commaFormmatter } from "../../components/styled/findQuantiles";
 
-// resolved_bets.v1.json
-import dataImport from "../../../../dicedata/output/ken_440_regress-100k-newreport/json/resolved_bets.v1.json";
-const DATA = dataImport["440Regress"];
+// session_yield.v1.json
+import dataImport from "../../../../dicedata/output/theone-100k-newreport/json/session_yield.v1.json";
+const DATA = dataImport["TheOne"];
 
-const TITLE = "How much did each bet\ncontribute to the overall win?";
-const SCALE = 0.7;
+const TITLE = "Bet Yield";
 
 // Sorting for the bets
-const preferredOrder: string[] = [
-  "DONTPASS",
-  "BUY4",
-  "PLACE4",
-  "PLACE5",
-  "PLACE6",
-  "PLACE8",
-  "PLACE9",
-  "PLACE10",
-  "BUY10",
-  "LAY4",
-  "LAY5",
-  "LAY6",
-  "LAY8",
-  "LAY9",
-  "LAY10",
-  "ALLSMALL",
-  "ALLTALL",
-  "ALLTALLSMALL",
-  "DONTCOME",
-  "DONTCOME4",
-  "DONTCOME5",
-  "DONTCOME6",
-  "DONTCOME8",
-  "DONTCOME9",
-  "DONTCOME10",
-];
+// const preferredOrder: string[] = [
+//   "DONTPASS",
+//   "BUY4",
+//   "PLACE5",
+//   "PLACE6",
+//   "PLACE8",
+//   "PLACE9",
+//   "BUY10",
+// ];
 
-DATA.sort(
-  (a, b) => preferredOrder.indexOf(a.BET) - preferredOrder.indexOf(b.BET)
-);
+// DATA.sort((a, b) => b.SESSION_YIELD - a.SESSION_YIELD);
 
 const title = createSignal(TITLE);
-const TITLE_POSITION = new Vector2(-1200, -1250);
+const TITLE_POSITION = new Vector2(-1150, -750);
 
 // Time to draw each percentage
-const DRAW_SECS = 0.1;
+const DRAW_SECS = 1;
 // Time between incrementing each percentage
-const BETWEEN_SECS = 0.001;
+const BETWEEN_SECS = 0.5;
 
 const TITLE_TXT_PROPS: TxtProps = {
   ...PoppinsWhite,
@@ -90,6 +70,15 @@ const RowProps: RectProps = {
   lineWidth: 0,
 };
 
+const HeaderProps: RectProps = {
+  width: "33.333%",
+  fill: tw_colors.green[950],
+  stroke: Grays.GRAY2,
+  lineWidth: 1,
+  justifyContent: "center",
+  alignItems: "center",
+};
+
 const ValueProps: RectProps = {
   width: "33.333%",
   fill: tw_colors.zinc[950],
@@ -97,6 +86,12 @@ const ValueProps: RectProps = {
   lineWidth: 1,
   justifyContent: "center",
   alignItems: "center",
+};
+
+const HeaderTxtProps: TxtProps = {
+  ...PoppinsWhite,
+  fontSize: 80,
+  fontWeight: 600,
 };
 
 const ValueTxtProps: TxtProps = {
@@ -110,14 +105,20 @@ export default makeScene2D(function* (view) {
 
   const signals: SimpleSignal<number, void>[] = [];
   range(DATA.length).map((index) => {
-    signals[index] = createSignal(0);
+    signals[index] = createSignal(0.0);
+  });
+
+  // Add a better label
+  const labels: SignalValue<string>[] = [];
+  range(DATA.length).map((index) => {
+    labels[index] = DATA[index].PCT_STR;
   });
 
   // --------------- container ----------------
   const camera = createRef<Camera>();
   const container = createRef<Layout>();
   const containerNode = createRef<Node>();
-  const tableRect = createRefArray<Rect>();
+  const tableRect = createRef<Rect>();
   view.add(
     <Camera ref={camera}>
       <Layout
@@ -130,27 +131,54 @@ export default makeScene2D(function* (view) {
         gap={0}
         padding={50}
         layout
-        // scale={SCALE}
       >
         <Node
           ref={containerNode}
           opacity={0}
         >
+          <Rect
+            ref={tableRect}
+            {...RowProps}
+            direction={"row"}
+          >
+            <Rect
+              {...HeaderProps}
+              justifyContent={"start"}
+              padding={50}
+              width={"20%"}
+            >
+              <Txt
+                {...HeaderTxtProps}
+                text={"Bet Yield"}
+              ></Txt>
+            </Rect>
+            <Rect
+              {...HeaderProps}
+              justifyContent={"center"}
+              padding={80}
+              width={"80%"}
+            >
+              <Txt
+                {...HeaderTxtProps}
+                text={"% of Bots Meeting or Exceeding This Yield"}
+              ></Txt>
+            </Rect>
+          </Rect>
+
           {range(DATA.length).map((index) => (
             <Rect
               {...RowProps}
               direction={"row"}
-              ref={tableRect}
             >
               <Rect
                 {...ValueProps}
-                justifyContent={"start"}
+                justifyContent={"center"}
                 padding={50}
                 width={"20%"}
               >
                 <Txt
                   {...ValueTxtProps}
-                  text={DATA[index].BET}
+                  text={labels[index]}
                 ></Txt>
               </Rect>
               <Rect
@@ -186,7 +214,7 @@ export default makeScene2D(function* (view) {
                     ]}
                     lineWidth={100}
                     end={() => signals[index]()}
-                    stroke={tw_colors.emerald[500]}
+                    stroke={tw_colors.green[500]}
                   ></Line>
                 </Layout>
               </Rect>
@@ -212,8 +240,8 @@ export default makeScene2D(function* (view) {
           direction={"column"}
           alignItems={"start"}
           ref={titleRef}
-          position={() => tableRect[0].topLeft().addY(-50)}
-          offset={[-1, 1]}
+          position={() => tableRect().topLeft().addY(-80)}
+          offset={[-1, 0]}
           // x={() => rightColX()}
           // y={0}
         >
@@ -235,7 +263,6 @@ export default makeScene2D(function* (view) {
   // https://github.com/motion-canvas/motion-canvas/issues/1057
   camera().scene().position(view.size().div(2));
 
-  camera().zoom(SCALE);
   camera().save();
   camera().position(titleRef().middle());
   camera().zoom(1.5);
@@ -253,11 +280,14 @@ export default makeScene2D(function* (view) {
   const generators = [];
   let waitSecs = 0;
   for (const i in range(DATA.length)) {
-    generators.push(signals[i](DATA[i].PCT_OF_WINS, DRAW_SECS, easeOutCubic));
+    generators.push(signals[i](DATA[i].CUMPCT, DRAW_SECS, easeInOutCubic));
     generators.push(waitFor(BETWEEN_SECS));
     waitSecs += DRAW_SECS + BETWEEN_SECS;
   }
+  yield camera().zoom(1.1, 2, easeInOutCubic);
   yield* chain(...generators);
+
+  yield* waitFor(1);
 
   yield* waitFor(5);
 });
