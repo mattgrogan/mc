@@ -1,3 +1,4 @@
+// EXTRACT_FRAMES: [000685]
 import {
   Camera,
   Layout,

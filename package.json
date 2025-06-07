@@ -8,18 +8,25 @@
     "build": "tsc && vite build",
     "test": "vitest",
     "skip-worktree": "git update-index --skip-worktree package.json && git update-index --skip-worktree package-lock.json",
-    "no-skip-worktree": "git update-index --no-skip-worktree package.json && git update-index --no-skip-worktree package-lock.json"
+    "no-skip-worktree": "git update-index --no-skip-worktree package.json && git update-index --no-skip-worktree package-lock.json",
+    "new-video": "node scripts/create-new-video.js",
+    "add-to-vite": "node scripts/add-to-vite.js",
+    "extract-frames": "node scripts/extract-frames-simple.js"
   },
   "dependencies": {
-    "@motion-canvas/2d": "^3.17.0",
-    "@motion-canvas/core": "^3.17.0",
-    "@motion-canvas/ffmpeg": "^3.17.0"
+    "@motion-canvas/2d": "^3.17.2",
+    "@motion-canvas/core": "^3.17.2",
+    "@motion-canvas/ffmpeg": "^3.17.2",
+    "sharp": "^0.34.2"
   },
   "devDependencies": {
-    "@motion-canvas/ui": "^3.17.0",
-    "@motion-canvas/vite-plugin": "^3.17.0",
+    "@motion-canvas/ui": "^3.17.2",
+    "@motion-canvas/vite-plugin": "^3.17.2",
     "typescript": "^5.2.2",
     "vite": "^4.0.0",
     "vitest": "^3.1.2"
+  },
+  "optionalDependencies": {
+    "@img/sharp-win32-x64": "^0.34.2"
   }
 }

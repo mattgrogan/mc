@@ -1,3 +1,4 @@
+// EXTRACT_FRAMES: [000000]
 import { makeScene2D, Rect } from "@motion-canvas/2d";
 import { createRef, waitFor } from "@motion-canvas/core";
 import { Table } from "../../components/table";

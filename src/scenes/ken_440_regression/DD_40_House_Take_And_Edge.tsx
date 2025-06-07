@@ -1,3 +1,4 @@
+// EXTRACT_FRAMES: [000488, 000839]
 import {
   Camera,
   Icon,
