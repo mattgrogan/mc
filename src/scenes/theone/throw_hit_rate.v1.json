@@ -1,0 +1,39 @@
+{
+    "TheOne": {
+        "PLAYER_NAME": "TheOne",
+        "PCT_WITH_ANY_WIN": 0.08336,
+        "THROW_HIT_RATE_RATING": "Sparse",
+        "__rating_metadata__": {
+            "THROW_HIT_RATE": {
+                "scale": [
+                    {
+                        "label": "Sparse",
+                        "min": 0.0,
+                        "max": 0.2
+                    },
+                    {
+                        "label": "Occasional",
+                        "min": 0.2,
+                        "max": 0.4
+                    },
+                    {
+                        "label": "Steady",
+                        "min": 0.4,
+                        "max": 0.6
+                    },
+                    {
+                        "label": "Frequent",
+                        "min": 0.6,
+                        "max": 0.8
+                    },
+                    {
+                        "label": "Constant",
+                        "min": 0.8,
+                        "max": 1.0
+                    }
+                ],
+                "rating_name": "throw_hit_rate"
+            }
+        }
+    }
+}

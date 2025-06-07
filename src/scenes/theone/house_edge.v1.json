@@ -1,0 +1,44 @@
+{
+  "TheOne": {
+    "PLAYER_NAME": "TheOne",
+    "HOUSE_EDGE": 0.025,
+    "HOUSE_EDGE_RATING": "Low",
+    "__rating_metadata__": {
+      "HOUSE_EDGE": {
+        "scale": [
+          {
+            "label": "Minimal",
+            "min": 0.0,
+            "max": 0.01,
+            "stars": 5
+          },
+          {
+            "label": "Low",
+            "min": 0.01,
+            "max": 0.025,
+            "stars": 4
+          },
+          {
+            "label": "Moderate",
+            "min": 0.025,
+            "max": 0.04,
+            "stars": 3
+          },
+          {
+            "label": "Elevated",
+            "min": 0.04,
+            "max": 0.07,
+            "stars": 2
+          },
+          {
+            "label": "Substantial",
+            "min": 0.07,
+            "max": null,
+            "stars": 1
+          }
+        ],
+        "rating_name": "house_edge"
+      }
+    }
+  }
+}

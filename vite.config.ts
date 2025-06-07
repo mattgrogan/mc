@@ -95,6 +95,8 @@ export default defineConfig({
         "./src/scenes/wgs_tweak/wgs_tweak.ts",
         "./src/scenes/ken_440_regression/ken_440_regression.ts",
         "./src/scenes/ken_440_regression/ken_440_regression_demo.ts",
+        "./src/scenes/theone/theone.ts",
+        "./src/scenes/theone/theone_demo.ts",
       ],
     }),
     ffmpeg(),
