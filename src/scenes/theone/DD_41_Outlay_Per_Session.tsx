@@ -1,3 +1,4 @@
+// EXTRACT_FRAMES: [001027]
 import {
   Camera,
   Layout,
@@ -47,7 +48,7 @@ import quantilesImport from "../../../../dicedata/output/theone-100k-newreport/j
 
 const DATA = dataImport["TheOne"];
 const QUANTILES = quantilesImport["TheOne"];
-const title = createSignal("How much did the bots\noutlay during a shooter?");
+const title = createSignal("How much did the bots\noutlay during a session?");
 const TITLE_POSITION = new Vector2(100, -600);
 
 // PLOT OPTIONS

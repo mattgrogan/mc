@@ -1,0 +1,68 @@
+{
+    "TheOne": [
+        {
+            "N": 4514,
+            "PLAYER_NAME": "TheOne",
+            "SESSION_YIELD": 0.01,
+            "PCT": 0.04514,
+            "CUMPCT": 0.56667,
+            "PCT_STR": "> 0.01x"
+        },
+        {
+            "N": 17542,
+            "PLAYER_NAME": "TheOne",
+            "SESSION_YIELD": 0.1,
+            "PCT": 0.17542,
+            "CUMPCT": 0.52153,
+            "PCT_STR": "> 0.1x"
+        },
+        {
+            "N": 14764,
+            "PLAYER_NAME": "TheOne",
+            "SESSION_YIELD": 0.5,
+            "PCT": 0.14764,
+            "CUMPCT": 0.34611,
+            "PCT_STR": "> 0.5x"
+        },
+        {
+            "N": 15034,
+            "PLAYER_NAME": "TheOne",
+            "SESSION_YIELD": 1.0,
+            "PCT": 0.15034,
+            "CUMPCT": 0.19847,
+            "PCT_STR": "> 1.0x"
+        },
+        {
+            "N": 4509,
+            "PLAYER_NAME": "TheOne",
+            "SESSION_YIELD": 2.0,
+            "PCT": 0.04509,
+            "CUMPCT": 0.04813,
+            "PCT_STR": "> 2.0x"
+        },
+        {
+            "N": 304,
+            "PLAYER_NAME": "TheOne",
+            "SESSION_YIELD": 3.0,
+            "PCT": 0.00304,
+            "CUMPCT": 0.00304,
+            "PCT_STR": "> 3.0x"
+        },
+        {
+            "N": 0,
+            "PLAYER_NAME": "TheOne",
+            "SESSION_YIELD": 5.0,
+            "PCT": 0.0,
+            "CUMPCT": 0.0,
+            "PCT_STR": "> 5.0x"
+        },
+        {
+            "N": 0,
+            "PLAYER_NAME": "TheOne",
+            "SESSION_YIELD": 10.0,
+            "PCT": 0.0,
+            "CUMPCT": 0.0,
+            "PCT_STR": "> 10.0x"
+        }
+    ]
+}

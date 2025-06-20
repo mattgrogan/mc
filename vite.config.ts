@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import motionCanvas from "@motion-canvas/vite-plugin";
-import ffmpeg from "@motion-canvas/ffmpeg";
+// import ffmpeg from "@motion-canvas/ffmpeg";
 
 export default defineConfig({
   // server: {
@@ -87,18 +87,22 @@ export default defineConfig({
         // "./src/scenes/p16/p16_demo.ts",
         // "./src/scenes/four_five_pt_molly/four_five_pt_molly_demo.ts",
         // "./src/scenes/sonic_the_hedgehog/sonic_the_hedgehog.ts",
-        "./src/scenes/bot_battle/bot_battle.ts",
-        "./src/scenes/ai_160_dc/ai_160_dc.ts",
-        "./src/scenes/ai_160_dc/ai_160_dc_demo.ts",
-        "./src/scenes/ehackstate95/ehackstate95_demo.ts",
-        "./src/scenes/wgs_tweak/wgs_tweak_demo.ts",
-        "./src/scenes/wgs_tweak/wgs_tweak.ts",
-        "./src/scenes/ken_440_regression/ken_440_regression.ts",
-        "./src/scenes/ken_440_regression/ken_440_regression_demo.ts",
+        // "./src/scenes/bot_battle/bot_battle.ts",
+        // "./src/scenes/ai_160_dc/ai_160_dc.ts",
+        // "./src/scenes/ai_160_dc/ai_160_dc_demo.ts",
+        // "./src/scenes/ehackstate95/ehackstate95_demo.ts",
+        // "./src/scenes/wgs_tweak/wgs_tweak_demo.ts",
+        // "./src/scenes/wgs_tweak/wgs_tweak.ts",
+        // "./src/scenes/ken_440_regression/ken_440_regression.ts",
+        // "./src/scenes/ken_440_regression/ken_440_regression_demo.ts",
         "./src/scenes/theone/theone.ts",
         "./src/scenes/theone/theone_demo.ts",
+        "./src/scenes/lay78/lay78.ts",
+        "./src/scenes/lay78/lay78_demo.ts",
+        "./src/scenes/dp1x68/dp1x68.ts",
+        "./src/scenes/dp1x68/dp1x68_demo.ts",
       ],
     }),
-    ffmpeg(),
+    // ffmpeg(),
   ],
 });

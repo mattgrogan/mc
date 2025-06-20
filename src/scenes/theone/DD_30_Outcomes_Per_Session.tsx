@@ -1,3 +1,4 @@
+// EXTRACT_FRAMES: [000525]
 import { Layout, Line, Txt } from "@motion-canvas/2d/lib/components";
 import {
   createRef,

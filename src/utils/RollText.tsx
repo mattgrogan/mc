@@ -47,6 +47,7 @@ export interface RollTextProps extends RectProps {
   initialText?: SignalValue<string>;
   txtProps?: TxtProps;
   seconds?: SignalValue<number>;
+  skipAnimationWhenZero?: boolean; // New optimization flag
 }
 
 export class RollText extends Rect {
@@ -58,6 +59,9 @@ export class RollText extends Rect {
   @initial(0.4)
   @signal()
   public declare readonly seconds: SimpleSignal<number, this>;
+  @initial(true)
+  @signal()
+  public declare readonly skipAnimationWhenZero: SimpleSignal<boolean, this>;
 
   private declare txtField: Txt;
 
@@ -67,11 +71,6 @@ export class RollText extends Rect {
       clip: true,
       ...props,
     });
-
-    // if (this.width() == 0 || this.height() == 0) {
-    //   const logger = useLogger();
-    //   logger.warn("Reminder: set size on RollText to make it visible.");
-    // }
 
     this.txtField = new Txt({
       text: this.initialText(),
@@ -85,9 +84,68 @@ export class RollText extends Rect {
     from: Direction | boolean = Direction.Bottom,
     props: TxtProps = {}
   ) {
+    // Early exit if text hasn't changed
     if (text == this.txtField.text()) {
       return;
     }
+
+    // Skip animation for zero values or dashes (common case)
+    const shouldSkipAnimation =
+      this.skipAnimationWhenZero() &&
+      (text === "0" || text === "-" || this.txtField.text() === "-");
+
+    if (shouldSkipAnimation) {
+      // Instant update without animation
+      this.txtField.text(text);
+      // Update other properties if provided
+      if (props.fill) this.txtField.fill(props.fill);
+      if (props.fontSize) this.txtField.fontSize(props.fontSize);
+      if (props.fontWeight) this.txtField.fontWeight(props.fontWeight);
+      return;
+    }
+
+    // Check if only style properties changed (not text content)
+    const textChanged = text !== this.txtField.text();
+    const onlyStyleChanged = !textChanged && Object.keys(props).length > 0;
+
+    if (onlyStyleChanged) {
+      // Just update styles without text animation
+      yield* this.updateStyles(props);
+      return;
+    }
+
+    // Full animation for meaningful changes
+    yield* this.animateTextChange(text, from, props);
+  }
+
+  private *updateStyles(props: TxtProps) {
+    // Animate style changes without creating new text nodes
+    const animations = [];
+
+    if (props.fill) {
+      animations.push(this.txtField.fill(props.fill, this.seconds() * 0.5));
+    }
+    if (props.fontSize) {
+      animations.push(
+        this.txtField.fontSize(props.fontSize, this.seconds() * 0.5)
+      );
+    }
+    if (props.fontWeight) {
+      animations.push(
+        this.txtField.fontWeight(props.fontWeight, this.seconds() * 0.5)
+      );
+    }
+
+    if (animations.length > 0) {
+      yield* all(...animations);
+    }
+  }
+
+  private *animateTextChange(
+    text: string,
+    from: Direction | boolean,
+    props: TxtProps
+  ) {
     const nextTxt = new Txt({
       layout: false,
       text: text,

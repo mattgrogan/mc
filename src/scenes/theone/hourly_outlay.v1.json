@@ -1,0 +1,12 @@
+{
+    "TheOne": {
+        "PLAYER_NAME": "TheOne",
+        "N": 100000,
+        "P25": 660.32,
+        "MEDIAN": 1104.76,
+        "MEAN": 1494.67,
+        "P75": 1875.0,
+        "THROWS_PER_HOUR": 100,
+        "STAT": "OUTLAY_PER_HOUR"
+    }
+}

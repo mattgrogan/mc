@@ -1,3 +1,4 @@
+// EXTRACT_FRAMES: [000685]
 import {
   Camera,
   Layout,
@@ -10,115 +11,103 @@ import {
   Line,
 } from "@motion-canvas/2d";
 import {
-  chain,
   createRef,
   createSignal,
-  debug,
-  delay,
+  easeInCubic,
   easeInOutCubic,
   easeOutCubic,
-  range,
-  SignalValue,
   SimpleSignal,
-  Vector2,
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
 import { Grays, PoppinsWhite } from "../../styles";
 import { tw_colors } from "../../tw_colors";
 import { FadeIn } from "../../utils/FadeIn";
-import { commaFormmatter } from "../../components/styled/findQuantiles";
 
 // session_yield.v1.json
 import dataImport from "../../../../dicedata/output/theone-100k-newreport/json/session_yield.v1.json";
 const DATA = dataImport["TheOne"];
 
-const TITLE = "Bet Yield";
+const TITLE = "Session Yield Achievements";
 
-// Sorting for the bets
-// const preferredOrder: string[] = [
-//   "DONTPASS",
-//   "BUY4",
-//   "PLACE5",
-//   "PLACE6",
-//   "PLACE8",
-//   "PLACE9",
-//   "BUY10",
-// ];
-
-// DATA.sort((a, b) => b.SESSION_YIELD - a.SESSION_YIELD);
+// Extract the specific yield targets we want to show
+const targetYields = [1.0, 2.0, 3.0, 5.0, 10.0];
+const yieldData = targetYields.map((target) => {
+  const entry = DATA.find((d) => d.SESSION_YIELD === target);
+  return {
+    multiplier: target,
+    percentage: entry ? entry.CUMPCT * 100 : 0,
+    label: `${target}X+`,
+  };
+});
 
 const title = createSignal(TITLE);
-const TITLE_POSITION = new Vector2(-1150, -750);
-
-// Time to draw each percentage
-const DRAW_SECS = 1;
-// Time between incrementing each percentage
-const BETWEEN_SECS = 0.5;
 
 const TITLE_TXT_PROPS: TxtProps = {
   ...PoppinsWhite,
-  fontSize: 100,
+  fontSize: 120,
   fontWeight: 800,
   fill: tw_colors.zinc[100],
 };
 
-const RowProps: RectProps = {
-  width: "80%",
-  height: "8%",
-  stroke: tw_colors.zinc[100],
-  lineWidth: 0,
-};
-
-const HeaderProps: RectProps = {
-  width: "33.333%",
-  fill: tw_colors.green[950],
-  stroke: Grays.GRAY2,
-  lineWidth: 1,
+const CardProps: RectProps = {
+  width: 600,
+  height: 500,
+  fill: tw_colors.zinc[900],
+  stroke: tw_colors.zinc[600],
+  lineWidth: 2,
+  radius: 0,
   justifyContent: "center",
   alignItems: "center",
+  direction: "column",
+  gap: 20,
+  padding: 30,
 };
 
-const ValueProps: RectProps = {
-  width: "33.333%",
-  fill: tw_colors.zinc[950],
-  stroke: Grays.GRAY2,
-  lineWidth: 1,
-  justifyContent: "center",
-  alignItems: "center",
+const BigNumberProps: TxtProps = {
+  ...PoppinsWhite,
+  fontSize: 140,
+  fontWeight: 800,
+  fill: tw_colors.green[400],
 };
 
-const HeaderTxtProps: TxtProps = {
+const SmallPercentProps: TxtProps = {
   ...PoppinsWhite,
   fontSize: 80,
   fontWeight: 600,
+  fill: tw_colors.green[400],
 };
 
-const ValueTxtProps: TxtProps = {
+const LabelProps: TxtProps = {
   ...PoppinsWhite,
-  fontSize: 60,
+  fontSize: 100,
+  fontWeight: 600,
+  fill: tw_colors.zinc[300],
+};
+
+const SubLabelProps: TxtProps = {
+  ...PoppinsWhite,
+  fontSize: 30,
   fontWeight: 500,
+  fill: tw_colors.zinc[400],
 };
 
 export default makeScene2D(function* (view) {
   yield* waitFor(1);
 
+  // Create signals for animated percentages and opacity
   const signals: SimpleSignal<number, void>[] = [];
-  range(DATA.length).map((index) => {
+  const opacitySignals: SimpleSignal<number, void>[] = [];
+  yieldData.forEach((_, index) => {
     signals[index] = createSignal(0.0);
-  });
-
-  // Add a better label
-  const labels: SignalValue<string>[] = [];
-  range(DATA.length).map((index) => {
-    labels[index] = DATA[index].PCT_STR;
+    opacitySignals[index] = createSignal(0.0);
   });
 
   // --------------- container ----------------
   const camera = createRef<Camera>();
   const container = createRef<Layout>();
-  const containerNode = createRef<Node>();
-  const tableRect = createRef<Rect>();
+  const cardsContainer = createRef<Layout>();
+
   view.add(
     <Camera ref={camera}>
       <Layout
@@ -126,101 +115,97 @@ export default makeScene2D(function* (view) {
         direction={"column"}
         justifyContent={"center"}
         alignItems={"center"}
-        width={"80%"}
+        width={"100%"}
         height={"100%"}
-        gap={0}
+        gap={100}
         padding={50}
         layout
       >
-        <Node
-          ref={containerNode}
+        <Layout
+          ref={cardsContainer}
+          direction={"row"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          gap={60}
+          width={"100%"}
           opacity={0}
+          layout
         >
-          <Rect
-            ref={tableRect}
-            {...RowProps}
-            direction={"row"}
-          >
-            <Rect
-              {...HeaderProps}
-              justifyContent={"start"}
-              padding={50}
-              width={"20%"}
-            >
-              <Txt
-                {...HeaderTxtProps}
-                text={"Bet Yield"}
-              ></Txt>
-            </Rect>
-            <Rect
-              {...HeaderProps}
-              justifyContent={"center"}
-              padding={80}
-              width={"80%"}
-            >
-              <Txt
-                {...HeaderTxtProps}
-                text={"% of Bots Meeting or Exceeding This Yield"}
-              ></Txt>
-            </Rect>
-          </Rect>
-
-          {range(DATA.length).map((index) => (
-            <Rect
-              {...RowProps}
-              direction={"row"}
-            >
-              <Rect
-                {...ValueProps}
+          {yieldData.map((data, index) => (
+            <Rect {...CardProps}>
+              <Layout
+                direction={"column"}
                 justifyContent={"center"}
-                padding={50}
-                width={"20%"}
+                alignItems={"center"}
+                gap={0}
               >
-                <Txt
-                  {...ValueTxtProps}
-                  text={labels[index]}
-                ></Txt>
-              </Rect>
-              <Rect
-                {...ValueProps}
-                justifyContent={"end"}
-                padding={80}
-                width={"20%"}
-              >
-                <Txt
-                  {...ValueTxtProps}
-                  text={() =>
-                    commaFormmatter(signals[index]() * 100, 2, "-  ") + "%"
-                  }
-                ></Txt>
-              </Rect>
-              <Rect
-                {...ValueProps}
-                width={"60%"}
-              >
-                <Layout layout={false}>
-                  <Line
-                    points={[
-                      [-650, 0],
-                      [650, 0],
-                    ]}
-                    lineWidth={100}
-                    stroke={tw_colors.zinc[700]}
-                  ></Line>
-                  <Line
-                    points={[
-                      [-650, 0],
-                      [650, 0],
-                    ]}
-                    lineWidth={100}
-                    end={() => signals[index]()}
-                    stroke={tw_colors.green[500]}
-                  ></Line>
+                {/* Percentage Display */}
+                <Layout
+                  direction={"row"}
+                  alignItems={"baseline"}
+                  gap={5}
+                  marginTop={0}
+                  opacity={() => opacitySignals[index]()}
+                >
+                  <Txt
+                    {...BigNumberProps}
+                    text={() => {
+                      const pct = signals[index]();
+                      return pct < 0.1 ? "< 0.1" : pct.toFixed(1);
+                    }}
+                  />
+                  <Txt
+                    {...SmallPercentProps}
+                    text={"%"}
+                  />
                 </Layout>
-              </Rect>
+
+                {/* Progress Bar */}
+                <Layout
+                  width={400}
+                  height={12}
+                  justifyContent={"start"}
+                  alignItems={"center"}
+                  layout={false}
+                >
+                  <Line
+                    points={[
+                      [-150, 0],
+                      [150, 0],
+                    ]}
+                    lineWidth={20}
+                    stroke={tw_colors.zinc[700]}
+                    radius={6}
+                  />
+                  <Line
+                    points={[
+                      [-150, 0],
+                      [150, 0],
+                    ]}
+                    lineWidth={20}
+                    end={() => Math.min(signals[index]() / 100, 1)}
+                    stroke={tw_colors.green[500]}
+                    radius={6}
+                  />
+                </Layout>
+
+                {/* Label */}
+                <Txt
+                  {...LabelProps}
+                  text={data.label}
+                  marginTop={50}
+                  marginBottom={0}
+                />
+
+                {/* Sub Label */}
+                <Txt
+                  {...SubLabelProps}
+                  text={"their outlay"}
+                />
+              </Layout>
             </Rect>
           ))}
-        </Node>
+        </Layout>
       </Layout>
     </Camera>
   );
@@ -234,28 +219,22 @@ export default makeScene2D(function* (view) {
       ref={titleNode}
       opacity={0}
     >
-      <Layout layout={false}>
-        <Layout
-          layout
-          direction={"column"}
-          alignItems={"start"}
-          ref={titleRef}
-          position={() => tableRect().topLeft().addY(-80)}
-          offset={[-1, 0]}
-          // x={() => rightColX()}
-          // y={0}
-        >
-          {() =>
-            title()
-              .split("\n")
-              .map((line) => (
-                <Txt
-                  {...TITLE_TXT_PROPS}
-                  text={line}
-                />
-              ))
-          }
-        </Layout>
+      <Layout
+        layout
+        direction={"column"}
+        alignItems={"center"}
+        ref={titleRef}
+      >
+        {() =>
+          title()
+            .split("\n")
+            .map((line) => (
+              <Txt
+                {...TITLE_TXT_PROPS}
+                text={line}
+              />
+            ))
+        }
       </Layout>
     </Node>
   );
@@ -263,31 +242,27 @@ export default makeScene2D(function* (view) {
   // https://github.com/motion-canvas/motion-canvas/issues/1057
   camera().scene().position(view.size().div(2));
 
-  camera().save();
-  camera().position(titleRef().middle());
-  camera().zoom(1.5);
+  // camera().save();
+  // camera().position(titleRef().middle());
+  // camera().zoom(1.5);
 
   // START DRAWING THE COMPONENTS HERE
   // =================================
-  yield* FadeIn(titleNode, 1, easeOutCubic, [100, 0]);
-  yield* waitFor(0.5);
-  yield camera().restore(2, easeInOutCubic);
-  yield* delay(1, FadeIn(containerNode, 2, easeOutCubic, [100, 0]));
+  // yield* FadeIn(titleNode, 1, easeOutCubic, [100, 0]);
+  // yield* waitFor(0.5);
+  // yield camera().restore(2, easeInOutCubic);
+  yield* FadeIn(cardsContainer, 2, easeOutCubic, [0, 100]);
 
   yield* waitFor(1);
 
   yield* waitUntil("show-data");
-  const generators = [];
-  let waitSecs = 0;
-  for (const i in range(DATA.length)) {
-    generators.push(signals[i](DATA[i].CUMPCT, DRAW_SECS, easeInOutCubic));
-    generators.push(waitFor(BETWEEN_SECS));
-    waitSecs += DRAW_SECS + BETWEEN_SECS;
-  }
-  yield camera().zoom(1.1, 2, easeInOutCubic);
-  yield* chain(...generators);
 
-  yield* waitFor(1);
+  // Animate each percentage
+  for (let i = 0; i < yieldData.length; i++) {
+    yield opacitySignals[i](1, 0.3, easeInCubic);
+    yield* signals[i](yieldData[i].percentage, 1.5, easeInOutCubic);
+    yield* waitFor(0.2);
+  }
 
   yield* waitFor(5);
 });

@@ -35,6 +35,8 @@ import {
 } from "../../components/styled/findQuantiles";
 import { tw_colors } from "../../tw_colors";
 
+const EVENT_NAME = "The One";
+
 // Theme colors for UI elements (not bot lines - those come from data)
 const UI_THEME = {
   COUNTER_BG: tw_colors.gray[800],
@@ -131,7 +133,7 @@ function createTitle() {
         {...PoppinsWhite}
         fontSize={120}
         fontWeight={900}
-        text={"Event Name"}
+        text={EVENT_NAME}
         offsetX={-1}
       />
       <Txt
@@ -163,7 +165,7 @@ function createCounter(rollSignal: SimpleSignal<number>) {
         fill={UI_THEME.COUNTER_BG}
         stroke={UI_THEME.COUNTER_BORDER}
         lineWidth={1}
-        radius={5}
+        radius={0}
         layout
         direction={"row"}
         justifyContent={"center"}
@@ -185,7 +187,7 @@ function createCounter(rollSignal: SimpleSignal<number>) {
           width={2}
           height={40}
           fill={UI_THEME.COUNTER_DIVIDER}
-          radius={1}
+          radius={0}
         />
         <Txt
           {...PoppinsWhite}

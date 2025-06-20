@@ -1,3 +1,4 @@
+// EXTRACT_FRAMES: [000408]
 import {
   Icon,
   Layout,
@@ -26,7 +27,7 @@ import houseEdgeData from "../../../../dicedata/output/theone-100k-newreport/jso
 import throwHitRateData from "../../../../dicedata/output/theone-100k-newreport/json/throw_hit_rate.v1.json";
 
 // Configuration for multiple strategies
-const SHOW_MULTIPLE_STRATEGIES = true; // Set to false for single strategy view
+const SHOW_MULTIPLE_STRATEGIES = false; // Set to false for single strategy view
 const STRATEGIES_DATA = [
   {
     name: "Strategy A",
