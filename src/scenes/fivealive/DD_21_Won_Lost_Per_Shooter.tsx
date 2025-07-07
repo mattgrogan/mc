@@ -1,6 +1,5 @@
 // EXTRACT_FRAMES: [001015]
 import {
-  Camera,
   Layout,
   Line,
   makeScene2D,
@@ -9,6 +8,7 @@ import {
   TxtProps,
 } from "@motion-canvas/2d";
 import {
+  all,
   createRef,
   createSignal,
   delay,
@@ -52,10 +52,10 @@ import quantilesImport from "../../../../dicedata/output/y2025/m07/fivealive-100
 const DATA = dataImport[PLAYER_NAME];
 const QUANTILES = quantilesImport[PLAYER_NAME];
 
-const title = createSignal(
-  "How much did the bots\nwin or lose during a shooter?"
+const title = createSignal("Profit and Loss per Shooter");
+const subtitle = createSignal(
+  `Histogram of outcomes from ${commaFormmatter(QUANTILES.N)} individual hands.`
 );
-const TITLE_POSITION = new Vector2(-1600, -500);
 
 // PLOT OPTIONS
 const X_AXIS_MIN = DATA.HIST_MIN[0];
@@ -65,7 +65,7 @@ const Y_AXIS_MAX = Math.max(...DATA.PCT) * 1.3;
 const X_TICKS_EVERY = 2;
 const PCT_FONT_SIZE = 30;
 const BAR_WIDTH = 60;
-const SECOND_AXIS_OFFSET_Y = -20;
+const SECOND_AXIS_OFFSET_Y = 20;
 
 // THEME
 const BAR_COLOR = tw_colors.blue[500];
@@ -94,6 +94,13 @@ const TITLE_TXT_PROPS: TxtProps = {
   fill: tw_colors.zinc[100],
 };
 
+const SUBTITLE_TXT_PROPS: TxtProps = {
+  ...PoppinsWhite,
+  fontSize: 60,
+  fontWeight: 400,
+  fill: tw_colors.zinc[400],
+};
+
 const arrowLevels = {
   MIN: 5,
   P05: 4.5,
@@ -111,57 +118,47 @@ export default makeScene2D(function* (view) {
   yield* waitFor(1);
 
   // --------------- container ----------------
-  const camera = createRef<Camera>();
   const container = createRef<Layout>();
   view.add(
-    <Camera ref={camera}>
-      <Layout
-        ref={container}
-        direction={"column"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        width={"100%"}
-        height={"100%"}
-        gap={50}
-        padding={0}
-        layout
-      ></Layout>
-    </Camera>
+    <Layout
+      ref={container}
+      direction={"column"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      width={"100%"}
+      height={"100%"}
+      gap={50}
+      padding={0}
+      layout
+    ></Layout>
   );
 
-  // --------------- title ----------------
-  const titleNode = createRef<Node>();
-  const titleRef = createRef<Layout>();
+  // --------------- title and subtitle ----------------
+  const titleContainer = createRef<Layout>();
 
-  container().add(
-    <Node
-      ref={titleNode}
+  view.add(
+    <Layout
+      ref={titleContainer}
+      direction={"column"}
+      alignItems={"start"}
+      position={[0, 0]}
+      gap={10}
       opacity={0}
+      layout
+      offsetX={-1}
+      offsetY={-1}
     >
-      <Layout layout={false}>
-        <Layout
-          layout
-          direction={"column"}
-          alignItems={"start"}
-          ref={titleRef}
-          position={TITLE_POSITION}
-          offset={[-1, 0]}
-          // x={() => rightColX()}
-          // y={0}
-        >
-          {() =>
-            title()
-              .split("\n")
-              .map((line) => (
-                <Txt
-                  {...TITLE_TXT_PROPS}
-                  text={line}
-                />
-              ))
-          }
-        </Layout>
-      </Layout>
-    </Node>
+      <Txt
+        {...TITLE_TXT_PROPS}
+        text={title}
+      />
+      <Txt
+        {...SUBTITLE_TXT_PROPS}
+        text={subtitle}
+        textAlign={"left"}
+        width={1600}
+      />
+    </Layout>
   );
 
   // --------------- plotArea ----------------
@@ -177,9 +174,6 @@ export default makeScene2D(function* (view) {
       }
     ></PlotArea>
   );
-
-  // https://github.com/motion-canvas/motion-canvas/issues/1057
-  // camera().scene().position(view.size().div(2));
 
   // --------------- plot ----------------
   const plot = createRef<Plot>();
@@ -516,21 +510,43 @@ export default makeScene2D(function* (view) {
     stroke: Grays.WHITE,
   });
 
-  // --------- position camera on title ---------------
-  camera().save();
-  camera().position(titleRef().middle());
-  camera().zoom(1.5);
+  // Calculate title positions
+  const titleFinalX = -view.width() / 2 + 100; // 100px from left edge
+  const titleFinalY = -view.height() / 2 + 100; // 100px from top edge
+
+  // Set initial scale
+  titleContainer().scale(1.5);
+
+  // Calculate initial position - 15% from left edge of view, vertically centered
+  const leftEdge = -view.width() / 2;
+  const titleInitialX = leftEdge + view.width() * 0.15;
+
+  // Since offsetY={-1}, we need to account for the title's height to center it
+  const titleBounds = titleContainer().cacheBBox();
+  const titleInitialY = -titleBounds.height / 2;
+
+  titleContainer().position(new Vector2(titleInitialX, titleInitialY));
 
   // START DRAWING THE COMPONENTS HERE
   // =================================
 
   // --------------- plotArea ----------------
-  // yield* FadeIn(plotArea.container, 1, easeOutCubic, [100, 0]);
   plotArea.container.opacity(1);
-  yield* FadeIn(titleNode, 1, easeOutCubic, [100, 0]);
+
+  // 1. Fade in title at initial position (scaled up)
+  yield* FadeIn(titleContainer, 1, easeOutCubic, [0, 50]);
+  yield* waitFor(1.5);
+
+  // 2. Move title to upper left corner and scale down simultaneously
+  yield* all(
+    titleContainer().position(
+      new Vector2(titleFinalX, titleFinalY),
+      1.5,
+      easeInOutCubic
+    ),
+    titleContainer().scale(1, 1.5, easeInOutCubic)
+  );
   yield* waitFor(0.5);
-  yield camera().restore(2, easeInOutCubic);
-  yield* waitFor(1.8);
 
   // --------------- both axes ----------------
   yield plot().xAxis.end(1, 0.6, easeOutCubic);
@@ -556,12 +572,8 @@ export default makeScene2D(function* (view) {
   // --------------- draw arrows ----------------
   const arrowDrawSecs = 0.8;
   const waitBetweenSecs = 1;
-  const longCameraMove = 2;
 
   // --------------- MIN arrow ----------------
-  // --------------- camera ----------------
-  yield camera().zoom(1.2, longCameraMove, easeInOutCubic);
-  yield* camera().position([-1100, 400], longCameraMove, easeInOutCubic);
   // --------------- draw new ----------------
   yield dataTable.columns[0].opacity(1, arrowDrawSecs);
   minArrow.stroke(tw_colors.red[600]);
@@ -578,8 +590,6 @@ export default makeScene2D(function* (view) {
   yield dataTable.headerRects[0].fill(tw_colors.zinc[800], arrowDrawSecs);
   yield* minArrow.stroke(tw_colors.zinc[600], arrowDrawSecs);
   yield minArrow.opacity(0, 1, linear);
-  // --------------- camera ----------------
-  yield* camera().position([1100, 400], longCameraMove, easeInOutCubic);
   // --------------- draw new ----------------
   yield dataTable.columns[7].opacity(1, arrowDrawSecs);
   maxArrow.stroke(tw_colors.green[600]);
@@ -590,9 +600,6 @@ export default makeScene2D(function* (view) {
     yield* upperRangeBox.opacity(0.5, 0.6, linear);
   }
   yield* waitFor(waitBetweenSecs);
-  // --------------- camera ----------------
-  yield camera().zoom(0.9, longCameraMove, easeInOutCubic);
-  yield camera().position([0, 0], longCameraMove, easeInOutCubic);
 
   // ###################################################
   // ------------- DRAW BARS ------------------------
@@ -607,8 +614,6 @@ export default makeScene2D(function* (view) {
   yield* sequence(0.1, ...labels.map((pct) => pct.opacity(1, 1)));
   // --------------- count box ----------------
   yield FadeIn(countRefs.layout, 0.6, easeOutCubic, [0, 50]);
-  // --------------- camera ----------------
-  yield camera().zoom(1, longCameraMove, easeInOutCubic);
 
   // ###################################################
   // --------------- MEDIAN arrow ----------------
@@ -648,9 +653,6 @@ export default makeScene2D(function* (view) {
   yield* p75Arrow.end(1, arrowDrawSecs);
 
   yield* waitFor(waitBetweenSecs);
-  // --------------- camera ----------------
-  yield camera().zoom(1, waitBetweenSecs * 2, easeInOutCubic);
-  yield* camera().y(0, waitBetweenSecs * 2, easeInOutCubic);
   // --------------- 90 arrows ----------------
   // --------------- previous ----------------
   yield dataTable.headerRects[2].fill(tw_colors.zinc[800], arrowDrawSecs);

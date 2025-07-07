@@ -233,6 +233,7 @@ export default makeScene2D(function* (view) {
       opacity={0}
       layout
       offsetX={-1}
+      offsetY={-1}
     >
       <Txt
         {...TITLE_TXT_PROPS}
@@ -241,6 +242,8 @@ export default makeScene2D(function* (view) {
       <Txt
         {...SUBTITLE_TXT_PROPS}
         text={subtitle}
+        textAlign={"left"}
+        width={1600}
       />
     </Layout>
   );
@@ -253,28 +256,31 @@ export default makeScene2D(function* (view) {
     tableContainer().scale(scale);
   }
 
-  // Calculate final title position (just above the table, left-aligned)
-  const tableBounds = tableContainer().cacheBBox();
-  const titleFinalY = tableBounds.top - 100;
-  const titleFinalX = tableBounds.left;
+  // Calculate title positions
+  const titleFinalX = -view.width() / 2 + 100;  // 100px from left edge
+  const titleFinalY = -view.height() / 2 + 100; // 100px from top edge
 
   // Set initial scale
   titleContainer().scale(1.5);
 
-  // Calculate initial position - 15% from left edge of view
-  // View width is from -view.width()/2 to view.width()/2
+  // Calculate initial position - 15% from left edge of view, vertically centered
   const leftEdge = -view.width() / 2;
   const titleInitialX = leftEdge + view.width() * 0.15;
-  titleContainer().position.x(titleInitialX);
+  
+  // Since offsetY={-1}, we need to account for the title's height to center it
+  const titleBounds = titleContainer().cacheBBox();
+  const titleInitialY = -titleBounds.height / 2;
+  
+  titleContainer().position(new Vector2(titleInitialX, titleInitialY));
 
   // START ANIMATIONS
   // =================================
 
-  // 1. Fade in title at center (scaled up)
+  // 1. Fade in title at initial position (scaled up)
   yield* FadeIn(titleContainer, 1, easeOutCubic, [0, 50]);
   yield* waitFor(1.5);
 
-  // 2. Move title to final position and scale down simultaneously
+  // 2. Move title to upper left corner and scale down simultaneously
   yield* all(
     titleContainer().position(
       new Vector2(titleFinalX, titleFinalY),
@@ -283,6 +289,7 @@ export default makeScene2D(function* (view) {
     ),
     titleContainer().scale(1, 1.5, easeInOutCubic)
   );
+  yield* waitFor(0.5);
 
   // 3. Fade in table
   yield* delay(0.5, FadeIn(tableContainer, 1.5, easeOutCubic, [0, 50]));

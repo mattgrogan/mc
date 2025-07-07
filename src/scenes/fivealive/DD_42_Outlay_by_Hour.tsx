@@ -1,6 +1,5 @@
 // EXTRACT_FRAMES: [000225]
 import {
-  Camera,
   Layout,
   makeScene2D,
   Rect,
@@ -10,10 +9,12 @@ import {
   Node,
 } from "@motion-canvas/2d";
 import {
+  all,
   createRef,
   createSignal,
   easeInOutCubic,
   easeOutCubic,
+  Vector2,
   waitFor,
   waitUntil,
 } from "@motion-canvas/core";
@@ -25,7 +26,8 @@ import { PLAYER_NAME } from "./DD_00_Params";
 import hourlyOutlayData from "../../../../dicedata/output/y2025/m07/fivealive-100k/json/hourly_outlay.v1.json";
 import { commaFormmatter } from "../../components/styled/findQuantiles";
 
-const TITLE = "Estimated Outlay per Hour";
+const title = createSignal("Estimated Outlay per Hour");
+const subtitle = createSignal("Based on a table speed of 100 throws per hour");
 
 // =============================================================================
 // CONFIGURATION - Edit these settings to control which players to show
@@ -71,6 +73,13 @@ const TITLE_TXT_PROPS: TxtProps = {
   fontSize: 100,
   fontWeight: 800,
   fill: tw_colors.zinc[100],
+};
+
+const SUBTITLE_TXT_PROPS: TxtProps = {
+  ...PoppinsWhite,
+  fontSize: 60,
+  fontWeight: 400,
+  fill: tw_colors.zinc[400],
 };
 
 const TableProps: RectProps = {
@@ -145,32 +154,30 @@ export default makeScene2D(function* (view) {
   yield* waitFor(1);
 
   // --------------- container ----------------
-  const camera = createRef<Camera>();
   const container = createRef<Layout>();
   const containerNode = createRef<Node>();
   const tableRect = createRef<Rect>();
 
   view.add(
-    <Camera ref={camera}>
-      <Layout
-        ref={container}
-        direction={"column"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        width={"100%"}
-        height={"100%"}
-        gap={80}
-        padding={50}
-        layout
+    <Layout
+      ref={container}
+      direction={"column"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      width={"100%"}
+      height={"100%"}
+      gap={80}
+      padding={50}
+      layout
+    >
+      <Node
+        ref={containerNode}
+        opacity={0}
       >
-        <Node
-          ref={containerNode}
-          opacity={0}
+        <Rect
+          ref={tableRect}
+          {...TableProps}
         >
-          <Rect
-            ref={tableRect}
-            {...TableProps}
-          >
             {/* Header Row */}
             <Rect {...HeaderRowProps}>
               <Rect {...HeaderCellProps}>
@@ -269,78 +276,75 @@ export default makeScene2D(function* (view) {
             ))}
           </Rect>
         </Node>
-      </Layout>
-    </Camera>
+    </Layout>
   );
 
-  // --------------- title ----------------
-  const titleNode = createRef<Node>();
-  const titleRef = createRef<Layout>();
+  // --------------- title and subtitle ----------------
+  const titleContainer = createRef<Layout>();
 
-  container().add(
-    <Node
-      ref={titleNode}
+  view.add(
+    <Layout
+      ref={titleContainer}
+      direction={"column"}
+      alignItems={"start"}
+      position={[0, 0]}
+      gap={10}
       opacity={0}
+      layout
+      offsetX={-1}
+      offsetY={-1}
     >
-      <Layout layout={false}>
-        <Layout
-          layout
-          direction={"column"}
-          alignItems={"center"}
-          ref={titleRef}
-          position={() => tableRect().topLeft().addY(-120)}
-          offset={[-1, 0]}
-        >
-          <Txt
-            {...TITLE_TXT_PROPS}
-            text={TITLE}
-          />
-        </Layout>
-      </Layout>
-    </Node>
+      <Txt
+        {...TITLE_TXT_PROPS}
+        text={title}
+      />
+      <Txt
+        {...SUBTITLE_TXT_PROPS}
+        text={subtitle}
+        textAlign={"left"}
+        width={1600}
+      />
+    </Layout>
   );
 
-  // --------------- footnote ----------------
-  const footnoteNode = createRef<Node>();
-  const footnoteRef = createRef<Layout>();
 
-  container().add(
-    <Node
-      ref={footnoteNode}
-      opacity={0}
-    >
-      <Layout layout={false}>
-        <Layout
-          layout
-          direction={"column"}
-          alignItems={"end"}
-          ref={footnoteRef}
-          position={() => container().bottomRight().add([-100, -100])}
-          offset={[1, 0]}
-        >
-          <Txt
-            {...FootnoteTxtProps}
-            text={"* Based on a table speed of 100 throws per hour."}
-          />
-        </Layout>
-      </Layout>
-    </Node>
-  );
+  // Calculate title positions
+  const titleFinalX = -view.width() / 2 + 100;  // 100px from left edge
+  const titleFinalY = -view.height() / 2 + 100; // 100px from top edge
 
-  // https://github.com/motion-canvas/motion-canvas/issues/1057
-  camera().scene().position(view.size().div(2));
+  // Set initial scale
+  titleContainer().scale(1.5);
 
-  camera().save();
-  camera().position(titleRef().middle());
-  camera().zoom(1.5);
+  // Calculate initial position - 15% from left edge of view, vertically centered
+  const leftEdge = -view.width() / 2;
+  const titleInitialX = leftEdge + view.width() * 0.15;
+  
+  // Since offsetY={-1}, we need to account for the title's height to center it
+  const titleBounds = titleContainer().cacheBBox();
+  const titleInitialY = -titleBounds.height / 2;
+  
+  titleContainer().position(new Vector2(titleInitialX, titleInitialY));
 
   // START DRAWING THE COMPONENTS HERE
   // =================================
-  yield* FadeIn(titleNode, 1, easeOutCubic, [100, 0]);
+
+  // 1. Fade in title at initial position (scaled up)
+  yield* FadeIn(titleContainer, 1, easeOutCubic, [0, 50]);
+  yield* waitFor(1.5);
+
+  // 2. Move title to upper left corner and scale down simultaneously
+  yield* all(
+    titleContainer().position(
+      new Vector2(titleFinalX, titleFinalY),
+      1.5,
+      easeInOutCubic
+    ),
+    titleContainer().scale(1, 1.5, easeInOutCubic)
+  );
   yield* waitFor(0.5);
-  yield camera().restore(2, easeInOutCubic);
+  
+  // 3. Fade in table
   yield* FadeIn(containerNode, 2, easeOutCubic, [100, 0]);
-  yield* FadeIn(footnoteNode, 1, easeOutCubic, [50, 0]);
 
   yield* waitFor(1);
 
