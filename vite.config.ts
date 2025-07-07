@@ -101,6 +101,8 @@ export default defineConfig({
         "./src/scenes/lay78/lay78_demo.ts",
         "./src/scenes/dp1x68/dp1x68.ts",
         "./src/scenes/dp1x68/dp1x68_demo.ts",
+        "./src/scenes/fivealive/fivealive.ts",
+        "./src/scenes/fivealive/fivealive_demo.ts",
       ],
     }),
     // ffmpeg(),
