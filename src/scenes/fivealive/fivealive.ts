@@ -14,7 +14,6 @@ import DD_40_Outlay_Per_Shooter from "./DD_40_Outlay_Per_Shooter?scene";
 import DD_41_Outlay_Per_Session from "./DD_41_Outlay_Per_Session?scene";
 import DD_42_Outlay_by_Hour from "./DD_42_Outlay_by_Hour?scene";
 import DD_43_Session_Yield from "./DD_43_Session_Yield?scene";
-import DD_43B_Session_Yield from "./DD_43B_Session_Yield?scene";
 
 // bets
 import DD_51_Wins_Per_Bet from "./DD_51_Wins_Per_Bet?scene";
@@ -47,7 +46,6 @@ export default makeProject({
     DD_41_Outlay_Per_Session,
     DD_42_Outlay_by_Hour,
     DD_43_Session_Yield,
-    DD_43B_Session_Yield,
 
     // bets
     DD_51_Wins_Per_Bet,

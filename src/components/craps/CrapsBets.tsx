@@ -52,7 +52,8 @@ export class CrapsBets extends Layout {
     denom: number,
     where: c,
     indicate: boolean = true,
-    is_buy: boolean = false
+    is_buy: boolean = false,
+    is_lay: boolean = false
   ) {
     const chip = this.newChip(denom, c.PLAYER);
     this.chips[where] = chip;
@@ -65,6 +66,9 @@ export class CrapsBets extends Layout {
 
     if (is_buy) {
       yield* chip.showBuy();
+    }
+    if (is_lay) {
+      yield* chip.showLay();
     }
   }
 

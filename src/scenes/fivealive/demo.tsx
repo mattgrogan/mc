@@ -16,7 +16,7 @@ import { c } from "../../components/craps/CrapsTableCoords";
 import { CrapsWinConditionsHorizontal } from "../../components/craps/CrapWinConditionsHorizontal";
 
 // SCENE-NAME-worst_sessions.json
-import simData from "../../../../dicedata/output/y2025/m07/fivealive-100k/sessions/fivealive-100k-FiveAlive-random-3.json";
+import simData from "../../../../dicedata/output/y2025/m07/fivealive-100k/sessions/fivealive-100k-FiveAlive-random-4.json";
 
 export default makeScene2D(function* (view) {
   // view.fill(Theme.BG);
